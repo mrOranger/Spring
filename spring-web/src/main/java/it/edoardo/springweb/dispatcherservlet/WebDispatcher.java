@@ -5,6 +5,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import it.edoardo.springweb.app.WebApplication;
+
 public class WebDispatcher extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
@@ -14,7 +16,7 @@ public class WebDispatcher extends AbstractAnnotationConfigDispatcherServletInit
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return null;
+		return new Class<?>[] {WebApplication.class};
 	}
 
 	@Override
