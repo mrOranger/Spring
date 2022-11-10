@@ -1,28 +1,29 @@
 package it.edoardo.springweb.model;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
 	
 	private List<Product> products;
-	private String id;
+	private int id;
 	private User customer;
 	
+	private static int INCREMENTAL_ID = 0;
+	
 	public Order(User customer) {
-		this.id = LocalTime.now().toString();
+		this.id = INCREMENTAL_ID++;
 		this.products = new ArrayList<Product>();
 		this.customer = customer;
 	}
 	
 	public Order(List<Product> products, User customer) {
-		this.id = LocalTime.now().toString();
+		this.id = INCREMENTAL_ID++;
 		this.products = products;
 		this.customer = customer;
 	}
 
-	public Order(List<Product> products, String id, User customer) {
+	public Order(List<Product> products, int id, User customer) {
 		this.id = id;
 		this.products = products;
 		this.customer = customer;
@@ -36,11 +37,11 @@ public class Order {
 		this.products = products;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
