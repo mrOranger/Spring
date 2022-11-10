@@ -5,5 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController @RequestMapping(path = "products/")
 public class ProductController {
+	
+	@RequestMapping(path = "/")
+	public String test() {
+		return "Product Controller";
+	}
 
 }
