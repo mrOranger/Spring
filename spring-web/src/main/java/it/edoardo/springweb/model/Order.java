@@ -15,10 +15,16 @@ public class Order {
 		this.products = new ArrayList<Product>();
 		this.customer = customer;
 	}
+	
+	public Order(List<Product> products, User customer) {
+		this.id = LocalTime.now().toString();
+		this.products = products;
+		this.customer = customer;
+	}
 
 	public Order(List<Product> products, String id, User customer) {
-		this.products = products;
 		this.id = id;
+		this.products = products;
 		this.customer = customer;
 	}
 

@@ -10,11 +10,30 @@ public class User {
 	private LocalDate dateOfBirth;
 	private String taxCode;
 	
+	private static int INCREMENTAL_ID = 0;
+	
+	public User(String firstName, String lastName) {
+		this.id = INCREMENTAL_ID++;
+		this.fistName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = LocalDate.now();
+		this.taxCode = this.generateTaxCode();
+	}
+	
+	public User(int id, String firstName, String lastName) {
+		this.id = id;
+		this.fistName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = LocalDate.now();
+		this.taxCode = this.generateTaxCode();
+	}
+	
 	public User(int id, String fistName, String lastName, LocalDate dateOfBirth) {
 		this.id = id;
 		this.fistName = fistName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;		
+		this.taxCode = this.generateTaxCode();
 	}
 	
 	public User(int id, String fistName, String lastName, LocalDate dateOfBirth, String taxCode) {
@@ -24,7 +43,7 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.taxCode = taxCode;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -63,6 +82,15 @@ public class User {
 
 	public void setTaxCode(String taxCode) {
 		this.taxCode = taxCode;
+	}
+	
+	private String generateTaxCode() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(this.getFistName().toUpperCase().substring(0, 2))
+			.append(this.getLastName().toUpperCase().substring(0, 2))
+			.append(this.getDateOfBirth().toString())
+			.append((int)(Math.random()*100));
+		return strBuilder.toString();
 	}
 
 	@Override
