@@ -3,6 +3,7 @@ package it.edoardo.springweb.controller.rest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,14 @@ public class UserController {
 	
 	@GetMapping(path = "/", 
 			produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getUser() {
+	public String getUsers() {
 		return null;
+	}
+	
+	@GetMapping(path = "/{userId}", 
+			produces = MediaType.TEXT_PLAIN_VALUE)
+	public String getUser(@PathVariable("userId") String userId) {
+		return userId;
 	}
 	
 	@PostMapping(path = "/",  
@@ -29,9 +36,9 @@ public class UserController {
 		return null;
 	}
 	
-	@DeleteMapping(path = "/",  
+	@DeleteMapping(path = "/{userId}",  
 			produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteUser() {
-		return null;
+	public String deleteUser(@PathVariable("userId") String userId) {
+		return userId;
 	}
 }
