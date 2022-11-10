@@ -1,36 +1,35 @@
 package it.edoardo.springweb.controller.rest;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController @RequestMapping(path = "users/")
 public class UserController {
 	
-	@RequestMapping(path = "/", 
-			method = RequestMethod.GET, 
+	@GetMapping(path = "/", 
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser() {
 		return null;
 	}
 	
-	@RequestMapping(path = "/", 
-			method = RequestMethod.POST, 
+	@PostMapping(path = "/",  
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public String addUser() {
 		return null;
 	}
 	
-	@RequestMapping(path = "/", 
-			method = RequestMethod.PUT, 
+	@PutMapping(path = "/",  
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateUser() {
 		return null;
 	}
 	
-	@RequestMapping(path = "/", 
-			method = RequestMethod.DELETE, 
+	@DeleteMapping(path = "/",  
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUser() {
 		return null;
