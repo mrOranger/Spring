@@ -1,5 +1,6 @@
 package it.edoardo.springweb.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ public class Database {
 	}
 	
 	private void createUsers() {
+		this.users = new ArrayList<User>();
 		this.users.add(new User("Mario", "Rossi"));
 		this.users.add(new User("Maria", "Rossi"));
 		this.users.add(new User("Federico", "Rossi"));
@@ -33,6 +35,7 @@ public class Database {
 	}
 	
 	private void creteProducts() {
+		this.products = new ArrayList<Product>();
 		this.products.add(new Product("Ammoniaca"));
 		this.products.add(new Product("Pane"));
 		this.products.add(new Product("Candeggina"));
@@ -42,11 +45,11 @@ public class Database {
 	}
 	
 	private void createOrders() {
+		this.orders = new ArrayList<Order>();
 		this.orders.add(new Order(this.products.subList(2, 5), this.users.get(0)));
 		this.orders.add(new Order(this.products.subList(1, 3), this.users.get(1)));
 		this.orders.add(new Order(this.products.subList(3, 5), this.users.get(2)));
 		this.orders.add(new Order(this.products.subList(0, 5), this.users.get(3)));
-		this.orders.add(new Order(this.products.subList(1, 4), this.users.get(4)));
 	}
 	
 	public List<User> getUsers() {

@@ -20,7 +20,10 @@ public class UserController {
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUsers() {
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").append(this.database.getUsers().size()).append(" users");
+		strBuilder.append("There are ").
+			append(this.database.getUsers().size()).
+			append(" users").
+			append("\n");
 		this.database.getUsers().stream().forEach(strBuilder::append);
 		return strBuilder.toString();
 	}
@@ -28,7 +31,7 @@ public class UserController {
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
 		final int userIndex = Integer.parseInt(userId);
-		if(userIndex > 0 && (userIndex < this.database.getUsers().size())) {
+		if(userIndex >= 0 && (userIndex < this.database.getUsers().size())) {
 			return this.database.getUsers().get(userIndex).toString();
 		}
 		return "There is not any user with that id!";

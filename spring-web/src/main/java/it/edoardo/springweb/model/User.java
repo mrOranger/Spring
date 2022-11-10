@@ -95,7 +95,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "id: " + id + fistName + " " + lastName + " " + dateOfBirth
-				+ " " + taxCode;
+		return "id: " + id + " " +fistName + " " + lastName + " " + dateOfBirth
+				+ " " + taxCode + '\n';
 	}
 }

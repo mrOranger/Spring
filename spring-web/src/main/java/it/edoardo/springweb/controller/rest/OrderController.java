@@ -20,7 +20,10 @@ public class OrderController {
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrders() {
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").append(this.database.getOrders().size()).append(" orders");
+		strBuilder.append("There are ").
+			append(this.database.getOrders().size()).
+			append(" orders").
+			append("\n");
 		this.database.getOrders().stream().forEach(strBuilder::append);
 		return strBuilder.toString();
 	}
@@ -28,7 +31,7 @@ public class OrderController {
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrder(@PathVariable("orderId") String orderId) {
 		final int orderIndex = Integer.parseInt(orderId);
-		if(orderIndex > 0 && (orderIndex < this.database.getOrders().size())) {
+		if(orderIndex >= 0 && (orderIndex < this.database.getOrders().size())) {
 			return this.database.getOrders().get(orderIndex).toString();
 		}
 		return "There is not any order with that id!";

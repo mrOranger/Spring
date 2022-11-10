@@ -20,7 +20,10 @@ public class ProductController {
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProducts() {
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").append(this.database.getProducts().size()).append(" products");
+		strBuilder.append("There are ").
+			append(this.database.getProducts().size()).
+			append(" products").
+			append("\n");
 		this.database.getProducts().stream().forEach(strBuilder::append);
 		return strBuilder.toString();
 	}
@@ -28,7 +31,7 @@ public class ProductController {
 	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProduct(@PathVariable("productId") String productId) {
 		final int productIndex = Integer.parseInt(productId);
-		if(productIndex > 0 && (productIndex < this.database.getProducts().size())) {
+		if(productIndex >= 0 && (productIndex < this.database.getProducts().size())) {
 			return this.database.getProducts().get(productIndex).toString();
 		}
 		return "There is not any product with that id!";
