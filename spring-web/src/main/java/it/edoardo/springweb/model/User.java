@@ -86,8 +86,8 @@ public class User {
 	
 	private String generateTaxCode() {
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append(this.getFistName().toUpperCase().substring(0, 2))
-			.append(this.getLastName().toUpperCase().substring(0, 2))
+		strBuilder.append(this.getFistName().toUpperCase().substring(0, 3))
+			.append(this.getLastName().toUpperCase().substring(0, 3))
 			.append(this.getDateOfBirth().toString())
 			.append((int)(Math.random()*100));
 		return strBuilder.toString();
@@ -95,7 +95,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "id: " + id + " " +fistName + " " + lastName + " " + dateOfBirth
+		return "id: " + id + " " + fistName + " " + lastName + " " + dateOfBirth
 				+ " " + taxCode + '\n';
 	}
 }
