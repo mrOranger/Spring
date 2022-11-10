@@ -51,8 +51,14 @@ public class Order {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("Order id.").append(this.getId()).append("\n");
 		strBuilder.append("Made by: ").append(this.getCustomer().toString()).append("\n");
-		this.getProducts().stream().forEach((product) -> strBuilder.append("\t").
+		this.getProducts().stream().forEach((product) -> 
+				strBuilder.append("\t").
 				append(product.toString()).append("\n"));
+		strBuilder.append("Totale: ").
+			append(this.getProducts().stream().
+						mapToDouble(Product::getPrice).
+						sum()).
+			append("\n");
 		return strBuilder.toString();
 	}
 }
