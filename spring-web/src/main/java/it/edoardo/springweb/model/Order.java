@@ -3,7 +3,11 @@ package it.edoardo.springweb.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+import org.json.JSONObject;
+
+import it.edoardo.springweb.model.interfaces.Jsonable;
+
+public class Order implements Jsonable{
 	
 	private List<Product> products;
 	private int id;
@@ -67,5 +71,21 @@ public class Order {
 						sum()).
 			append("\n");
 		return strBuilder.toString();
+	}
+
+	@Override
+	public JSONObject toJson() {
+		final JSONObject json = new JSONObject();
+		json.put("id", this.getId())
+			.put("user", this.getCustomer().toJson())
+			.put("products", new ArrayList<Product>());
+		
+		this.getProducts().stream().forEach((product) -> {
+			json.append("products", product.toJson());
+		});
+		
+		final double total = this.getProducts().stream().mapToDouble(Product::getPrice).sum();
+		json.put("total", total);
+		return json;
 	}
 }

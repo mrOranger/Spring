@@ -2,7 +2,11 @@ package it.edoardo.springweb.model;
 
 import java.time.LocalDate;
 
-public class User {
+import org.json.JSONObject;
+
+import it.edoardo.springweb.model.interfaces.Jsonable;
+
+public class User implements Jsonable{
 	
 	private int id;
 	private String fistName;
@@ -97,5 +101,15 @@ public class User {
 	public String toString() {
 		return "id: " + id + " " + fistName + " " + lastName + " " + dateOfBirth
 				+ " " + taxCode + '\n';
+	}
+
+	@Override
+	public JSONObject toJson() {
+		final JSONObject json = new JSONObject();
+		json.put("id", this.getId()).append("firstName", this.getFistName())
+			.put("lastName", this.getLastName())
+			.put("dateOfBirth", this.getDateOfBirth().toString())
+			.put("taxCode", this.getTaxCode());
+		return json;
 	}
 }

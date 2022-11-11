@@ -1,6 +1,10 @@
 package it.edoardo.springweb.model;
 
-public class Product {
+import org.json.JSONObject;
+
+import it.edoardo.springweb.model.interfaces.Jsonable;
+
+public class Product implements Jsonable{
 	
 	private int id;
 	private String name;
@@ -53,5 +57,14 @@ public class Product {
 	@Override
 	public String toString() {
 		return "id: " + id + " name: " + name + ", price: " + price + '\n';
+	}
+	
+	@Override
+	public JSONObject toJson() {
+		final JSONObject json = new JSONObject();
+		json.put("id", this.getId())
+			.put("name", this.getName())
+			.put("price", this.getPrice());
+		return json;
 	}
 }
