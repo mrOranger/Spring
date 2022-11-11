@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oracle.webservices.internal.api.message.ContentType;
+
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.info.HttpResponseMessage;
 
@@ -28,14 +30,14 @@ public class UserController {
 	 * @return the collection of users
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject getUsers() {
+	public String getUsers() {
 		final JSONArray json = database.getUsers();
-		if(!json.equals(null)) {
+		if(!json.isEmpty()) {
 			final HttpResponseMessage message = new HttpResponseMessage(
 					"Users in the collection", json, HttpStatus.OK);
-			return message.toJson();
+			return message.toJson().toString();
 		}
-		return new HttpResponseMessage("Empty collection", new JSONArray(), HttpStatus.OK).toJson();
+		return new HttpResponseMessage("Empty collection", new JSONArray(), HttpStatus.OK).toJson().toString();
 	}
 	
 	/**
@@ -46,6 +48,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
+		// TODO: creare un metodo per restituire un utente
 		return null;
 	}
 	

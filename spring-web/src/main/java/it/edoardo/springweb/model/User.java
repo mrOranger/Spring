@@ -106,7 +106,7 @@ public class User implements Jsonable{
 	@Override
 	public JSONObject toJson() {
 		final JSONObject json = new JSONObject();
-		json.put("id", this.getId()).append("firstName", this.getFistName())
+		json.put("id", this.getId()).put("firstName", this.getFistName())
 			.put("lastName", this.getLastName())
 			.put("dateOfBirth", this.getDateOfBirth().toString())
 			.put("taxCode", this.getTaxCode());

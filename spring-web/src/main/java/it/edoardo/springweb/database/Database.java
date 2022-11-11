@@ -61,9 +61,12 @@ public class Database {
 	}
 	
 	public JSONObject getUser(int userId) {
-		this.users.stream().filter((user) -> { 
-			return user.getId() == userId; 
+		User user = this.users.stream().filter((currUser) -> { 
+			return currUser.getId() == userId; 
 		}).findFirst().orElse(null);
+		if(!user.equals(null)) {
+			return user.toJson();
+		}
 		return null;
 	}
 	
