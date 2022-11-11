@@ -1,5 +1,6 @@
 package it.edoardo.springweb.controller.rest;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,16 +24,9 @@ public class UserController {
 	 * METHOD => GET
 	 * @return the collection of users
 	 */
-	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getUsers() {
-		// TODO: modificare cosa viene restituito
-		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").
-			append(this.database.getUsers().size()).
-			append(" users").
-			append("\n");
-		this.database.getUsers().stream().forEach(strBuilder::append);
-		return strBuilder.toString();
+	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public JSONArray getUsers() {
+		return database.getUsers();
 	}
 	
 	/**
@@ -43,12 +37,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
-		// TODO: modificare cosa viene restituito
-		final int userIndex = Integer.parseInt(userId);
-		if(userIndex >= 0 && (userIndex < this.database.getUsers().size())) {
-			return this.database.getUsers().get(userIndex).toString();
-		}
-		return "There is not any user with that id!";
+		return null;
 	}
 	
 	/**

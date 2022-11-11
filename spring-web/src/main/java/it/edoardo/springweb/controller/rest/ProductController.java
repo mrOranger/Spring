@@ -25,13 +25,7 @@ public class ProductController {
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProducts() {
 		// TODO: modificare cosa viene restituito
-		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").
-			append(this.database.getProducts().size()).
-			append(" products").
-			append("\n");
-		this.database.getProducts().stream().forEach(strBuilder::append);
-		return strBuilder.toString();
+		return null;
 	}
 	
 	/**
@@ -42,11 +36,7 @@ public class ProductController {
 	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProduct(@PathVariable("productId") String productId) {
 		// TODO: modificare cosa viene restituito
-		final int productIndex = Integer.parseInt(productId);
-		if(productIndex >= 0 && (productIndex < this.database.getProducts().size())) {
-			return this.database.getProducts().get(productIndex).toString();
-		}
-		return "There is not any product with that id!";
+		return null;
 	}
 	
 	/**

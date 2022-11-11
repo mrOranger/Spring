@@ -24,14 +24,8 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrders() {
-		// TODO: modificare cosa viene restituito
-		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("There are ").
-			append(this.database.getOrders().size()).
-			append(" orders").
-			append("\n");
-		this.database.getOrders().stream().forEach(strBuilder::append);
-		return strBuilder.toString();
+		// TODO: restituire tutti gli ordini nel db
+		return null;
 	}
 	
 	/**
@@ -41,12 +35,8 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrder(@PathVariable("orderId") String orderId) {
-		// TODO: modificare cosa viene restituito
-		final int orderIndex = Integer.parseInt(orderId);
-		if(orderIndex >= 0 && (orderIndex < this.database.getOrders().size())) {
-			return this.database.getOrders().get(orderIndex).toString();
-		}
-		return "There is not any order with that id!";
+		// TODO: restituire un ordine
+		return null;
 	}
 	
 	/**
