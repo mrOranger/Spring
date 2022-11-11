@@ -24,6 +24,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrders() {
+		// TODO: modificare cosa viene restituito
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("There are ").
 			append(this.database.getOrders().size()).
@@ -40,6 +41,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrder(@PathVariable("orderId") String orderId) {
+		// TODO: modificare cosa viene restituito
 		final int orderIndex = Integer.parseInt(orderId);
 		if(orderIndex >= 0 && (orderIndex < this.database.getOrders().size())) {
 			return this.database.getOrders().get(orderIndex).toString();
@@ -55,6 +57,7 @@ public class OrderController {
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String addOrder() {
+		// TODO: Creare metodo per aggiungere un ordine
 		return null;
 	}
 	
@@ -66,6 +69,7 @@ public class OrderController {
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateOrders() {
+		// TODO: creare metodo per sostituire una collezione di ordini
 		return null;
 	}
 	
@@ -78,6 +82,7 @@ public class OrderController {
 	 */
 	@PutMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateOrder(@PathVariable("orderId") String orderId) {
+		// TODO: creare un metodo per sostituire un ordine
 		return null;
 	}
 	
@@ -90,6 +95,7 @@ public class OrderController {
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteOrders() {
+		// TODO: creare un metodo per eliminare gli ordini
 		return null;
 	}
 	
@@ -102,6 +108,7 @@ public class OrderController {
 	 */
 	@DeleteMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteOrder(@PathVariable("orderId") String orderId) {
+		// TODO: creare un metodo per eliminare un ordine
 		return orderId;
 	}
 }

@@ -24,6 +24,7 @@ public class ProductController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProducts() {
+		// TODO: modificare cosa viene restituito
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("There are ").
 			append(this.database.getProducts().size()).
@@ -40,6 +41,7 @@ public class ProductController {
 	 */
 	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProduct(@PathVariable("productId") String productId) {
+		// TODO: modificare cosa viene restituito
 		final int productIndex = Integer.parseInt(productId);
 		if(productIndex >= 0 && (productIndex < this.database.getProducts().size())) {
 			return this.database.getProducts().get(productIndex).toString();
@@ -55,6 +57,7 @@ public class ProductController {
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String addProduct() {
+		// TODO: creare metodo per aggiungere un prodotto
 		return null;
 	}
 	
@@ -66,6 +69,7 @@ public class ProductController {
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateProducts() {
+		// TODO: creare metodo per modificare la collezione di prodotti
 		return null;
 	}
 	
@@ -77,6 +81,7 @@ public class ProductController {
 	 */
 	@PutMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateProduct(@PathVariable("productId") String productId) {
+		// TODO: creare metodo per modificare un prodotto
 		return null;
 	}
 	
@@ -88,6 +93,7 @@ public class ProductController {
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteProducts() {
+		// TODO: creare metodo per eliminare i prodotti
 		return null;
 	}
 	
@@ -99,6 +105,7 @@ public class ProductController {
 	 */
 	@DeleteMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteProduct(@PathVariable("productId") String productId) {
+		// TODO: creare metodo per eliminare un prodotto
 		return productId;
 	}
 }

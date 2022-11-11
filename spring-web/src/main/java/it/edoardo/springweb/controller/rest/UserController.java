@@ -25,6 +25,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUsers() {
+		// TODO: modificare cosa viene restituito
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("There are ").
 			append(this.database.getUsers().size()).
@@ -42,6 +43,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
+		// TODO: modificare cosa viene restituito
 		final int userIndex = Integer.parseInt(userId);
 		if(userIndex >= 0 && (userIndex < this.database.getUsers().size())) {
 			return this.database.getUsers().get(userIndex).toString();
@@ -57,6 +59,7 @@ public class UserController {
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String addUser() {
+		// TODO: creare un metodo per aggiungere un utente
 		return null;
 	}
 	
@@ -68,6 +71,7 @@ public class UserController {
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateUsers() {
+		// TODO: creare un metodo per sostituire la collezione di utenti
 		return null;
 	}
 
@@ -79,6 +83,7 @@ public class UserController {
 	 */
 	@PutMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String updateUser(@PathVariable("userId") String userId) {
+		// TODO: creare un metodo per sostituire un utente
 		return null;
 	}
 
@@ -90,6 +95,7 @@ public class UserController {
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUsers() {
+		// TODO: creare un metodo per eliminare la collezione di utentei
 		return null;
 	}
 	
@@ -101,6 +107,7 @@ public class UserController {
 	 */	
 	@DeleteMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUser(@PathVariable("userId") String userId) {
+		// TODO: creare un metodo per eliminare un utente
 		return userId;
 	}
 }
