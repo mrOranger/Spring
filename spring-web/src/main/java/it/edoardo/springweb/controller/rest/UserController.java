@@ -1,7 +1,9 @@
 package it.edoardo.springweb.controller.rest;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.info.HttpResponseMessage;
 
 @RestController @RequestMapping(path = "users/")
 public class UserController {
@@ -25,8 +28,14 @@ public class UserController {
 	 * @return the collection of users
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONArray getUsers() {
-		return database.getUsers();
+	public JSONObject getUsers() {
+		final JSONArray json = database.getUsers();
+		if(!json.equals(null)) {
+			final HttpResponseMessage message = new HttpResponseMessage(
+					"Users in the collection", json, HttpStatus.OK);
+			return message.toJson();
+		}
+		return new HttpResponseMessage("Empty collection", new JSONArray(), HttpStatus.OK).toJson();
 	}
 	
 	/**
