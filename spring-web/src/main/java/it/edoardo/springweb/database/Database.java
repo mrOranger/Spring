@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import it.edoardo.springweb.model.Order;
@@ -52,16 +54,43 @@ public class Database {
 		this.orders.add(new Order(this.products.subList(0, 5), this.users.get(3)));
 	}
 	
-	public List<User> getUsers() {
-		return users;
+	public JSONArray getUsers() {
+		final JSONArray json = new JSONArray();
+		this.users.stream().forEach((user) -> json.put(user.toJson()));
+		return json;
+	}
+	
+	public JSONObject getUser(int userId) {
+		this.users.stream().filter((user) -> { 
+			return user.getId() == userId; 
+		}).findFirst().orElse(null);
+		return null;
+	}
+	
+	public JSONObject getProduct(int productId) {
+		this.products.stream().filter((product) -> { 
+			return product.getId() == productId; 
+		}).findFirst().orElse(null);
+		return null;
+	}
+	
+	public JSONObject getOrder(int orderId) {
+		this.orders.stream().filter((order) -> { 
+			return order.getId() == orderId; 
+		}).findFirst().orElse(null);
+		return null;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public JSONArray getProducts() {
+		final JSONArray json = new JSONArray();
+		this.products.stream().forEach((product) -> json.put(product.toJson()));
+		return json;		
 	}
 
-	public List<Order> getOrders() {
-		return orders;
+	public JSONArray getOrders() {
+		final JSONArray json = new JSONArray();
+		this.orders.stream().forEach((order) -> json.put(order.toJson()));
+		return json;
 	}
 
 	@PreDestroy
