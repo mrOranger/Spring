@@ -77,7 +77,7 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@PutMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateOrder() {
+	public String updateOrder(@PathVariable("orderId") String orderId) {
 		return null;
 	}
 	

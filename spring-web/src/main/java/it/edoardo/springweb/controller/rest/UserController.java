@@ -17,6 +17,12 @@ public class UserController {
 	
 	@Autowired private Database database;
 	
+	/**
+	 * Returns all the users in the collection
+	 * URL => http://localhost:8080/spring-web/users/
+	 * METHOD => GET
+	 * @return the collection of users
+	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUsers() {
 		StringBuilder strBuilder = new StringBuilder();
@@ -28,6 +34,12 @@ public class UserController {
 		return strBuilder.toString();
 	}
 	
+	/**
+	 * Returns the user identified with the id
+	 * URL => http://localhost:8080/spring-web/users/:id
+	 * METHOD => GET
+	 * @return the user if present
+	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
 		final int userIndex = Integer.parseInt(userId);
@@ -37,16 +49,56 @@ public class UserController {
 		return "There is not any user with that id!";
 	}
 	
+	/**
+	 * Add a new user in the collection
+	 * URL => http://localhost:8080/spring-web/users/
+	 * METHOD => POST
+	 * @return the new collection
+	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String addUser() {
 		return null;
 	}
 	
+	/**
+	 * Replace the collection with a new one
+	 * URL => http://localhost:8080/spring-web/users/
+	 * METHOD => PUT
+	 * @return the new collection
+	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUser() {
+	public String updateUsers() {
+		return null;
+	}
+
+	/**
+	 * Replace the user in the collection with a new one
+	 * URL => http://localhost:8080/spring-web/users/:id
+	 * METHOD => PUT
+	 * @return the new collection
+	 */
+	@PutMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public String updateUser(@PathVariable("userId") String userId) {
+		return null;
+	}
+
+	/**
+	 * Delete all the collection
+	 * URL => http://localhost:8080/spring-web/users/
+	 * METHOD => DELETE
+	 * @return the empty collection
+	 */
+	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+	public String deleteUsers() {
 		return null;
 	}
 	
+	/**
+	 * Delete the user in the collection
+	 * URL => http://localhost:8080/spring-web/users/:id
+	 * METHOD => DELETE
+	 * @return the new collection
+	 */	
 	@DeleteMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUser(@PathVariable("userId") String userId) {
 		return userId;
