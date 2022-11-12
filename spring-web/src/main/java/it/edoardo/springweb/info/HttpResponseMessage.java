@@ -17,6 +17,12 @@ public class HttpResponseMessage implements Jsonable{
 		this.data = data;
 		this.status = status;
 	}
+	
+	public HttpResponseMessage(String message, JSONObject data, HttpStatus status) {
+		this.message = message;
+		this.data = new JSONArray().put(data);
+		this.status = status;
+	}
 
 	public String getMessage() {
 		return message;
