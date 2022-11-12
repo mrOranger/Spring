@@ -1,6 +1,10 @@
 package it.edoardo.springweb.model;
 
-public abstract class Item implements Comparable<Item>{
+import org.json.JSONObject;
+
+import it.edoardo.springweb.model.interfaces.Jsonable;
+
+public abstract class Item implements Comparable<Item>, Jsonable{
 	
 	protected int id;
 	
@@ -19,6 +23,13 @@ public abstract class Item implements Comparable<Item>{
 	@Override
 	public int compareTo(Item o) {
 		return this.getId() - o.getId();
+	}
+
+	@Override
+	public JSONObject toJson() {
+		final JSONObject json = new JSONObject();
+		json.put("id", this.getId());
+		return json;
 	}
 
 	@Override
