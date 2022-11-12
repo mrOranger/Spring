@@ -9,39 +9,39 @@ import it.edoardo.springweb.model.interfaces.Jsonable;
 
 public class Order extends Item implements Jsonable{
 	
-	private List<Product> products;
-	private User customer;
+	private List<Item> products;
+	private Item customer;
 	
 	private static int INCREMENTAL_ID = 0;
 	
-	public Order(User customer) {
+	public Order(Item customer) {
 		super(INCREMENTAL_ID++);
-		this.products = new ArrayList<Product>();
+		this.products = new ArrayList<Item>();
 		this.customer = customer;
 	}
 	
-	public Order(List<Product> products, User customer) {
+	public Order(List<Item> products, Item customer) {
 		super(INCREMENTAL_ID++);
 		this.products = products;
 		this.customer = customer;
 	}
 
-	public Order(List<Product> products, int id, User customer) {
+	public Order(List<Item> products, int id, Item customer) {
 		super(id);
 		this.products = products;
 		this.customer = customer;
 	}
 
-	public List<Product> getProducts() {
+	public List<Item> getProducts() {
 		return products;
 	}
 	
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<Item> products) {
 		this.products = products;
 	}
 	
 	public User getCustomer() {
-		return customer;
+		return (User)this.customer;
 	}
 	
 	public void setCustomer(User customer) {
@@ -58,7 +58,7 @@ public class Order extends Item implements Jsonable{
 				append(product.toString()).append("\n"));
 		strBuilder.append("Totale: ").
 			append(this.getProducts().stream().
-						mapToDouble(Product::getPrice).
+						mapToDouble((item) -> ((Product)item).getPrice()).
 						sum()).
 			append("\n");
 		return strBuilder.toString();
@@ -74,7 +74,7 @@ public class Order extends Item implements Jsonable{
 			json.append("products", product.toJson());
 		});
 		
-		final double total = this.getProducts().stream().mapToDouble(Product::getPrice).sum();
+		final double total = this.getProducts().stream().mapToDouble((item) -> ((Product)item).getPrice()).sum();
 		json.put("total", total);
 		return json;
 	}
