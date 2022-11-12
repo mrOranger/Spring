@@ -15,11 +15,15 @@ public class JsonResponse implements Jsonable{
 	
 	public JsonResponse(List<Item> items) {
 		this.data = new JSONArray();
-		items.forEach((item) -> this.data.put(item));
+		items.forEach((item) -> this.data.put(item.toJson()));
 	}
 	
 	public JsonResponse(Item item) {
-		this.data = new JSONArray().put(item.toJson());
+		if(item != null) {
+			this.data = new JSONArray().put(item.toJson());
+		} else {
+			this.data = new JSONArray();
+		}
 	}
 	
 	public JSONArray getData() {

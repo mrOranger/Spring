@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.info.JsonResponse;
 
 @RestController @RequestMapping(path = "products/")
 public class ProductController {
@@ -24,8 +25,7 @@ public class ProductController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProducts() {
-		// TODO: modificare cosa viene restituito
-		return null;
+		return new JsonResponse(database.getProducts()).toJson().toString();
 	}
 	
 	/**
@@ -35,8 +35,7 @@ public class ProductController {
 	 */
 	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getProduct(@PathVariable("productId") String productId) {
-		// TODO: modificare cosa viene restituito
-		return null;
+		return new JsonResponse(database.getProduct(Integer.parseInt(productId))).toJson().toString();
 	}
 	
 	/**

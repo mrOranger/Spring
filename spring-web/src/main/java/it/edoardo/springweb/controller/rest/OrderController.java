@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.info.JsonResponse;
 
 @RestController @RequestMapping(path = "orders/")
 public class OrderController {
@@ -24,8 +25,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrders() {
-		// TODO: restituire tutti gli ordini nel db
-		return null;
+		return new JsonResponse(database.getOrders()).toJson().toString();
 	}
 	
 	/**
@@ -35,8 +35,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrder(@PathVariable("orderId") String orderId) {
-		// TODO: restituire un ordine
-		return null;
+		return new JsonResponse(database.getOrder(Integer.parseInt(orderId))).toJson().toString();
 	}
 	
 	/**

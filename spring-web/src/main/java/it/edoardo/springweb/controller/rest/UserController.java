@@ -1,6 +1,5 @@
 package it.edoardo.springweb.controller.rest;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +25,8 @@ public class UserController {
 	 * @return the collection of users
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public JSONObject getUsers() {
-		return new JsonResponse(database.getUsers()).toJson();
+	public String getUsers() {
+		return new JsonResponse(database.getUsers()).toJson().toString();
 	}
 	
 	/**
@@ -36,9 +35,9 @@ public class UserController {
 	 * METHOD => GET
 	 * @return the user if present
 	 */
-	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public JSONObject getUser(@PathVariable("userId") String userId) {
-		return new JsonResponse(database.getUser(Integer.parseInt(userId))).toJson();
+	@GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String getUser(@PathVariable("userId") String userId) {
+		return new JsonResponse(database.getUser(Integer.parseInt(userId))).toJson().toString();
 	}
 	
 	/**

@@ -91,7 +91,7 @@ public class User extends Item implements Jsonable{
 	@Override
 	public String toString() {
 		return super.toString() + " " + fistName + " " + lastName + " " + dateOfBirth
-				+ " " + taxCode + '\n';
+				+ " " + taxCode;
 	}
 
 	@Override

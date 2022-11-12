@@ -47,7 +47,7 @@ public class Product extends Item implements Jsonable{
 
 	@Override
 	public String toString() {
-		return super.toString() + " name: " + name + ", price: " + price + '\n';
+		return super.toString() + " name: " + name + ", price: " + price;
 	}
 	
 	@Override
