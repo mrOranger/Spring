@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
-import it.edoardo.springweb.info.HttpResponseMessage;
 
 @RestController @RequestMapping(path = "users/")
 public class UserController {
@@ -29,13 +28,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getUsers() {
-		final JSONArray json = database.getUsers();
-		if(!json.isEmpty()) {
-			final HttpResponseMessage message = new HttpResponseMessage(
-					"Users in the collection", json, HttpStatus.OK);
-			return message.toJson().toString();
-		}
-		return new HttpResponseMessage("Empty collection", new JSONArray(), HttpStatus.OK).toJson().toString();
+		return null;
 	}
 	
 	/**
@@ -46,13 +39,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getUser(@PathVariable("userId") String userId) {
-		final JSONObject json = database.getUser(Integer.parseInt(userId));
-		if(json != null) {
-			final HttpResponseMessage message = new HttpResponseMessage(
-					"User " + userId, json, HttpStatus.OK);
-			return message.toJson().toString();
-		}
-		return new HttpResponseMessage("Empty collection", new JSONArray(), HttpStatus.OK).toJson().toString();
+		return null;
 	}
 	
 	/**
