@@ -54,46 +54,34 @@ public class Database {
 		this.orders.add(new Order(this.products.subList(0, 5), this.users.get(3)));
 	}
 	
-	public JSONArray getUsers() {
-		final JSONArray json = new JSONArray();
-		this.users.stream().forEach((user) -> json.put(user.toJson()));
-		return json;
+	public List<User> getUsers() {
+		return this.users;
 	}
-	
-	public JSONObject getUser(int userId) {
-		User user = this.users.stream().filter((currUser) -> { 
+
+	public User getUser(int userId) {
+		return this.users.stream().filter((currUser) -> { 
 			return currUser.getId() == userId; 
 		}).findFirst().orElse(null);
-		if(user != null) {
-			return user.toJson();
-		}
-		return null;
 	}
 	
-	public JSONObject getProduct(int productId) {
-		this.products.stream().filter((product) -> { 
+	public List<Product> getProducts() {
+		return this.products;
+	}
+	
+	public Product getProduct(int productId) {
+		return this.products.stream().filter((product) -> { 
 			return product.getId() == productId; 
 		}).findFirst().orElse(null);
-		return null;
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
 	}
 	
-	public JSONObject getOrder(int orderId) {
-		this.orders.stream().filter((order) -> { 
+	public Order getOrder(int orderId) {
+		return this.orders.stream().filter((order) -> { 
 			return order.getId() == orderId; 
 		}).findFirst().orElse(null);
-		return null;
-	}
-
-	public JSONArray getProducts() {
-		final JSONArray json = new JSONArray();
-		this.products.stream().forEach((product) -> json.put(product.toJson()));
-		return json;		
-	}
-
-	public JSONArray getOrders() {
-		final JSONArray json = new JSONArray();
-		this.orders.stream().forEach((order) -> json.put(order.toJson()));
-		return json;
 	}
 
 	@PreDestroy
