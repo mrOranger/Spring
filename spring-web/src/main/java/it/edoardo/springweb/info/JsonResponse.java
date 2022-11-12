@@ -2,7 +2,6 @@ package it.edoardo.springweb.info;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 
 import it.edoardo.springweb.model.interfaces.Jsonable;
 
@@ -29,6 +28,6 @@ public class JsonResponse implements Jsonable{
 	
 	@Override
 	public JSONObject toJson() {
-		return null;
+		return new JSONObject().put("data", this.data);
 	}
 }
