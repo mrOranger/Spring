@@ -6,9 +6,8 @@ import org.json.JSONObject;
 
 import it.edoardo.springweb.model.interfaces.Jsonable;
 
-public class User implements Jsonable{
+public class User extends Item implements Jsonable{
 	
-	private int id;
 	private String fistName;
 	private String lastName;
 	private LocalDate dateOfBirth;
@@ -17,7 +16,7 @@ public class User implements Jsonable{
 	private static int INCREMENTAL_ID = 0;
 	
 	public User(String firstName, String lastName) {
-		this.id = INCREMENTAL_ID++;
+		super(INCREMENTAL_ID++);
 		this.fistName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = LocalDate.now();
@@ -25,7 +24,7 @@ public class User implements Jsonable{
 	}
 	
 	public User(int id, String firstName, String lastName) {
-		this.id = id;
+		super(id);
 		this.fistName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = LocalDate.now();
@@ -33,7 +32,7 @@ public class User implements Jsonable{
 	}
 	
 	public User(int id, String fistName, String lastName, LocalDate dateOfBirth) {
-		this.id = id;
+		super(id);
 		this.fistName = fistName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;		
@@ -41,19 +40,11 @@ public class User implements Jsonable{
 	}
 	
 	public User(int id, String fistName, String lastName, LocalDate dateOfBirth, String taxCode) {
-		this.id = id;
+		super(id);
 		this.fistName = fistName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
 		this.taxCode = taxCode;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getFistName() {
@@ -99,17 +90,15 @@ public class User implements Jsonable{
 
 	@Override
 	public String toString() {
-		return "id: " + id + " " + fistName + " " + lastName + " " + dateOfBirth
+		return super.toString() + " " + fistName + " " + lastName + " " + dateOfBirth
 				+ " " + taxCode + '\n';
 	}
 
 	@Override
 	public JSONObject toJson() {
-		final JSONObject json = new JSONObject();
-		json.put("id", this.getId()).put("firstName", this.getFistName())
+		return super.toJson().put("firstName", this.getFistName())
 			.put("lastName", this.getLastName())
 			.put("dateOfBirth", this.getDateOfBirth().toString())
 			.put("taxCode", this.getTaxCode());
-		return json;
 	}
 }

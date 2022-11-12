@@ -40,14 +40,6 @@ public class Order extends Item implements Jsonable{
 		this.products = products;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public User getCustomer() {
 		return customer;
 	}
