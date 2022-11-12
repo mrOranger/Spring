@@ -3,6 +3,10 @@ package it.edoardo.springweb.model;
 public abstract class Item implements Comparable<Item>{
 	
 	protected int id;
+	
+	public Item(int id) {
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
