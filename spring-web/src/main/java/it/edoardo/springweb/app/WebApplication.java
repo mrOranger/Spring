@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -20,7 +21,7 @@ import it.edoardo.springweb.model.Product;
 import it.edoardo.springweb.model.User;
 
 @EnableWebMvc @Configuration @ComponentScan("it.edoardo.springweb.controller")
-@ImportResource(locations = "spring-web.xml")
+@PropertySource(value = "classpath:values.properties")
 public class WebApplication {
 	
 	@Value(value = "${user.first_name}")
