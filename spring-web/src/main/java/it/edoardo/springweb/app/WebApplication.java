@@ -1,7 +1,5 @@
 package it.edoardo.springweb.app;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -28,31 +26,13 @@ public class WebApplication {
 		return new Database();
 	}
 	
-	@Bean(name = "user") @Scope("prototype")
-	@Description("Simple Bean of an user item")
-	public Item getUser(String firstName, String lastName) {
-		return new User(firstName, lastName);
-	}
-	
-	@Bean(name = "product") @Scope("prototype")
-	@Description("Simple bean of a product item")
-	public Item getProduct(String productName) {
-		return new Product(productName);
-	}
-	
-	@Bean(name = "order") @Scope("prototype")
-	@Description("Simple bean of an order item")
-	public Item getOrder(List<Item> products, Item user) {
-		return new Order(products, user);
-	}
-	
 	@Bean(name = "users") @Scope("singleton")
 	@Description("Bean containing the list of users in this application to inject in Database Bean")
 	public List<Item> getUsers() {
-		return Lists.newArrayList(getUser("Mario", "Rossi"), 
-				getUser("Maria", "Neri"),
-				getUser("Federico", "Verdi"),
-				getUser("Federica", "Bruni"));
+		return Lists.newArrayList(new User("Mario", "Rossi"), 
+				new User("Maria", "Neri"),
+				new User("Federico", "Verdi"),
+				new User("Federica", "Bruni"));
 	}
 	
 	@Bean(name = "products") @Scope("singleton")
@@ -66,7 +46,7 @@ public class WebApplication {
 				new Product("Pasta"));
 	}
 	
-	@Bean(name = "products") @Scope("singleton")
+	@Bean(name = "orders") @Scope("singleton")
 	@Description("Bean containing the list of orders in this application to inject in Database Bean")
 	public List<Item> getOrders() {
 		return Lists.newArrayList(new Order(getProducts().subList(2, 5), getUsers().get(0)),

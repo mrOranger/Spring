@@ -1,6 +1,5 @@
 package it.edoardo.springweb.database;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.edoardo.springweb.model.Item;
-import it.edoardo.springweb.model.Order;
-import it.edoardo.springweb.model.Product;
-import it.edoardo.springweb.model.User;
 
+// TODO: inserire il logger per il database ed i controllers
 @Component
 public class Database {
 	
@@ -24,32 +21,6 @@ public class Database {
 	@PostConstruct
 	public void init() {
 	}
-	
-//	private void createUsers() {
-//		this.users = new ArrayList<Item>();
-//		this.users.add(new User("Mario", "Rossi"));
-//		this.users.add(new User("Maria", "Rossi"));
-//		this.users.add(new User("Federico", "Rossi"));
-//		this.users.add(new User("Federica", "Rossi"));
-//	}
-//	
-//	private void creteProducts() {
-//		this.products = new ArrayList<Item>();
-//		this.products.add(new Product("Ammoniaca"));
-//		this.products.add(new Product("Pane"));
-//		this.products.add(new Product("Candeggina"));
-//		this.products.add(new Product("Acqua"));
-//		this.products.add(new Product("Zucchine"));
-//		this.products.add(new Product("Pasta"));
-//	}
-//	
-//	private void createOrders() {
-//		this.orders = new ArrayList<Item>();
-//		this.orders.add(new Order(this.products.subList(2, 5), this.users.get(0)));
-//		this.orders.add(new Order(this.products.subList(1, 3), this.users.get(1)));
-//		this.orders.add(new Order(this.products.subList(3, 5), this.users.get(2)));
-//		this.orders.add(new Order(this.products.subList(0, 5), this.users.get(3)));
-//	}
 	
 	public List<Item> getUsers() {
 		return this.users;
