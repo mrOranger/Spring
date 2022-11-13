@@ -77,6 +77,6 @@ public class WebApplication {
 	@Bean(name = "user_logger") @Scope("singleton")
 	@Description("Bean of a logger for the User Controller")
 	public UserLogger getUserLogger() {
-		return new UserLogger("");
+		return new UserLogger();
 	}
 }
