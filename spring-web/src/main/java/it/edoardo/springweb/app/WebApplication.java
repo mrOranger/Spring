@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.google.common.collect.Lists;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.logger.user.UserLogger;
 import it.edoardo.springweb.model.Item;
 import it.edoardo.springweb.model.Order;
 import it.edoardo.springweb.model.Product;
@@ -21,6 +23,7 @@ import it.edoardo.springweb.model.User;
 
 @EnableWebMvc @Configuration @ComponentScan("it.edoardo.springweb.controller")
 @PropertySource(value = "classpath:values.properties")
+@EnableAspectJAutoProxy
 public class WebApplication {
 	
 	@Value(value = "${user.first_name}")
@@ -69,5 +72,11 @@ public class WebApplication {
 	@Description("Bean used to simulate a database")
 	public Database getDatabase() {
 		return new Database(getUsers(), getProducts(), getOrders());
+	}
+	
+	@Bean(name = "user_logger") @Scope("singleton")
+	@Description("Bean of a logger for the User Controller")
+	public UserLogger getUserLogger() {
+		return new UserLogger("");
 	}
 }
