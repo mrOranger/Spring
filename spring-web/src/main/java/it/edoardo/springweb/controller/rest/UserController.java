@@ -1,5 +1,8 @@
 package it.edoardo.springweb.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +28,7 @@ public class UserController {
 	 * @return the collection of users
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getUsers() {
+	public String getUsers(HttpServletRequest request, HttpServletResponse response) {
 		return new JsonResponse(database.getUsers()).toJson().toString();
 	}
 	

@@ -1,11 +1,14 @@
 package it.edoardo.springweb.logger.user;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -15,8 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
-import com.google.inject.internal.Annotations;
 
 import it.edoardo.springweb.logger.Logger;
 
@@ -37,9 +38,11 @@ public class UserLogger extends Logger{
 	private String getMethodType(JoinPoint joinPoint) {
 		MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
 		Method method = methodSignature.getMethod();
+		HttpServletRequest request = (HttpServletRequest)joinPoint.getArgs()[0];
+		HttpServletResponse response = (HttpServletResponse)joinPoint.getArgs()[1];
 		for(Annotation annotation : method.getAnnotations()) {
 			if(annotation.annotationType().equals(GetMapping.class)) {
-				return "[GET] - [" + ((GetMapping)annotation).path()[0] + "]";
+				return "[GET] - [" + ((GetMapping)annotation).path()[0] + "] - [" + request.getRemoteHost() + "]";
 			}
 			if(annotation.annotationType().equals(PostMapping.class)) {
 				return "[POST] - ["  + ((PostMapping)annotation).path()[0] + "]";
@@ -61,22 +64,6 @@ public class UserLogger extends Logger{
 
 	@Override
 	protected void writeFileLog(String message) {
-	    FileOutputStream outputStream = null;
-		try {
-			outputStream = new FileOutputStream("LOG.dat");
-		    byte[] strToBytes = message.getBytes();
-		    outputStream.write(strToBytes);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-		    try {
-		    	if(outputStream != null) {
-					outputStream.close();	
-		    	}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		// TODO: rivedere salvataggio file
 	}
-
 }
