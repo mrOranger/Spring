@@ -2,10 +2,12 @@ package it.edoardo.springweb.app;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -18,7 +20,17 @@ import it.edoardo.springweb.model.Product;
 import it.edoardo.springweb.model.User;
 
 @EnableWebMvc @Configuration @ComponentScan("it.edoardo.springweb.controller")
+@ImportResource(locations = "spring-web.xml")
 public class WebApplication {
+	
+	@Value(value = "${user.first_name}")
+	private String[] NAMES;
+	
+	@Value(value = "${user.last_name}")
+	private String[] LAST_NAMES;
+	
+	@Value(value = "${product.name}")
+	private String[] PRODUCTS;
 	
 	@Bean(name = "database") @Scope("singleton")
 	@Description("Bean used to simulate a database")
