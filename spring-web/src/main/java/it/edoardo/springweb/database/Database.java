@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.edoardo.springweb.model.Item;
@@ -14,9 +13,15 @@ import it.edoardo.springweb.model.Item;
 @Component
 public class Database {
 	
-	@Autowired private List<Item> users;
-	@Autowired private List<Item> products;
-	@Autowired private List<Item> orders;
+	private List<Item> users;
+	private List<Item> products;
+	private List<Item> orders;
+	
+	public Database(List<Item> users, List<Item> products, List<Item> orders) {
+		this.users = users;
+		this.products = products;
+		this.orders = orders;
+	}
 	
 	@PostConstruct
 	public void init() {
