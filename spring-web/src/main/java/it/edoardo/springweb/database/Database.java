@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import it.edoardo.springweb.model.Item;
 
-// TODO: inserire il logger per il database ed i controllers
 @Component
 public class Database {
 	
@@ -27,34 +26,129 @@ public class Database {
 	public void init() {
 	}
 	
-	public List<Item> getUsers() {
-		return this.users;
-	}
-
-	public Item getUser(int userId) {
-		return this.users.stream().filter((currUser) -> { 
-			return currUser.getId() == userId; 
-		}).findFirst().orElse(null);
-	}
-	
-	public List<Item> getProducts() {
-		return this.products;
+	public List<Item> getItems(ItemType type) {
+		switch(type) {
+			case USER:
+				return this.users;
+			case PRODUCT:
+				return this.products;
+			default:
+				return this.orders;
+		}
 	}
 	
-	public Item getProduct(int productId) {
-		return this.products.stream().filter((product) -> { 
-			return product.getId() == productId; 
-		}).findFirst().orElse(null);
-	}
-
-	public List<Item> getOrders() {
-		return this.orders;
+	public Item getItem(int itemId, ItemType type) {
+		switch(type) {
+			case USER:
+				return this.users.stream().filter((currUser) -> { 
+					return currUser.getId() == itemId; 
+				}).findFirst().orElse(null);
+			case PRODUCT:
+				return this.products.stream().filter((currProduct) -> { 
+					return currProduct.getId() == itemId; 
+				}).findFirst().orElse(null);
+			default:
+				return this.orders.stream().filter((currOrder) -> { 
+					return currOrder.getId() == itemId; 
+				}).findFirst().orElse(null);
+		}
 	}
 	
-	public Item getOrder(int orderId) {
-		return this.orders.stream().filter((order) -> { 
-			return order.getId() == orderId; 
-		}).findFirst().orElse(null);
+	public List<Item> addItem(Item item, ItemType type) {
+		switch(type) {
+			case USER:
+				this.users.add(item);
+				return this.users;
+			case PRODUCT:
+				this.products.add(item);
+				return this.products;
+			default:
+				this.orders.add(item);
+				return this.orders;
+		}
+	}
+	
+	public List<Item> replaceCollection(List<Item> items, ItemType type) {
+		switch(type) {
+			case USER:
+				this.users = items;
+				return users;
+			case PRODUCT:
+				this.products = items;
+				return products;
+			default:
+				this.orders = items;
+				return orders;
+		}
+	}
+	
+	public List<Item> replaceElement(Item item, ItemType type) {
+		switch(type) {
+			case USER:
+				this.users.stream().map((currUser) -> {
+					if(currUser.getId() == item.getId()) {
+						return item;
+					}
+					return currUser;
+				});
+				return users;
+			case PRODUCT:
+				this.products.stream().map((currProduct) -> {
+					if(currProduct.getId() == item.getId()) {
+						return item;
+					}
+					return currProduct;
+				});
+				return products;
+			default:
+				this.users.stream().map((currOrder) -> {
+					if(currOrder.getId() == item.getId()) {
+						return item;
+					}
+					return currOrder;
+				});
+				return orders;
+		}
+	}
+	
+	public List<Item> deleteCollection(ItemType type) {
+		switch(type) {
+			case USER:
+				this.users.removeAll(this.users);
+				return users;
+			case PRODUCT:
+				this.products.removeAll(this.products);
+				return products;
+			default:
+				this.orders.removeAll(this.orders);
+				return orders;
+		}		
+	}
+	
+	public List<Item> deleteItem(Item item, ItemType type) {
+		switch(type) {
+			case USER:
+				Item foundUser = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+								.findFirst().get();
+				if(foundUser != null) {
+					this.users.remove(foundUser);
+				}
+				return this.users;
+			case PRODUCT:
+				Item foundProduct = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+								.findFirst().get();
+				if(foundProduct != null) {
+					this.products.remove(foundProduct);
+				}
+				return this.products;
+			default:
+				Item foundOrder = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+							.findFirst().get();
+				if(foundOrder != null) {
+					this.users.remove(foundOrder);
+				}
+				return this.orders;
+		}				
 	}
 
 	@PreDestroy
