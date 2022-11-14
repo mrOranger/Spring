@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.google.common.collect.Lists;
 
 import it.edoardo.springweb.database.Database;
-import it.edoardo.springweb.logger.user.UserLogger;
+import it.edoardo.springweb.logger.Logger;
 import it.edoardo.springweb.model.Item;
 import it.edoardo.springweb.model.Order;
 import it.edoardo.springweb.model.Product;
@@ -74,9 +74,9 @@ public class WebApplication {
 		return new Database(getUsers(), getProducts(), getOrders());
 	}
 	
-	@Bean(name = "user_logger") @Scope("singleton")
+	@Bean(name = "logger") @Scope("singleton")
 	@Description("Bean of a logger for the User Controller")
-	public UserLogger getUserLogger() {
-		return new UserLogger();
+	public Logger getUserLogger() {
+		return new Logger();
 	}
 }
