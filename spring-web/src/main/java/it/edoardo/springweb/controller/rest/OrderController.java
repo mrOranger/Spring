@@ -1,5 +1,7 @@
 package it.edoardo.springweb.controller.rest;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.info.JsonResponse;
+import it.edoardo.springweb.model.Item;
 
 @RestController @RequestMapping(path = "orders/")
 public class OrderController {
@@ -28,7 +33,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrders(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.getOrders()).toJson().toString();
+		return new JsonResponse(database.getItems(ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -38,7 +43,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
-		return new JsonResponse(database.getOrder(Integer.parseInt(orderId))).toJson().toString();
+		return new JsonResponse(database.getItem(Integer.parseInt(orderId), ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -48,9 +53,8 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addOrder(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: Creare metodo per aggiungere un ordine
-		return null;
+	public String addOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return new JsonResponse(database.addItem(item, ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -60,9 +64,8 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateOrders(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: creare metodo per sostituire una collezione di ordini
-		return null;
+	public String updateOrders(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
+		return new JsonResponse(database.replaceCollection(items, ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -73,9 +76,8 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@PutMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
-		// TODO: creare un metodo per sostituire un ordine
-		return null;
+	public String updateOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return new JsonResponse(database.replaceElement(item, ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -87,8 +89,7 @@ public class OrderController {
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteOrders(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: creare un metodo per eliminare gli ordini
-		return null;
+		return new JsonResponse(database.deleteCollection(ItemType.ORDER)).toJson().toString();
 	}
 	
 	/**
@@ -100,7 +101,6 @@ public class OrderController {
 	 */
 	@DeleteMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
-		// TODO: creare un metodo per eliminare un ordine
-		return orderId;
+		return new JsonResponse(database.deleteItem(Integer.parseInt(orderId), ItemType.ORDER)).toJson().toString();
 	}
 }

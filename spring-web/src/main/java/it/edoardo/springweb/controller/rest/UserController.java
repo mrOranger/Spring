@@ -1,5 +1,7 @@
 package it.edoardo.springweb.controller.rest;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
+import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.info.JsonResponse;
+import it.edoardo.springweb.model.Item;
 
 @RestController @RequestMapping(path = "users/")
 public class UserController {
@@ -29,7 +34,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getUsers(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.getUsers()).toJson().toString();
+		return new JsonResponse(database.getItems(ItemType.USER)).toJson().toString();
 	}
 	
 	/**
@@ -40,7 +45,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
-		return new JsonResponse(database.getUser(Integer.parseInt(userId))).toJson().toString();
+		return new JsonResponse(database.getItem(Integer.parseInt(userId), ItemType.USER)).toJson().toString();
 	}
 	
 	/**
@@ -50,9 +55,8 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addUser(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: creare un metodo per aggiungere un utente
-		return null;
+	public String addUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return new JsonResponse(database.addItem(item, ItemType.USER)).toJson().toString();
 	}
 	
 	/**
@@ -62,9 +66,8 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUsers(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: creare un metodo per sostituire la collezione di utenti
-		return null;
+	public String updateUsers(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
+		return new JsonResponse(database.replaceCollection(items, ItemType.USER)).toJson().toString();
 	}
 
 	/**
@@ -74,9 +77,8 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
-		// TODO: creare un metodo per sostituire un utente
-		return null;
+	public String updateUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return new JsonResponse(database.replaceElement(item, ItemType.USER)).toJson().toString();
 	}
 
 	/**
@@ -87,8 +89,7 @@ public class UserController {
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUsers(HttpServletRequest request, HttpServletResponse response) {
-		// TODO: creare un metodo per eliminare la collezione di utentei
-		return null;
+		return new JsonResponse(database.deleteCollection(ItemType.USER)).toJson().toString();
 	}
 	
 	/**
@@ -99,7 +100,6 @@ public class UserController {
 	 */	
 	@DeleteMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
-		// TODO: creare un metodo per eliminare un utente
-		return userId;
+		return new JsonResponse(database.deleteItem(Integer.parseInt(userId), ItemType.USER)).toJson().toString();
 	}
 }

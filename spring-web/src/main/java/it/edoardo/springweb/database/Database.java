@@ -125,24 +125,24 @@ public class Database {
 		}		
 	}
 	
-	public List<Item> deleteItem(Item item, ItemType type) {
+	public List<Item> deleteItem(int itemId, ItemType type) {
 		switch(type) {
 			case USER:
-				Item foundUser = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+				Item foundUser = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
 								.findFirst().get();
 				if(foundUser != null) {
 					this.users.remove(foundUser);
 				}
 				return this.users;
 			case PRODUCT:
-				Item foundProduct = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+				Item foundProduct = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
 								.findFirst().get();
 				if(foundProduct != null) {
 					this.products.remove(foundProduct);
 				}
 				return this.products;
 			default:
-				Item foundOrder = this.products.stream().filter((currUser) -> currUser.getId() == item.getId())
+				Item foundOrder = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
 							.findFirst().get();
 				if(foundOrder != null) {
 					this.users.remove(foundOrder);
