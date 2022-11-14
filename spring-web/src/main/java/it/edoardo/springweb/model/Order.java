@@ -14,20 +14,8 @@ public class Order extends Item implements Jsonable{
 	
 	private static int INCREMENTAL_ID = 0;
 	
-	public Order(Item customer) {
-		super(INCREMENTAL_ID++);
-		this.products = new ArrayList<Item>();
-		this.customer = customer;
-	}
-	
 	public Order(List<Item> products, Item customer) {
 		super(INCREMENTAL_ID++);
-		this.products = products;
-		this.customer = customer;
-	}
-
-	public Order(List<Item> products, int id, Item customer) {
-		super(id);
 		this.products = products;
 		this.customer = customer;
 	}

@@ -16,18 +16,6 @@ public class Product extends Item implements Jsonable{
 		this.name = name;
 		this.price = Math.random();
 	}
-	
-	public Product(String name, double price) {
-		super(INCREMENTAL_ID++);
-		this.name = name;
-		this.price = price;
-	}
-	
-	public Product(int id, String name, double price) {
-		super(id);
-		this.name = name;
-		this.price = price;
-	}
 
 	public String getName() {
 		return name;

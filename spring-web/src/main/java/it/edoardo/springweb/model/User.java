@@ -22,30 +22,6 @@ public class User extends Item implements Jsonable{
 		this.dateOfBirth = LocalDate.now();
 		this.taxCode = this.generateTaxCode();
 	}
-	
-	public User(int id, String firstName, String lastName) {
-		super(id);
-		this.fistName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = LocalDate.now();
-		this.taxCode = this.generateTaxCode();
-	}
-	
-	public User(int id, String fistName, String lastName, LocalDate dateOfBirth) {
-		super(id);
-		this.fistName = fistName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;		
-		this.taxCode = this.generateTaxCode();
-	}
-	
-	public User(int id, String fistName, String lastName, LocalDate dateOfBirth, String taxCode) {
-		super(id);
-		this.fistName = fistName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		this.taxCode = taxCode;
-	}
 
 	public String getFistName() {
 		return fistName;
@@ -67,8 +43,8 @@ public class User extends Item implements Jsonable{
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = LocalDate.parse(dateOfBirth);
 	}
 
 	public String getTaxCode() {

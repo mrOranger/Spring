@@ -21,6 +21,7 @@ import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.info.JsonResponse;
 import it.edoardo.springweb.model.Item;
 
+// TODO: modify methods with @RequestBody
 @RestController @RequestMapping(path = "products/")
 public class ProductController {
 	
