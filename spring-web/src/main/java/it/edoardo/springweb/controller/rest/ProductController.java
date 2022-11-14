@@ -1,5 +1,8 @@
 package it.edoardo.springweb.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +27,7 @@ public class ProductController {
 	 * @return all the element inside the collection 
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getProducts() {
+	public String getProducts(HttpServletRequest request, HttpServletResponse response) {
 		return new JsonResponse(database.getProducts()).toJson().toString();
 	}
 	
@@ -34,7 +37,7 @@ public class ProductController {
 	 * @return the element with the corresponding id
 	 */
 	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getProduct(@PathVariable("productId") String productId) {
+	public String getProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
 		return new JsonResponse(database.getProduct(Integer.parseInt(productId))).toJson().toString();
 	}
 	
@@ -45,7 +48,7 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addProduct() {
+	public String addProduct(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare metodo per aggiungere un prodotto
 		return null;
 	}
@@ -57,7 +60,7 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateProducts() {
+	public String updateProducts(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare metodo per modificare la collezione di prodotti
 		return null;
 	}
@@ -69,7 +72,7 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateProduct(@PathVariable("productId") String productId) {
+	public String updateProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
 		// TODO: creare metodo per modificare un prodotto
 		return null;
 	}
@@ -81,7 +84,7 @@ public class ProductController {
 	 * @return the empty collection
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteProducts() {
+	public String deleteProducts(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare metodo per eliminare i prodotti
 		return null;
 	}
@@ -93,7 +96,7 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@DeleteMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteProduct(@PathVariable("productId") String productId) {
+	public String deleteProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
 		// TODO: creare metodo per eliminare un prodotto
 		return productId;
 	}

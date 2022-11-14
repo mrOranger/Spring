@@ -1,5 +1,8 @@
 package it.edoardo.springweb.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +27,7 @@ public class OrderController {
 	 * @return the list of the orders of the collection
 	 */
 	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getOrders() {
+	public String getOrders(HttpServletRequest request, HttpServletResponse response) {
 		return new JsonResponse(database.getOrders()).toJson().toString();
 	}
 	
@@ -34,7 +37,7 @@ public class OrderController {
 	 * @return the order with the corresponding id if present in the collection
 	 */
 	@GetMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getOrder(@PathVariable("orderId") String orderId) {
+	public String getOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
 		return new JsonResponse(database.getOrder(Integer.parseInt(orderId))).toJson().toString();
 	}
 	
@@ -45,7 +48,7 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addOrder() {
+	public String addOrder(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: Creare metodo per aggiungere un ordine
 		return null;
 	}
@@ -57,7 +60,7 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateOrders() {
+	public String updateOrders(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare metodo per sostituire una collezione di ordini
 		return null;
 	}
@@ -70,7 +73,7 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@PutMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateOrder(@PathVariable("orderId") String orderId) {
+	public String updateOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
 		// TODO: creare un metodo per sostituire un ordine
 		return null;
 	}
@@ -83,7 +86,7 @@ public class OrderController {
 	 * @return an empty collection
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteOrders() {
+	public String deleteOrders(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare un metodo per eliminare gli ordini
 		return null;
 	}
@@ -96,7 +99,7 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@DeleteMapping(path = "/{orderId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteOrder(@PathVariable("orderId") String orderId) {
+	public String deleteOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
 		// TODO: creare un metodo per eliminare un ordine
 		return orderId;
 	}

@@ -39,7 +39,7 @@ public class UserController {
 	 * @return the user if present
 	 */
 	@GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getUser(@PathVariable("userId") String userId) {
+	public String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
 		return new JsonResponse(database.getUser(Integer.parseInt(userId))).toJson().toString();
 	}
 	
@@ -50,7 +50,7 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addUser() {
+	public String addUser(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare un metodo per aggiungere un utente
 		return null;
 	}
@@ -62,7 +62,7 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUsers() {
+	public String updateUsers(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare un metodo per sostituire la collezione di utenti
 		return null;
 	}
@@ -74,7 +74,7 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUser(@PathVariable("userId") String userId) {
+	public String updateUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
 		// TODO: creare un metodo per sostituire un utente
 		return null;
 	}
@@ -86,7 +86,7 @@ public class UserController {
 	 * @return the empty collection
 	 */
 	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteUsers() {
+	public String deleteUsers(HttpServletRequest request, HttpServletResponse response) {
 		// TODO: creare un metodo per eliminare la collezione di utentei
 		return null;
 	}
@@ -98,7 +98,7 @@ public class UserController {
 	 * @return the new collection
 	 */	
 	@DeleteMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteUser(@PathVariable("userId") String userId) {
+	public String deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
 		// TODO: creare un metodo per eliminare un utente
 		return userId;
 	}
