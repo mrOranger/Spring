@@ -1,7 +1,10 @@
 package it.edoardo.springweb.model;
 
+import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Generated("jsonschema2pojo")
 public abstract class Item implements Comparable<Item>{
 	
 	@JsonProperty(value = "id") protected int id;

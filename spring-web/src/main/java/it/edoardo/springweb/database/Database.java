@@ -76,15 +76,21 @@ public class Database {
 	public List<? extends Item> replaceCollection(List<? extends Item> items, ItemType type) {
 		switch(type) {
 			case USER:
-				this.users.stream().forEach(this.users::remove);
-				items.stream().forEach(this.users::add);
+				for(int i = 0; i < this.users.size(); i++) {
+					this.users.remove(i);
+				}
+				items.stream().forEach(this.users::add);	
 				return users;
 			case PRODUCT:
-				this.products.stream().forEach(this.products::remove);
+				for(int i = 0; i < this.products.size(); i++) {
+					this.products.remove(i);
+				}
 				items.stream().forEach(this.products::add);
 				return products;
 			default:
-				this.orders.stream().forEach(this.orders::remove);
+				for(int i = 0; i < this.orders.size(); i++) {
+					this.orders.remove(i);
+				}
 				items.stream().forEach(this.orders::add);
 				return orders;
 		}

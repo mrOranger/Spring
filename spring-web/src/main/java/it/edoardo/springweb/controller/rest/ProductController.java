@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.model.Item;
+import it.edoardo.springweb.model.Product;
 
-@RestController @RequestMapping(path = "products/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController 
+@RequestMapping(path = "products/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 	
 	@Autowired private Database database;
@@ -52,8 +54,8 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item addProduct(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return database.addItem(item, ItemType.PRODUCT);
+	public Item addProduct(HttpServletRequest request, HttpServletResponse response, @RequestBody Product product) {
+		return database.addItem(product, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -63,8 +65,8 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<Item> updateProducts(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
-		return database.replaceCollection(items, ItemType.PRODUCT);
+	public List<? extends Item> updateProducts(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Product> products) {
+		return database.replaceCollection(products, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -74,8 +76,8 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item updateProduct(HttpServletRequest request, HttpServletResponse response,  @RequestBody Item item) {
-		return database.replaceElement(item, ItemType.PRODUCT);
+	public Item updateProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId, @RequestBody Product product) {
+		return database.replaceElement(Integer.parseInt(productId), product, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -85,7 +87,7 @@ public class ProductController {
 	 * @return the empty collection
 	 */
 	@DeleteMapping(path = "/")
-	public List<Item> deleteProducts(HttpServletRequest request, HttpServletResponse response) {
+	public List<? extends Item> deleteProducts(HttpServletRequest request, HttpServletResponse response) {
 		return database.deleteCollection(ItemType.PRODUCT);
 	}
 	
@@ -96,7 +98,7 @@ public class ProductController {
 	 * @return the new collection
 	 */
 	@DeleteMapping(path = "/{productId}")
-	public List<Item> deleteProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
+	public List<? extends Item> deleteProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
 		return database.deleteItem(Integer.parseInt(productId), ItemType.PRODUCT);
 	}
 }

@@ -2,26 +2,29 @@ package it.edoardo.springweb.model;
 
 import java.util.List;
 
+import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Generated("jsonschema2pojo")
 public class Order extends Item{
 	
-	@JsonProperty(value = "products") private List<Item> products;
-	@JsonProperty(value = "customer") private Item customer;
+	@JsonProperty(value = "products") private List<Product> products;
+	@JsonProperty(value = "customer") private User customer;
 
 	@JsonProperty(value = "products")
-	public List<Item> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 	
 	@JsonProperty(value = "products")
-	public void setProducts(List<Item> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
 	
 	@JsonProperty(value = "customer")
 	public User getCustomer() {
-		return (User)this.customer;
+		return this.customer;
 	}
 	
 	@JsonProperty(value = "customer")

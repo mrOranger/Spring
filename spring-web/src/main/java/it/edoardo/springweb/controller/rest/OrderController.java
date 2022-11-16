@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.model.Item;
+import it.edoardo.springweb.model.Order;
 
-@RestController @RequestMapping(path = "orders/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController 
+@RequestMapping(path = "orders/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderController {
 	
 	@Autowired private Database database;
@@ -30,7 +32,7 @@ public class OrderController {
 	 * METHOD => GET 
 	 * @return the list of the orders of the collection
 	 */
-	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/")
 	public List<Item> getOrders(HttpServletRequest request, HttpServletResponse response) {
 		return database.getItems(ItemType.ORDER);
 	}
@@ -52,8 +54,8 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item addOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return database.addItem(item, ItemType.ORDER);
+	public Item addOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody Order order) {
+		return database.addItem(order, ItemType.ORDER);
 	}
 	
 	/**
@@ -63,8 +65,8 @@ public class OrderController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<Item> updateOrders(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
-		return database.replaceCollection(items, ItemType.ORDER);
+	public List<? extends Item> updateOrders(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Order> orders) {
+		return database.replaceCollection(orders, ItemType.ORDER);
 	}
 	
 	/**
@@ -75,8 +77,8 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@PutMapping(path = "/{orderId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item updateOrder(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return database.replaceElement(item, ItemType.ORDER);
+	public Item updateOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId, @RequestBody Order order) {
+		return database.replaceElement(Integer.parseInt(orderId), order, ItemType.ORDER);
 	}
 	
 	/**
@@ -87,7 +89,7 @@ public class OrderController {
 	 * @return an empty collection
 	 */
 	@DeleteMapping(path = "/")
-	public List<Item> deleteOrders(HttpServletRequest request, HttpServletResponse response) {
+	public List<? extends Item> deleteOrders(HttpServletRequest request, HttpServletResponse response) {
 		return database.deleteCollection(ItemType.ORDER);
 	}
 	
@@ -99,7 +101,7 @@ public class OrderController {
 	 * @return the modified collection
 	 */
 	@DeleteMapping(path = "/{orderId}")
-	public List<Item> deleteOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
+	public List<? extends Item> deleteOrder(HttpServletRequest request, HttpServletResponse response, @PathVariable("orderId") String orderId) {
 		return database.deleteItem(Integer.parseInt(orderId), ItemType.ORDER);
 	}
 }
