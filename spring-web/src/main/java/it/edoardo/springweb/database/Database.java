@@ -10,6 +10,7 @@ import javax.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
 
 import it.edoardo.springweb.model.Item;
+import it.edoardo.springweb.model.Order;
 
 @Component
 public class Database {
@@ -64,13 +65,36 @@ public class Database {
 	public Item addItem(Item item, ItemType type) {
 		switch(type) {
 			case USER:
-				this.users.add(item);
+				this.addSingleItem(this.users, item);
 			case PRODUCT:
-				this.products.add(item);
+				this.addSingleItem(this.products, item);
 			default:
-				this.orders.add(item);
+				this.addUnregisteredUser(item);
+				this.addUnregisteredProducts(item);
+				this.addSingleItem(this.orders, item);	
 		}
 		return item;
+	}
+	
+	private void addUnregisteredUser(Item item) {
+		if(!this.users.contains(((Order)item).getCustomer())) {
+			this.users.add(((Order)item).getCustomer());
+		} 
+	}
+	
+	private void addUnregisteredProducts(Item item) {
+		List<Item> unregisteredProducts = ((Order)item).getProducts().stream().
+				filter((product) -> !this.products.contains(product)).
+				collect(Collectors.toList());
+			if(unregisteredProducts.size() > 0 ) {
+				this.products.addAll(products);	
+			}
+	}
+	
+	private void addSingleItem(List<Item> collection, Item item) {
+		if(!collection.contains(item)) {
+			collection.add(item);
+		}
 	}
 	
 	public List<? extends Item> replaceCollection(List<? extends Item> items, ItemType type) {
@@ -101,6 +125,8 @@ public class Database {
 				replaceSingleElement(this.products, item, itemIndex);
 				break;
 			default:
+				this.addUnregisteredUser(item);
+				this.addUnregisteredProducts(item);
 				replaceSingleElement(this.orders, item, itemIndex);
 				break;
 		}

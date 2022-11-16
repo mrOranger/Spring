@@ -20,6 +20,11 @@ public abstract class Item implements Comparable<Item>{
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		return this.getId() == ((Item)obj).getId();
+	}
+
+	@Override
 	public int compareTo(Item o) {
 		return this.getId() - o.getId();
 	}
