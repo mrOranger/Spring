@@ -2,6 +2,7 @@ package it.edoardo.springweb.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -72,48 +73,65 @@ public class Database {
 		return item;
 	}
 	
-	public List<Item> replaceCollection(List<Item> items, ItemType type) {
+	public List<? extends Item> replaceCollection(List<? extends Item> items, ItemType type) {
 		switch(type) {
 			case USER:
-				this.users = items;
+				this.users.stream().forEach(this.users::remove);
+				items.stream().forEach(this.users::add);
 				return users;
 			case PRODUCT:
-				this.products = items;
+				this.products.stream().forEach(this.products::remove);
+				items.stream().forEach(this.products::add);
 				return products;
 			default:
-				this.orders = items;
+				this.orders.stream().forEach(this.orders::remove);
+				items.stream().forEach(this.orders::add);
 				return orders;
 		}
 	}
 	
-	public Item replaceElement(Item item, ItemType type) {
+	// TODO: refactoring
+	public Item replaceElement(int itemIndex, Item item, ItemType type) {
+		Item found;
 		switch(type) {
 			case USER:
-				this.users.stream().map((currUser) -> {
-					if(currUser.getId() == item.getId()) {
-						return item;
-					}
-					return currUser;
-				});
+				found = this.users.stream().filter((elem) -> elem.getId() == itemIndex).
+					findFirst().orElse(null);
+				if(found != null) {
+					this.users = this.users.stream().map(currUser -> 
+						(currUser.getId() == itemIndex) ? item : currUser
+					).collect(Collectors.toList());
+				} else {
+					this.users.add(item);
+				}
+				break;
 			case PRODUCT:
-				this.products.stream().map((currProduct) -> {
-					if(currProduct.getId() == item.getId()) {
-						return item;
-					}
-					return currProduct;
-				});
+				found = this.products.stream().filter((elem) -> elem.getId() == itemIndex).
+					findFirst().orElse(null);
+				if(found != null) {
+					this.products = this.products.stream().map(currProduct -> 
+						(currProduct.getId() == itemIndex) ? item : currProduct
+					).collect(Collectors.toList());
+				} else {
+					this.products.add(item);
+				}
+				break;
 			default:
-				this.users.stream().map((currOrder) -> {
-					if(currOrder.getId() == item.getId()) {
-						return item;
-					}
-					return currOrder;
-				});
+				found = this.orders.stream().filter((elem) -> elem.getId() == itemIndex).
+					findFirst().orElse(null);
+				if(found != null) {
+					this.orders = this.orders.stream().map(currOrder -> 
+						(currOrder.getId() == itemIndex) ? item : currOrder
+					).collect(Collectors.toList());
+				} else {
+					this.orders.add(item);
+				}
+				break;
 		}
 		return item;
 	}
 	
-	public List<Item> deleteCollection(ItemType type) {
+	public List<? extends Item> deleteCollection(ItemType type) {
 		switch(type) {
 			case USER:
 				this.users.removeAll(this.users);
@@ -127,10 +145,10 @@ public class Database {
 		}		
 	}
 	
-	public List<Item> deleteItem(int itemId, ItemType type) {
+	public List<? extends Item> deleteItem(int itemId, ItemType type) {
 		switch(type) {
 			case USER:
-				Item foundUser = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
+				Item foundUser = this.users.stream().filter((currUser) -> currUser.getId() == itemId)
 								.findFirst().get();
 				if(foundUser != null) {
 					this.users.remove(foundUser);
@@ -144,7 +162,7 @@ public class Database {
 				}
 				return this.products;
 			default:
-				Item foundOrder = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
+				Item foundOrder = this.orders.stream().filter((currUser) -> currUser.getId() == itemId)
 							.findFirst().get();
 				if(foundOrder != null) {
 					this.users.remove(foundOrder);

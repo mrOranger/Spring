@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.database.ItemType;
 import it.edoardo.springweb.model.Item;
+import it.edoardo.springweb.model.User;
 
 @RestController 
 @RequestMapping(path = "users/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +56,7 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item addUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item user) {
+	public Item addUser(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
 		return database.addItem(user, ItemType.USER);
 	}
 	
@@ -67,8 +67,8 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<Item> updateUsers(HttpServletRequest request, HttpServletResponse response, @ModelAttribute List<Item> items) {
-		return database.replaceCollection(items, ItemType.USER);
+	public List<? extends Item> updateUsers(HttpServletRequest request, HttpServletResponse response, @RequestBody List<User> users) {
+		return database.replaceCollection(users, ItemType.USER);
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class UserController {
 	 * @return the new collection
 	 */
 	@PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Item updateUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return database.replaceElement(item, ItemType.USER);
+	public Item updateUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId, @RequestBody User user) {
+		return database.replaceElement(Integer.parseInt(userId), user, ItemType.USER);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class UserController {
 	 * @return the empty collection
 	 */
 	@DeleteMapping(path = "/")
-	public List<Item> deleteUsers(HttpServletRequest request, HttpServletResponse response) {
+	public List<? extends Item> deleteUsers(HttpServletRequest request, HttpServletResponse response) {
 		return database.deleteCollection(ItemType.USER);
 	}
 	
@@ -100,7 +100,7 @@ public class UserController {
 	 * @return the new collection
 	 */	
 	@DeleteMapping(path = "/{userId}")
-	public List<Item> deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
+	public List<? extends Item> deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
 		return database.deleteItem(Integer.parseInt(userId), ItemType.USER);
 	}
 }
