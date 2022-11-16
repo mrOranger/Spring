@@ -47,18 +47,18 @@ public class Database {
 	public Item getItem(int itemId, ItemType type) {
 		switch(type) {
 			case USER:
-				return this.users.stream().filter((currUser) -> { 
-					return currUser.getId() == itemId; 
-				}).findFirst().orElse(null);
+				return getSingleItem(this.users, itemId);
 			case PRODUCT:
-				return this.products.stream().filter((currProduct) -> { 
-					return currProduct.getId() == itemId; 
-				}).findFirst().orElse(null);
+				return getSingleItem(this.products, itemId);
 			default:
-				return this.orders.stream().filter((currOrder) -> { 
-					return currOrder.getId() == itemId; 
-				}).findFirst().orElse(null);
+				return getSingleItem(this.orders, itemId);
 		}
+	}
+	
+	private Item getSingleItem(List<? extends Item> collection, int itemId) {
+		return collection.stream().filter((currItem) -> { 
+			return currItem.getId() == itemId; 
+		}).findFirst().orElse(null);
 	}
 	
 	public Item addItem(Item item, ItemType type) {
@@ -76,65 +76,47 @@ public class Database {
 	public List<? extends Item> replaceCollection(List<? extends Item> items, ItemType type) {
 		switch(type) {
 			case USER:
-				for(int i = 0; i < this.users.size(); i++) {
-					this.users.remove(i);
-				}
-				items.stream().forEach(this.users::add);	
-				return users;
+				return replaceSingleCollection(this.users, items);
 			case PRODUCT:
-				for(int i = 0; i < this.products.size(); i++) {
-					this.products.remove(i);
-				}
-				items.stream().forEach(this.products::add);
-				return products;
+				return replaceSingleCollection(this.products, items);
 			default:
-				for(int i = 0; i < this.orders.size(); i++) {
-					this.orders.remove(i);
-				}
-				items.stream().forEach(this.orders::add);
-				return orders;
+				return replaceSingleCollection(this.orders, items);
 		}
 	}
 	
-	// TODO: refactoring
+	private List<? extends Item> replaceSingleCollection(List<Item> oldCollection, List<? extends Item> newCollection) {
+		for(int i = 0; i < oldCollection.size(); i++) {
+			oldCollection.remove(i);
+		}
+		newCollection.stream().forEach((item) -> oldCollection.add(item));
+		return oldCollection;
+	}
+	
 	public Item replaceElement(int itemIndex, Item item, ItemType type) {
-		Item found;
 		switch(type) {
 			case USER:
-				found = this.users.stream().filter((elem) -> elem.getId() == itemIndex).
-					findFirst().orElse(null);
-				if(found != null) {
-					this.users = this.users.stream().map(currUser -> 
-						(currUser.getId() == itemIndex) ? item : currUser
-					).collect(Collectors.toList());
-				} else {
-					this.users.add(item);
-				}
+				replaceSingleElement(this.users, item, itemIndex);
 				break;
 			case PRODUCT:
-				found = this.products.stream().filter((elem) -> elem.getId() == itemIndex).
-					findFirst().orElse(null);
-				if(found != null) {
-					this.products = this.products.stream().map(currProduct -> 
-						(currProduct.getId() == itemIndex) ? item : currProduct
-					).collect(Collectors.toList());
-				} else {
-					this.products.add(item);
-				}
+				replaceSingleElement(this.products, item, itemIndex);
 				break;
 			default:
-				found = this.orders.stream().filter((elem) -> elem.getId() == itemIndex).
-					findFirst().orElse(null);
-				if(found != null) {
-					this.orders = this.orders.stream().map(currOrder -> 
-						(currOrder.getId() == itemIndex) ? item : currOrder
-					).collect(Collectors.toList());
-				} else {
-					this.orders.add(item);
-				}
+				replaceSingleElement(this.orders, item, itemIndex);
 				break;
 		}
 		return item;
+	}
+	
+	private void replaceSingleElement(List<Item> collection, Item item, int itemIndex) {
+		Item found = collection.stream().filter((elem) -> elem.getId() == itemIndex).
+				findFirst().orElse(null);
+			if(found != null) {
+				collection = collection.stream().map(currOrder -> 
+					(currOrder.getId() == itemIndex) ? item : currOrder
+				).collect(Collectors.toList());
+			} else {
+				collection.add(item);
+			}
 	}
 	
 	public List<? extends Item> deleteCollection(ItemType type) {
@@ -154,27 +136,21 @@ public class Database {
 	public List<? extends Item> deleteItem(int itemId, ItemType type) {
 		switch(type) {
 			case USER:
-				Item foundUser = this.users.stream().filter((currUser) -> currUser.getId() == itemId)
-								.findFirst().get();
-				if(foundUser != null) {
-					this.users.remove(foundUser);
-				}
-				return this.users;
+				return deleteSingleItem(this.users, itemId);
 			case PRODUCT:
-				Item foundProduct = this.products.stream().filter((currProd) -> currProd.getId() == itemId)
-								.findFirst().get();
-				if(foundProduct != null) {
-					this.products.remove(foundProduct);
-				}
-				return this.products;
+				return deleteSingleItem(this.products, itemId);
 			default:
-				Item foundOrder = this.orders.stream().filter((currOrder) -> currOrder.getId() == itemId)
-							.findFirst().get();
-				if(foundOrder != null) {
-					this.orders.remove(foundOrder);
-				}
-				return this.orders;
+				return deleteSingleItem(this.orders, itemId);
 		}				
+	}
+	
+	private List<? extends Item> deleteSingleItem(List<? extends Item> collection, int itemId) {
+		Item foundItem = collection.stream().filter((currItem) -> currItem.getId() == itemId)
+						.findFirst().get();
+		if(foundItem != null) {
+			collection.remove(foundItem);
+		}
+		return collection;
 	}
 
 	@PreDestroy
