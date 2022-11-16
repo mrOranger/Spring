@@ -161,17 +161,17 @@ public class Database {
 				}
 				return this.users;
 			case PRODUCT:
-				Item foundProduct = this.products.stream().filter((currUser) -> currUser.getId() == itemId)
+				Item foundProduct = this.products.stream().filter((currProd) -> currProd.getId() == itemId)
 								.findFirst().get();
 				if(foundProduct != null) {
 					this.products.remove(foundProduct);
 				}
 				return this.products;
 			default:
-				Item foundOrder = this.orders.stream().filter((currUser) -> currUser.getId() == itemId)
+				Item foundOrder = this.orders.stream().filter((currOrder) -> currOrder.getId() == itemId)
 							.findFirst().get();
 				if(foundOrder != null) {
-					this.users.remove(foundOrder);
+					this.orders.remove(foundOrder);
 				}
 				return this.orders;
 		}				
