@@ -1,5 +1,6 @@
 package it.edoardo.springweb.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,14 +17,19 @@ public class Database {
 	private List<Item> products;
 	private List<Item> orders;
 	
-	public Database(List<Item> users, List<Item> products, List<Item> orders) {
-		this.users = users;
-		this.products = products;
-		this.orders = orders;
+	public Database(String database, String user, String password, String url, String port) {
+		System.out.println(new StringBuilder().append("Connecting to ").append(database)
+				.append(" with credentials ")
+				.append(user).append(" ").append(password)
+				.append(" in ")
+				.append(url).append(":").append(port).toString());
 	}
 	
 	@PostConstruct
 	public void init() {
+		this.users = new ArrayList<Item>();
+		this.products = new ArrayList<Item>();
+		this.orders = new ArrayList<Item>();
 	}
 	
 	public List<Item> getItems(ItemType type) {
