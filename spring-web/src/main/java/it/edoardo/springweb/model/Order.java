@@ -1,37 +1,30 @@
 package it.edoardo.springweb.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import it.edoardo.springweb.model.interfaces.Jsonable;
+public class Order extends Item{
+	
+	@JsonProperty(value = "products") private List<Item> products;
+	@JsonProperty(value = "customer") private Item customer;
 
-public class Order extends Item implements Jsonable{
-	
-	private List<Item> products;
-	private Item customer;
-	
-	private static int INCREMENTAL_ID = 0;
-	
-	public Order(List<Item> products, Item customer) {
-		super(INCREMENTAL_ID++);
-		this.products = products;
-		this.customer = customer;
-	}
-
+	@JsonProperty(value = "products")
 	public List<Item> getProducts() {
 		return products;
 	}
 	
+	@JsonProperty(value = "products")
 	public void setProducts(List<Item> products) {
 		this.products = products;
 	}
 	
+	@JsonProperty(value = "customer")
 	public User getCustomer() {
 		return (User)this.customer;
 	}
 	
+	@JsonProperty(value = "customer")
 	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
@@ -50,20 +43,5 @@ public class Order extends Item implements Jsonable{
 						sum()).
 			append("\n");
 		return strBuilder.toString();
-	}
-
-	@Override
-	public JSONObject toJson() {
-		final JSONObject json = super.toJson()
-			.put("user", this.getCustomer().toJson())
-			.put("products", new ArrayList<Product>());
-		
-		this.getProducts().stream().forEach((product) -> {
-			json.append("products", product.toJson());
-		});
-		
-		final double total = this.getProducts().stream().mapToDouble((item) -> ((Product)item).getPrice()).sum();
-		json.put("total", total);
-		return json;
 	}
 }

@@ -2,79 +2,68 @@ package it.edoardo.springweb.model;
 
 import java.time.LocalDate;
 
-import org.json.JSONObject;
+import javax.annotation.Generated;
 
-import it.edoardo.springweb.model.interfaces.Jsonable;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
-public class User extends Item implements Jsonable{
+@Generated("jsonschema2pojo")
+public class User extends Item{
 	
-	private String fistName;
-	private String lastName;
+	@JsonProperty(value = "firstName") private String firstName;
+	
+	@JsonProperty(value = "lastName") private String lastName;
+	
+	@JsonProperty(value = "dateOfBirth") 
+	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
-	private String taxCode;
 	
-	private static int INCREMENTAL_ID = 0;
+	@JsonProperty(value = "taxCode") private String taxCode;
 	
-	public User(String firstName, String lastName) {
-		super(INCREMENTAL_ID++);
-		this.fistName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = LocalDate.now();
-		this.taxCode = this.generateTaxCode();
+	@JsonProperty(value = "firstName")
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public String getFistName() {
-		return fistName;
+	@JsonProperty(value = "firstName")
+	public void setFistName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public void setFistName(String fistName) {
-		this.fistName = fistName;
-	}
-
+	@JsonProperty(value = "lastName")
 	public String getLastName() {
 		return lastName;
 	}
 
+	@JsonProperty(value = "lastName")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	@JsonProperty(value = "dateOfBirth")
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = LocalDate.parse(dateOfBirth);
+	@JsonProperty(value = "dateOfBirth")
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
+	@JsonProperty(value = "taxCode")
 	public String getTaxCode() {
 		return taxCode;
 	}
 
+	@JsonProperty(value = "taxCode")
 	public void setTaxCode(String taxCode) {
 		this.taxCode = taxCode;
-	}
-	
-	private String generateTaxCode() {
-		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append(this.getFistName().toUpperCase().substring(0, 3))
-			.append(this.getLastName().toUpperCase().substring(0, 3))
-			.append(this.getDateOfBirth().toString())
-			.append((int)(Math.random()*100));
-		return strBuilder.toString();
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + fistName + " " + lastName + " " + dateOfBirth
+		return super.toString() + " " + firstName + " " + lastName + " " + dateOfBirth
 				+ " " + taxCode;
-	}
-
-	@Override
-	public JSONObject toJson() {
-		return super.toJson().put("firstName", this.getFistName())
-			.put("lastName", this.getLastName())
-			.put("dateOfBirth", this.getDateOfBirth().toString())
-			.put("taxCode", this.getTaxCode());
 	}
 }

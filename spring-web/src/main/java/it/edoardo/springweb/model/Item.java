@@ -1,21 +1,17 @@
 package it.edoardo.springweb.model;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import it.edoardo.springweb.model.interfaces.Jsonable;
-
-public abstract class Item implements Comparable<Item>, Jsonable{
+public abstract class Item implements Comparable<Item>{
 	
-	protected int id;
-	
-	public Item(int id) {
-		this.id = id;
-	}
+	@JsonProperty(value = "id") protected int id;
 
+	@JsonProperty(value = "id") 
 	public int getId() {
 		return id;
 	}
 
+	@JsonProperty(value = "id") 
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -23,13 +19,6 @@ public abstract class Item implements Comparable<Item>, Jsonable{
 	@Override
 	public int compareTo(Item o) {
 		return this.getId() - o.getId();
-	}
-
-	@Override
-	public JSONObject toJson() {
-		final JSONObject json = new JSONObject();
-		json.put("id", this.getId());
-		return json;
 	}
 
 	@Override
