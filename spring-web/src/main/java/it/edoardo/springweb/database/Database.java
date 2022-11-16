@@ -60,18 +60,16 @@ public class Database {
 		}
 	}
 	
-	public List<Item> addItem(Item item, ItemType type) {
+	public Item addItem(Item item, ItemType type) {
 		switch(type) {
 			case USER:
 				this.users.add(item);
-				return this.users;
 			case PRODUCT:
 				this.products.add(item);
-				return this.products;
 			default:
 				this.orders.add(item);
-				return this.orders;
 		}
+		return item;
 	}
 	
 	public List<Item> replaceCollection(List<Item> items, ItemType type) {
@@ -88,7 +86,7 @@ public class Database {
 		}
 	}
 	
-	public List<Item> replaceElement(Item item, ItemType type) {
+	public Item replaceElement(Item item, ItemType type) {
 		switch(type) {
 			case USER:
 				this.users.stream().map((currUser) -> {
@@ -97,7 +95,6 @@ public class Database {
 					}
 					return currUser;
 				});
-				return users;
 			case PRODUCT:
 				this.products.stream().map((currProduct) -> {
 					if(currProduct.getId() == item.getId()) {
@@ -105,7 +102,6 @@ public class Database {
 					}
 					return currProduct;
 				});
-				return products;
 			default:
 				this.users.stream().map((currOrder) -> {
 					if(currOrder.getId() == item.getId()) {
@@ -113,8 +109,8 @@ public class Database {
 					}
 					return currOrder;
 				});
-				return orders;
 		}
+		return item;
 	}
 	
 	public List<Item> deleteCollection(ItemType type) {

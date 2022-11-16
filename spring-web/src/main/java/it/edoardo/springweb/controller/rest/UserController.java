@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.database.ItemType;
-import it.edoardo.springweb.info.JsonResponse;
 import it.edoardo.springweb.model.Item;
-import it.edoardo.springweb.model.User;
 
-@RestController @RequestMapping(path = "users/")
+@RestController 
+@RequestMapping(path = "users/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 	
 	@Autowired private Database database;
@@ -34,9 +33,9 @@ public class UserController {
 	 * METHOD => GET
 	 * @return the collection of users
 	 */
-	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getUsers(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.getItems(ItemType.USER)).toJson().toString();
+	@GetMapping(path = "/")
+	public List<Item> getUsers(HttpServletRequest request, HttpServletResponse response) {
+		return database.getItems(ItemType.USER);
 	}
 	
 	/**
@@ -45,9 +44,9 @@ public class UserController {
 	 * METHOD => GET
 	 * @return the user if present
 	 */
-	@GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
-		return new JsonResponse(database.getItem(Integer.parseInt(userId), ItemType.USER)).toJson().toString();
+	@GetMapping(path = "/{userId}")
+	public Item getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
+		return database.getItem(Integer.parseInt(userId), ItemType.USER);
 	}
 	
 	/**
@@ -56,9 +55,9 @@ public class UserController {
 	 * METHOD => POST
 	 * @return the new collection
 	 */
-	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute User user) {
-		return new JsonResponse(database.addItem(user, ItemType.USER)).toJson().toString();
+	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Item addUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item user) {
+		return database.addItem(user, ItemType.USER);
 	}
 	
 	/**
@@ -67,9 +66,9 @@ public class UserController {
 	 * METHOD => PUT
 	 * @return the new collection
 	 */
-	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUsers(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
-		return new JsonResponse(database.replaceCollection(items, ItemType.USER)).toJson().toString();
+	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Item> updateUsers(HttpServletRequest request, HttpServletResponse response, @ModelAttribute List<Item> items) {
+		return database.replaceCollection(items, ItemType.USER);
 	}
 
 	/**
@@ -78,9 +77,9 @@ public class UserController {
 	 * METHOD => PUT
 	 * @return the new collection
 	 */
-	@PutMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return new JsonResponse(database.replaceElement(item, ItemType.USER)).toJson().toString();
+	@PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Item updateUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return database.replaceElement(item, ItemType.USER);
 	}
 
 	/**
@@ -89,9 +88,9 @@ public class UserController {
 	 * METHOD => DELETE
 	 * @return the empty collection
 	 */
-	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteUsers(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.deleteCollection(ItemType.USER)).toJson().toString();
+	@DeleteMapping(path = "/")
+	public List<Item> deleteUsers(HttpServletRequest request, HttpServletResponse response) {
+		return database.deleteCollection(ItemType.USER);
 	}
 	
 	/**
@@ -100,8 +99,8 @@ public class UserController {
 	 * METHOD => DELETE
 	 * @return the new collection
 	 */	
-	@DeleteMapping(path = "/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
-		return new JsonResponse(database.deleteItem(Integer.parseInt(userId), ItemType.USER)).toJson().toString();
+	@DeleteMapping(path = "/{userId}")
+	public List<Item> deleteUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") String userId) {
+		return database.deleteItem(Integer.parseInt(userId), ItemType.USER);
 	}
 }

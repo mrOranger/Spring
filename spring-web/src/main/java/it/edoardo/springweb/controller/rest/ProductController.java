@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springweb.database.Database;
 import it.edoardo.springweb.database.ItemType;
-import it.edoardo.springweb.info.JsonResponse;
 import it.edoardo.springweb.model.Item;
 
-// TODO: modify methods with @RequestBody
-@RestController @RequestMapping(path = "products/")
+@RestController @RequestMapping(path = "products/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 	
 	@Autowired private Database database;
@@ -32,9 +30,9 @@ public class ProductController {
 	 * METHOD => GET
 	 * @return all the element inside the collection 
 	 */
-	@GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getProducts(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.getItems(ItemType.PRODUCT)).toJson().toString();
+	@GetMapping(path = "/")
+	public List<Item> getProducts(HttpServletRequest request, HttpServletResponse response) {
+		return database.getItems(ItemType.PRODUCT);
 	}
 	
 	/**
@@ -42,9 +40,9 @@ public class ProductController {
 	 * METHOD => GET
 	 * @return the element with the corresponding id
 	 */
-	@GetMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
-		return new JsonResponse(database.getItem(Integer.parseInt(productId), ItemType.PRODUCT)).toJson().toString();
+	@GetMapping(path = "/{productId}")
+	public Item getProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
+		return database.getItem(Integer.parseInt(productId), ItemType.PRODUCT);
 	}
 	
 	/**
@@ -53,9 +51,9 @@ public class ProductController {
 	 * METHOD => POST
 	 * @return the new collection
 	 */
-	@PostMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String addProduct(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
-		return new JsonResponse(database.addItem(item, ItemType.PRODUCT)).toJson().toString();
+	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Item addProduct(HttpServletRequest request, HttpServletResponse response, @RequestBody Item item) {
+		return database.addItem(item, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -64,9 +62,9 @@ public class ProductController {
 	 * METHOD => PUT
 	 * @return the new collection
 	 */
-	@PutMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateProducts(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
-		return new JsonResponse(database.replaceCollection(items, ItemType.PRODUCT)).toJson().toString();
+	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Item> updateProducts(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Item> items) {
+		return database.replaceCollection(items, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -75,9 +73,9 @@ public class ProductController {
 	 * METHOD => PUT
 	 * @return the new collection
 	 */
-	@PutMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String updateProduct(HttpServletRequest request, HttpServletResponse response,  @RequestBody Item item) {
-		return new JsonResponse(database.replaceElement(item, ItemType.PRODUCT)).toJson().toString();
+	@PutMapping(path = "/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Item updateProduct(HttpServletRequest request, HttpServletResponse response,  @RequestBody Item item) {
+		return database.replaceElement(item, ItemType.PRODUCT);
 	}
 	
 	/**
@@ -86,9 +84,9 @@ public class ProductController {
 	 * METHOD => DELETE
 	 * @return the empty collection
 	 */
-	@DeleteMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteProducts(HttpServletRequest request, HttpServletResponse response) {
-		return new JsonResponse(database.deleteCollection(ItemType.PRODUCT)).toJson().toString();
+	@DeleteMapping(path = "/")
+	public List<Item> deleteProducts(HttpServletRequest request, HttpServletResponse response) {
+		return database.deleteCollection(ItemType.PRODUCT);
 	}
 	
 	/**
@@ -97,8 +95,8 @@ public class ProductController {
 	 * METHOD => DELETE
 	 * @return the new collection
 	 */
-	@DeleteMapping(path = "/{productId}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public String deleteProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
-		return new JsonResponse(database.deleteItem(Integer.parseInt(productId), ItemType.PRODUCT)).toJson().toString();
+	@DeleteMapping(path = "/{productId}")
+	public List<Item> deleteProduct(HttpServletRequest request, HttpServletResponse response, @PathVariable("productId") String productId) {
+		return database.deleteItem(Integer.parseInt(productId), ItemType.PRODUCT);
 	}
 }
