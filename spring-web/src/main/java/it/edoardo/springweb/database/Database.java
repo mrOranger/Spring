@@ -87,6 +87,7 @@ public class Database {
 				filter((product) -> !this.products.contains(product)).
 				collect(Collectors.toList());
 			if(unregisteredProducts.size() > 0 ) {
+				System.out.println(products);
 				this.products.addAll(products);	
 			}
 	}
