@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Order {
 	
+	private int id;
 	private User customer;
 	private List<Product> products;
 	
@@ -11,10 +12,19 @@ public class Order {
 		super();
 	}
 
-	public Order(User customer, List<Product> products) {
+	public Order(int id, User customer, List<Product> products) {
 		super();
+		this.id = id;
 		this.customer = customer;
 		this.products = products;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public User getCustomer() {
