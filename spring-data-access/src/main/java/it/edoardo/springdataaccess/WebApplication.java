@@ -4,17 +4,21 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import it.edoardo.springdataaccess.dao.OrderService;
 import it.edoardo.springdataaccess.dao.ProductService;
 import it.edoardo.springdataaccess.dao.UserService;
 
-@Configuration @PropertySource(value = "classpath:database.properties")
+@EnableWebMvc 
+@Configuration @ComponentScan("it.edoardo.springdataaccess.controller.rest.user")
+@PropertySource(value = "classpath:database.properties")
 public class WebApplication {
 	
 	@Value("${driver_class_name}") private String driver;
