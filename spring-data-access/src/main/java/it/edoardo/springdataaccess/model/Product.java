@@ -10,17 +10,6 @@ public class Product {
 	@JsonProperty(value = "id") private int id;
 	@JsonProperty(value = "name") private String name;
 	@JsonProperty(value = "price") private double price;
-	
-	public Product() {
-		super();
-	}
-
-	public Product(int id, String name, double price) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.price = price;
-	}
 
 	@JsonProperty(value = "id")
 	public int getId() {

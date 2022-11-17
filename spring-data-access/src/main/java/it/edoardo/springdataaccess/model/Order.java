@@ -13,17 +13,6 @@ public class Order {
 	@JsonProperty(value = "customer") private User customer;
 	@JsonProperty(value = "products") private List<Product> products;
 	
-	public Order() {
-		super();
-	}
-
-	public Order(int id, User customer, List<Product> products) {
-		super();
-		this.id = id;
-		this.customer = customer;
-		this.products = products;
-	}
-
 	@JsonProperty(value = "id")
 	public int getId() {
 		return id;

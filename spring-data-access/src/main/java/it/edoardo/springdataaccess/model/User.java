@@ -14,19 +14,6 @@ public class User {
 	@JsonProperty(value = "lastName") private String lastName;
 	@JsonProperty(value = "dateOfBirth") private LocalDate dateOfBirth;
 	@JsonProperty(value = "taxCode") private String taxCode;
-
-	
-	public User() {
-		super();
-	}
-	
-	public User(int id, String firstName, String lastName, LocalDate dateOfBirth, String taxCode) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		this.taxCode = taxCode;
-	}
 	
 	@JsonProperty(value = "id")
 	public int getId() {
