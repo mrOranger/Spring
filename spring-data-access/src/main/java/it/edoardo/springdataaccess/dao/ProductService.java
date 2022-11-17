@@ -13,6 +13,8 @@ public class ProductService implements ProductDAO{
 	
 	private JdbcTemplate connection;
 	
+	private static final String INSERT_PRODUCT = "INSERT INTO products VALUES(?, ?)";
+	
 	public ProductService(DataSource dataSource) {
 		this.connection = new JdbcTemplate(dataSource);
 	}
@@ -31,8 +33,7 @@ public class ProductService implements ProductDAO{
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(INSERT_PRODUCT, product.getName(), product.getPrice());
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import it.edoardo.springdataaccess.model.User;
 public class UserService implements UserDAO{
 	
 	private JdbcTemplate connection;
+	
+	private static final String INSERT_USER = "INSERT INTO users VALUES(?, ?, ?, ?)";
 
 	public UserService(DataSource dataSource) {
 		this.connection = new JdbcTemplate(dataSource);
@@ -31,8 +33,7 @@ public class UserService implements UserDAO{
 
 	@Override
 	public void addUser(User user) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(INSERT_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
 	}
 
 	@Override

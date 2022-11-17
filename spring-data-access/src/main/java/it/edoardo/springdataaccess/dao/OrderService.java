@@ -15,6 +15,10 @@ public class OrderService implements OrderDAO{
 	
 	private JdbcTemplate connection;
 	
+	private static final String INSERT_ORDER = "INSERT INTO orders VALUES (?)";
+	private static final String INSERT_ORDER_PRODUCTS = "INSERT INTO orders_products VALUES (?, ?)";
+	
+	
 	public OrderService(DataSource dataSource) {
 		this.connection = new JdbcTemplate(dataSource);
 	}
@@ -33,8 +37,8 @@ public class OrderService implements OrderDAO{
 
 	@Override
 	public void addOrder(Order order) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(INSERT_ORDER, order.getCustomer().getId());
+		order.getProducts().forEach((product) -> this.connection.update(INSERT_ORDER_PRODUCTS, order.getId(), product.getId()));
 	}
 
 	@Override
