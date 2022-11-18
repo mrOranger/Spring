@@ -17,23 +17,23 @@ import it.edoardo.springdataaccess.dao.ProductService;
 import it.edoardo.springdataaccess.dao.UserService;
 
 @EnableWebMvc 
-@Configuration @ComponentScan("it.edoardo.springdataaccess.controller.rest.user")
+@Configuration @ComponentScan("it.edoardo.springdataaccess.controller.rest")
 @PropertySource(value = "classpath:database.properties")
 public class WebApplication {
 	
-	@Value("${driver_class_name}") private String driver;
-	@Value("${url}") private String url;
-	@Value("${username}") private String username;
-	@Value("${password}") private String password;
+	@Value("${database.driver_class_name}") private String driver;
+	@Value("${database.url}") private String url;
+	@Value("${database.username}") private String username;
+	@Value("${database.password}") private String password;
 	
 	@Bean @Scope("singleton")
 	@Description("DataSource used for connecting to the database")
 	public DataSource getDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(driver);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.setUrl(url);
+		dataSource.setDriverClassName(this.driver);
+		dataSource.setUsername(this.username);
+		dataSource.setPassword(this.password);
+		dataSource.setUrl(this.url);
 		return dataSource;
 	}
 	
