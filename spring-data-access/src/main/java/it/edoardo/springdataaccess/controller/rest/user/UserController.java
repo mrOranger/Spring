@@ -2,11 +2,10 @@ package it.edoardo.springdataaccess.controller.rest.user;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +23,8 @@ public class UserController {
 		return this.userService.getUsers();
 	}
 	
-	@GetMapping(path = "/:id/")
-	public User getUser(@PathParam(value = "id") int userId) {
+	@GetMapping(path = "/{id}")
+	public User getUser(@PathVariable(value = "id") int userId) {
 		return this.userService.getUser(userId);
 	}
 }
