@@ -44,7 +44,7 @@ public class UserController {
 	}
 	
 	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<User> putUsers(List<User> users) {
+	public List<User> putUsers(@RequestBody List<User> users) {
 		try {
 			this.userService.updateUsers(users);
 		} catch(DataAccessException e) {
@@ -54,8 +54,8 @@ public class UserController {
 		return users;
 	}
 	
-	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public User putUser(int userId, User user) {
+	@PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public User putUser(@PathVariable int userId, @RequestBody User user) {
 		try {
 			this.userService.updateUser(userId, user);
 		} catch(DataAccessException e) {
