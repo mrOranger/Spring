@@ -28,7 +28,7 @@ public class UserService implements UserDAO {
 	}
 
 	@Override
-	public List<User> getUsers() {
+	public List<User> getUsers() throws DataAccessException {
 		return this.connection.query(GET_USERS, new UserMapper());
 	}
 
