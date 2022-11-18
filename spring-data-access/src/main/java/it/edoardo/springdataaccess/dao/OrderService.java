@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import it.edoardo.springdataaccess.dao.interfaces.OrderDAO;
+import it.edoardo.springdataaccess.dao.mapper.OrderMapper;
+import it.edoardo.springdataaccess.dao.mapper.ProductMapper;
+import it.edoardo.springdataaccess.dao.mapper.UserMapper;
 import it.edoardo.springdataaccess.model.Order;
 import it.edoardo.springdataaccess.model.Product;
 import it.edoardo.springdataaccess.model.User;
@@ -15,8 +19,31 @@ public class OrderService implements OrderDAO{
 	
 	private JdbcTemplate connection;
 	
-	private static final String INSERT_ORDER = "INSERT INTO orders VALUES (?)";
-	private static final String INSERT_ORDER_PRODUCTS = "INSERT INTO orders_products VALUES (?, ?)";
+	@Autowired private UserService userService;
+	@Autowired private ProductService productService;
+	
+	private static final String GET_ORDERS = "SELECT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price "
+			+ "FROM orders O, orders_products OP, products P, users C"
+			+ "WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id";
+	private static final String GET_ORDER = GET_ORDERS + " AND C.id = ?";
+	private static final String ADD_ORDER = "INSERT INTO orders (id, customer) VALUES id = ?, customer = ?" +
+			" ON DUPLICATE KEY UPDATE id = ?, order = ?";
+	private static final String ADD_ORDER_PRODUCT = "INSERT INTO orders_products VALUES order_id = ?, product_id = ?"
+			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
+	private static final String DELETE_ORDERS = "DELETE FROM orders";
+	private static final String DELETE_ORDER = DELETE_ORDERS + " WHERE id = ?";
+	
+	private static final String GET_USER = "SELECT C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code FROM orders O, users C"
+			+ "	WHERE  O.customer = C.id";
+	private static final String GET_PRODUCTS = "SELECT P.id AS product_id, P.name AS product_name, P.price AS product_price\r\n"
+			+ "FROM orders O, orders_products OP, products P, users C"
+			+ "WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id AND O.id = ?";
+	private static final String GET_PRODUCT = GET_PRODUCTS + " AND P.id = ?";
+	private static final String ADD_PRODUCT_ORDER = "INSERT INTO INSERT INTO orders_products VALUES (?, ?) "
+			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
+	private static final String DELETE_PRODUCTS = "DELETE FROM orders O, orders_products OP WHERE O.id = OP.order_id";
+	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " AND O.id = ? AND OP.product_id = ?";
+	
 	
 	
 	public OrderService(DataSource dataSource) {
@@ -25,68 +52,65 @@ public class OrderService implements OrderDAO{
 
 	@Override
 	public List<Order> getOrders() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.query(GET_ORDERS, new OrderMapper());
 	}
 
 	@Override
 	public Order getOrder(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.queryForObject(GET_ORDER, new OrderMapper(), id);
 	}
 
 	@Override
 	public void addOrder(Order order) {
-		this.connection.update(INSERT_ORDER, order.getCustomer().getId());
-		order.getProducts().forEach((product) -> this.connection.update(INSERT_ORDER_PRODUCTS, order.getId(), product.getId()));
+		this.userService.addUser(order.getCustomer());
+		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
+		this.connection.query(ADD_ORDER, new OrderMapper(), order.getId(), order.getCustomer().getId());
+		order.getProducts().stream().forEach((product) -> this.connection.query(ADD_ORDER_PRODUCT, new OrderMapper(), order.getId(), product.getId(), order.getId(), product.getId()));
 	}
 
 	@Override
 	public void updateOrders(List<Order> orders) {
-		// TODO Auto-generated method stub
-		
+		orders.stream().forEach((order) -> {
+			this.addOrder(order);
+		}); 
 	}
 
 	@Override
 	public void updateOrder(int id, Order order) {
-		// TODO Auto-generated method stub
-		
+		this.userService.addUser(order.getCustomer());
+		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
+		this.connection.query(ADD_ORDER, new OrderMapper(), id, order.getCustomer().getId());
+		order.getProducts().stream().forEach((product) -> this.connection.query(ADD_ORDER_PRODUCT, new OrderMapper(), id, product.getId(), id, product.getId()));
 	}
 
 	@Override
 	public void deleteOrders() {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(DELETE_ORDERS);
 	}
 
 	@Override
 	public void deleteOrder(int id) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(DELETE_ORDER, id);
 	}
 
 	@Override
 	public User getUser(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.queryForObject(GET_USER, new UserMapper());
 	}
 
 	@Override
 	public List<Product> getProducts(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.query(GET_PRODUCTS, new ProductMapper(), orderId);
 	}
 
 	@Override
 	public Product getProduct(int orderId, int productId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.queryForObject(GET_PRODUCT, new ProductMapper(), orderId, productId);
 	}
 
 	@Override
 	public void addProduct(int orderId, Product product) {
-		// TODO Auto-generated method stub
-		
+		// TODO: complete from this
 	}
 
 	@Override
