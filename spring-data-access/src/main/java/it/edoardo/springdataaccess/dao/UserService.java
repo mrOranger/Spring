@@ -60,14 +60,12 @@ public class UserService implements UserDAO {
 	}
 
 	@Override
-	public void deleteUsers() {
-		// TODO Auto-generated method stub
-
+	public void deleteUsers() throws DataAccessException {
+		this.connection.update(DELETE_USERS);
 	}
 
 	@Override
-	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
-
+	public void deleteUser(int id) throws DataAccessException {
+		this.connection.update(DELETE_USER, id);
 	}
 }
