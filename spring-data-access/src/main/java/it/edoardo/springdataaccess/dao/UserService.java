@@ -4,19 +4,21 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import it.edoardo.springdataaccess.dao.interfaces.UserDAO;
 import it.edoardo.springdataaccess.dao.mapper.UserMapper;
 import it.edoardo.springdataaccess.model.User;
 
-public class UserService implements UserDAO{
-	
+public class UserService implements UserDAO {
+
 	private JdbcTemplate connection;
-	
-	private static final String ADD_USER = "INSERT INTO users VALUES(?, ?, ?, ?)";
-	private static final String GET_USERS = "SELECT * FROM users";
-	private static final String GET_USER = "SELECT (id, first_name, last_name, date_of_birth, tax_code) FROM users WHERE id = ?";
+
+	private static final String ADD_USER = "INSERT INTO users (id, first_name, last_name, date_of_birth, tax_code) VALUES(?, ?, ?, ?, ?)";
+	private static final String GET_USERS = "SELECT id, first_name, last_name, date_of_birth, tax_code FROM users";
+	private static final String GET_USER = "SELECT id, first_name, last_name, date_of_birth, tax_code FROM users WHERE id = ?";
 	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, tax_code = ? WHERE id = ?";
 	private static final String DELETE_USERS = "DELETE FROM users";
 	private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
@@ -31,36 +33,41 @@ public class UserService implements UserDAO{
 	}
 
 	@Override
-	public User getUser(int id) {
-		return this.connection.queryForObject(GET_USER, User.class, id);
+	public User getUser(int id) throws EmptyResultDataAccessException {
+		User user = null;
+		try {
+			user = this.connection.queryForObject(GET_USER, new UserMapper(), id);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	@Override
-	public void addUser(User user) {
-		this.connection.update(ADD_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
+	public void addUser(User user) throws DataAccessException {
+		this.connection.update(ADD_USER, user.getId(), user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(),
+				user.getTaxCode());
 	}
 
 	@Override
-	public void updateUsers(List<User> users) {
-		// TODO Auto-generated method stub
-		
+	public void updateUsers(List<User> users) throws DataAccessException {
+		users.forEach((user) -> this.updateUser(user.getId(), user));
 	}
 
 	@Override
-	public void updateUser(int id, User user) {
-		// TODO Auto-generated method stub
-		
+	public void updateUser(int id, User user) throws DataAccessException {
+		this.connection.update(UPDATE_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode(), id);
 	}
 
 	@Override
 	public void deleteUsers() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteUser(int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
