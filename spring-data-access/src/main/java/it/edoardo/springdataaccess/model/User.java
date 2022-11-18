@@ -4,7 +4,9 @@ import java.time.LocalDate;
 
 import javax.annotation.Generated;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @Generated("jsonschema2pojo")
 public class User {
@@ -12,7 +14,10 @@ public class User {
 	@JsonProperty(value = "id") private int id;
 	@JsonProperty(value = "firstName") private String firstName;
 	@JsonProperty(value = "lastName") private String lastName;
+	
+	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	@JsonProperty(value = "dateOfBirth") private LocalDate dateOfBirth;
+	
 	@JsonProperty(value = "taxCode") private String taxCode;
 	
 	@JsonProperty(value = "id")
