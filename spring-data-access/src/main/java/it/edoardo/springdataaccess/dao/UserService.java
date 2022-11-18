@@ -13,7 +13,12 @@ public class UserService implements UserDAO{
 	
 	private JdbcTemplate connection;
 	
-	private static final String INSERT_USER = "INSERT INTO users VALUES(?, ?, ?, ?)";
+	private static final String ADD_USER = "INSERT INTO users VALUES(?, ?, ?, ?)";
+	private static final String GET_USERS = "SELECT * FROM users";
+	private static final String GET_USER = "SELECT (id, first_name, last_name, date_of_birth, tax_code) FROM users WHERE id = ?";
+	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, tax_code = ? WHERE id = ?";
+	private static final String DELETE_USERS = "DELETE FROM users";
+	private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
 
 	public UserService(DataSource dataSource) {
 		this.connection = new JdbcTemplate(dataSource);
@@ -33,7 +38,7 @@ public class UserService implements UserDAO{
 
 	@Override
 	public void addUser(User user) {
-		this.connection.update(INSERT_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
+		this.connection.update(ADD_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
 	}
 
 	@Override
