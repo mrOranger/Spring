@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import it.edoardo.springdataaccess.dao.interfaces.UserDAO;
+import it.edoardo.springdataaccess.dao.mapper.UserMapper;
 import it.edoardo.springdataaccess.model.User;
 
 public class UserService implements UserDAO{
@@ -26,14 +27,12 @@ public class UserService implements UserDAO{
 
 	@Override
 	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.query(GET_USERS, new UserMapper());
 	}
 
 	@Override
 	public User getUser(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.connection.queryForObject(GET_USER, User.class, id);
 	}
 
 	@Override
