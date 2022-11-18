@@ -16,10 +16,10 @@ public class UserService implements UserDAO {
 
 	private JdbcTemplate connection;
 
-	private static final String ADD_USER = "INSERT INTO users (id, first_name, last_name, date_of_birth, tax_code) VALUES(?, ?, ?, ?, ?)";
+	private static final String ADD_USER = "INSERT INTO users (id, first_name, last_name, date_of_birth, tax_code) VALUES(?, ?, ?, ?, ?)"
+			+ "	ON DUPLICATE KEY UPDATE first_name = ?, last_name = ?, date_of_birth = ?, tax_code = ?";
 	private static final String GET_USERS = "SELECT id, first_name, last_name, date_of_birth, tax_code FROM users";
 	private static final String GET_USER = "SELECT id, first_name, last_name, date_of_birth, tax_code FROM users WHERE id = ?";
-	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, tax_code = ? WHERE id = ?";
 	private static final String DELETE_USERS = "DELETE FROM users";
 	private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
 
@@ -56,7 +56,8 @@ public class UserService implements UserDAO {
 
 	@Override
 	public void updateUser(int id, User user) throws DataAccessException {
-		this.connection.update(UPDATE_USER, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode(), id);
+		this.connection.update(ADD_USER, id, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode(),
+				user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
 	}
 
 	@Override
