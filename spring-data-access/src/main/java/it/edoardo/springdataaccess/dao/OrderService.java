@@ -108,7 +108,7 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public List<Product> getProducts(int orderId) {
+	public List<Product> getProducts(int orderId) throws DataAccessException {
 		return this.connection.query(GET_PRODUCTS, new ProductMapper(), orderId);
 	}
 
@@ -118,13 +118,13 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public void addProduct(int orderId, Product product) {
+	public void addProduct(int orderId, Product product) throws DataAccessException {
 		this.productService.addProduct(product);
 		this.connection.update(ADD_PRODUCT_ORDER, orderId, product.getId());
 	}
 
 	@Override
-	public void updateProducts(int orderId, List<Product> products) {
+	public void updateProducts(int orderId, List<Product> products) throws DataAccessException {
 		products.stream().forEach((product) -> {
 			this.productService.updateProduct(product.getId(), product);
 			this.addProduct(orderId, product);
@@ -132,18 +132,18 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public void updateProduct(int orderId, int productId, Product product) {
+	public void updateProduct(int orderId, int productId, Product product) throws DataAccessException  {
 		this.productService.addProduct(product);
 		this.connection.update(ADD_PRODUCT_ORDER, orderId, productId);
 	}
 
 	@Override
-	public void deleteProducts(int orderId) {
+	public void deleteProducts(int orderId) throws DataAccessException {
 		this.connection.update(DELETE_PRODUCTS, orderId);
 	}
 
 	@Override
-	public void deleteProduct(int orderId, int productId) {
+	public void deleteProduct(int orderId, int productId) throws DataAccessException {
 		this.connection.update(DELETE_PRODUCT, orderId, productId);
 	}
 

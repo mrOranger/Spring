@@ -2,6 +2,7 @@ package it.edoardo.springdataaccess.controller.rest.order;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,50 +13,58 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.edoardo.springdataaccess.dao.OrderService;
 import it.edoardo.springdataaccess.model.Product;
 
 @RestController
 @RequestMapping(path = "/orders/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductInOrderController {
 	
+	@Autowired private OrderService orderService;
+	
 	@GetMapping(path = "/{orderId}/products/")
 	public List<Product> getProducts(@PathVariable(value = "orderId") int orderId) {
-		return null;
+		return this.orderService.getProducts(orderId);
 	}
 	
 	@GetMapping(path = "/{orderId}/products/{productId}")
 	public Product getProduct(@PathVariable(value = "orderId") int orderId, 
 			@PathVariable(value = "productId") int productId) {
-		return null;
+		return this.orderService.getProduct(orderId, productId);
 	}
 	
 	@PostMapping(path = "/{orderId}/products/")
 	public Product addProduct(@PathVariable(value = "orderId") int orderId, 
 			@RequestBody Product product) {
-		return null;
+		this.orderService.addProduct(orderId, product);
+		return product;
 	}
 	
 	@PutMapping(path = "/{orderId}/products/")
 	public List<Product> updateProducts(@PathVariable(value = "orderId") int orderId, 
 			@RequestBody List<Product> products) {
-		return null;
+		this.orderService.updateProducts(orderId, products);
+		return products;
 	}
 	
 	@PutMapping(path = "/{orderId}/products/{productId}/")
 	public Product updateProduct(@PathVariable(value = "orderId") int orderId, 
 		@PathVariable(value = "productId") int productId,
 		@RequestBody Product product) {
-		return null;
+		this.orderService.updateProduct(orderId, productId, product);
+		return product;
 	}
 	
 	@DeleteMapping(path = "/{orderId}/products/")
 	public List<Product> deleteProducts(@PathVariable(value = "orderId") int orderId) {
+		this.orderService.deleteProducts(orderId);
 		return null;
 	}
 	
 	@DeleteMapping(path = "/{orderId}/products/{productId}/")
 	public Product deleteProduct(@PathVariable(value = "orderId") int orderId, 
 			@PathVariable(value = "productId") int productId) {
+		this.orderService.deleteProduct(orderId, productId);
 		return null;
 	}
 }
