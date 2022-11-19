@@ -46,10 +46,10 @@ public class OrderService implements OrderDAO{
 			+ " FROM orders O, orders_products OP, products P, users C"
 			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id AND O.id = ?";
 	private static final String GET_PRODUCT = GET_PRODUCTS + " AND P.id = ?";
-	private static final String ADD_PRODUCT_ORDER = "INSERT INTO INSERT INTO orders_products VALUES (?, ?) "
+	private static final String ADD_PRODUCT_ORDER = "INSERT INTO orders_products VALUES (?, ?) "
 			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
-	private static final String DELETE_PRODUCTS = "DELETE FROM orders O, orders_products OP WHERE O.id = OP.order_id AND O.id = ? ";
-	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " AND OP.product_id = ?";
+	private static final String DELETE_PRODUCTS = "DELETE FROM orders_products WHERE order_id = ?";
+	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " AND product_id = ?";
 	
 	
 	
@@ -120,7 +120,7 @@ public class OrderService implements OrderDAO{
 	@Override
 	public void addProduct(int orderId, Product product) throws DataAccessException {
 		this.productService.addProduct(product);
-		this.connection.update(ADD_PRODUCT_ORDER, orderId, product.getId());
+		this.connection.update(ADD_PRODUCT_ORDER, orderId, product.getId(), orderId, product.getId());
 	}
 
 	@Override
