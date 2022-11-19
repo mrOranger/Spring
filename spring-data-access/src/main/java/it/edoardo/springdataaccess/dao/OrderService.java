@@ -63,7 +63,7 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public Order getOrder(int id) throws EmptyResultDataAccessException{
+	public Order getOrder(int id) throws EmptyResultDataAccessException {
 		return this.connection.queryForObject(GET_ORDER, new OrderMapper(), id);
 	}
 
@@ -113,7 +113,7 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public Product getProduct(int orderId, int productId) {
+	public Product getProduct(int orderId, int productId) throws EmptyResultDataAccessException {
 		return this.connection.queryForObject(GET_PRODUCT, new ProductMapper(), orderId, productId);
 	}
 
