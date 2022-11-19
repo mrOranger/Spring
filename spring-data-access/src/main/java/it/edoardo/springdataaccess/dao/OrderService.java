@@ -24,13 +24,16 @@ public class OrderService implements OrderDAO{
 	@Autowired private UserService userService;
 	@Autowired private ProductService productService;
 	
-	private static final String GET_ORDERS = "SELECT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price"
+	private static final String GET_ORDERS = "SELECT DISTINCT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price"
 			+ " FROM orders O, orders_products OP, products P, users C"
-			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id";
-	private static final String GET_ORDER = GET_ORDERS + " AND C.id = ?";
-	private static final String ADD_ORDER = "INSERT INTO orders (id, customer) VALUES id = ?, customer = ?" +
-			" ON DUPLICATE KEY UPDATE id = ?, order = ?";
-	private static final String ADD_ORDER_PRODUCT = "INSERT INTO orders_products VALUES order_id = ?, product_id = ?"
+			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id"
+			+ " ORDER BY O.id";
+	private static final String GET_ORDER = "SELECT DISTINCT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price"
+			+ " FROM orders O, orders_products OP, products P, users C"
+			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id AND O.id = ?";
+	private static final String ADD_ORDER = "INSERT INTO orders (id, customer) VALUES (?, ?)" +
+			" ON DUPLICATE KEY UPDATE id = ?, customer = ?";
+	private static final String ADD_ORDER_PRODUCT = "INSERT INTO orders_products VALUES (?, ?)"
 			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
 	private static final String DELETE_ORDERS = "DELETE FROM orders";
 	private static final String DELETE_ORDERS_REFERENCE = "DELETE FROM orders_products";
@@ -68,7 +71,7 @@ public class OrderService implements OrderDAO{
 	public void addOrder(Order order) throws DataAccessException {
 		this.userService.addUser(order.getCustomer());
 		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
-		this.connection.query(ADD_ORDER, new OrderMapper(), order.getId(), order.getCustomer().getId());
+		this.connection.query(ADD_ORDER, new OrderMapper(), order.getId(), order.getCustomer().getId(), order.getId(), order.getCustomer().getId());
 		order.getProducts().stream().forEach((product) -> this.connection.query(ADD_ORDER_PRODUCT, new OrderMapper(), order.getId(), product.getId(), order.getId(), product.getId()));
 	}
 
@@ -83,20 +86,20 @@ public class OrderService implements OrderDAO{
 	public void updateOrder(int id, Order order) throws DataAccessException {
 		this.userService.addUser(order.getCustomer());
 		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
-		this.connection.query(ADD_ORDER, new OrderMapper(), id, order.getCustomer().getId());
+		this.connection.query(ADD_ORDER, new OrderMapper(), id, order.getCustomer().getId(), id, order.getCustomer().getId());
 		order.getProducts().stream().forEach((product) -> this.connection.query(ADD_ORDER_PRODUCT, new OrderMapper(), id, product.getId(), id, product.getId()));
 	}
 
 	@Override
 	public void deleteOrders() throws DataAccessException {
-		this.connection.update(DELETE_ORDERS);
 		this.connection.update(DELETE_ORDERS_REFERENCE);
+		this.connection.update(DELETE_ORDERS);
 	}
 
 	@Override
 	public void deleteOrder(int id) throws DataAccessException {
-		this.connection.update(DELETE_ORDER, id);
 		this.connection.update(DELETE_ORDER_REFERENCE, id);
+		this.connection.update(DELETE_ORDER, id);
 	}
 
 	@Override

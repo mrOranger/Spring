@@ -3,6 +3,8 @@ package it.edoardo.springdataaccess.controller.rest.order;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,41 +26,74 @@ public class OrderController {
 	
 	@GetMapping(path = "/")
 	public List<Order> getOrders() {
-		return this.connection.getOrders();
+		try {
+			return this.connection.getOrders();
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@GetMapping(path = "/{id}/")
 	public Order getOrder(@PathVariable(name = "id") int id) {
-		return this.connection.getOrder(id);
+		try {
+			return this.connection.getOrder(id);
+		} catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Order postOrder(@RequestBody Order order) {
-		this.connection.addOrder(order);
-		return order;
+		try {
+			this.connection.addOrder(order);
+			return order;
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public List<Order> putOrders(@RequestBody List<Order> orders) {
-		this.connection.updateOrders(orders);
-		return orders;
+		try {
+			this.connection.updateOrders(orders);
+			return orders;			
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@PutMapping(path = "/{id}/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Order putOrder(@PathVariable(name = "id") int id, @RequestBody Order order) {
-		this.connection.updateOrder(id, order);
-		return order;
+		try {
+			this.connection.updateOrder(id, order);
+			return order;
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@DeleteMapping(path = "/")
 	public List<Order> deleteOrders() {
-		this.connection.deleteOrders();
+		try {
+			this.connection.deleteOrders();
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
 	@DeleteMapping(path = "/{id}/")
 	public Order deleteOrder(@PathVariable(name = "id") int id) {
-		this.connection.deleteOrder(id);
+		try {
+			this.connection.deleteOrder(id);
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

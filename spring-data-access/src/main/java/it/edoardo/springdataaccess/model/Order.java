@@ -38,10 +38,6 @@ public class Order {
 		return products;
 	}
 	
-	public void addProduct(Product product) {
-		this.products.add(product);
-	}
-	
 	@JsonProperty(value = "products")
 	public void setProducts(List<Product> products) {
 		this.products = products;
