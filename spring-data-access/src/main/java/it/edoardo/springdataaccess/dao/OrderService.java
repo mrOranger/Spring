@@ -41,8 +41,8 @@ public class OrderService implements OrderDAO{
 	private static final String GET_PRODUCT = GET_PRODUCTS + " AND P.id = ?";
 	private static final String ADD_PRODUCT_ORDER = "INSERT INTO INSERT INTO orders_products VALUES (?, ?) "
 			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
-	private static final String DELETE_PRODUCTS = "DELETE FROM orders O, orders_products OP WHERE O.id = OP.order_id";
-	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " AND O.id = ? AND OP.product_id = ?";
+	private static final String DELETE_PRODUCTS = "DELETE FROM orders O, orders_products OP WHERE O.id = OP.order_id AND O.id = ? ";
+	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " AND OP.product_id = ?";
 	
 	
 	
@@ -110,31 +110,32 @@ public class OrderService implements OrderDAO{
 
 	@Override
 	public void addProduct(int orderId, Product product) {
-		// TODO: complete from this
+		this.productService.addProduct(product);
+		this.connection.update(ADD_PRODUCT_ORDER, orderId, product.getId());
 	}
 
 	@Override
 	public void updateProducts(int orderId, List<Product> products) {
-		// TODO Auto-generated method stub
-		
+		products.stream().forEach((product) -> {
+			this.productService.updateProduct(product.getId(), product);
+			this.addProduct(orderId, product);
+		});
 	}
 
 	@Override
 	public void updateProduct(int orderId, int productId, Product product) {
-		// TODO Auto-generated method stub
-		
+		this.productService.addProduct(product);
+		this.connection.update(ADD_PRODUCT_ORDER, orderId, productId);
 	}
 
 	@Override
 	public void deleteProducts(int orderId) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(DELETE_PRODUCTS, orderId);
 	}
 
 	@Override
 	public void deleteProduct(int orderId, int productId) {
-		// TODO Auto-generated method stub
-		
+		this.connection.update(DELETE_PRODUCT, orderId, productId);
 	}
 
 }
