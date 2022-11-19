@@ -60,7 +60,7 @@ public class UserService implements UserDAO {
 	@Override
 	public void updateUser(int id, User user) throws DataAccessException {
 		this.connection.update(ADD_USER, id, user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode(),
-				user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
+				user.getId(), user.getFirstName(), user.getLastName(), user.getDateOfBirth().toString(), user.getTaxCode());
 	}
 
 	@Override
