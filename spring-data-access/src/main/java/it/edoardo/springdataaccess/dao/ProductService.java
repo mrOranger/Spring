@@ -20,8 +20,12 @@ public class ProductService implements ProductDAO{
 	private static final String GET_PRODUCT = "SELECT id, name, price FROM products WHERE id = ?";
 	private static final String ADD_PRODUCT = "INSERT INTO products (id, name, price) VALUES (?, ?, ?)"
 			+ " ON DUPLICATE KEY UPDATE id = ?, name = ?, price = ?";
+	private static final String UPDATE_PRODUCT_REFERENCE = "UPDATE orders_products SET product_id = ?"
+			+ " WHERE product_id = ?";
+	private static final String DELETE_PRODUCTS_REFERENCE = "DELETE FROM products_orders";
 	private static final String DELETE_PRODUCTS = "DELETE FROM products";
-	private static final String DELETE_PRODUCT = "DELETE FROM products WHERE id = ?";
+	private static final String DELETE_PRODUCT_REFERENCE = DELETE_PRODUCTS_REFERENCE + " WHERE product_id = ?";
+	private static final String DELETE_PRODUCT = DELETE_PRODUCTS + " WHERE id = ?";
 	
 	
 	public ProductService(DataSource dataSource) {
@@ -53,15 +57,18 @@ public class ProductService implements ProductDAO{
 	public void updateProduct(int id, Product product) throws DataAccessException {
 		this.connection.update(ADD_PRODUCT, id, product.getName(), product.getPrice(),
 				product.getId(), product.getName(), product.getPrice());
+		this.connection.update(UPDATE_PRODUCT_REFERENCE, id, product.getId());
 	}
 
 	@Override
 	public void deleteProducts() throws DataAccessException {
+		this.connection.update(DELETE_PRODUCTS_REFERENCE);
 		this.connection.update(DELETE_PRODUCTS);
 	}
 
 	@Override
 	public void deleteProduct(int id) throws DataAccessException {
+		this.connection.update(DELETE_PRODUCT_REFERENCE, id);
 		this.connection.update(DELETE_PRODUCT, id);
 	}
 }
