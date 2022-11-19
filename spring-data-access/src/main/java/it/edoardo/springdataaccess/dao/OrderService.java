@@ -5,6 +5,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import it.edoardo.springdataaccess.dao.interfaces.OrderDAO;
@@ -22,22 +24,24 @@ public class OrderService implements OrderDAO{
 	@Autowired private UserService userService;
 	@Autowired private ProductService productService;
 	
-	private static final String GET_ORDERS = "SELECT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price "
-			+ "FROM orders O, orders_products OP, products P, users C"
-			+ "WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id";
+	private static final String GET_ORDERS = "SELECT O.id, C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code, P.id AS product_id, P.name AS product_name, P.price AS product_price"
+			+ " FROM orders O, orders_products OP, products P, users C"
+			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id";
 	private static final String GET_ORDER = GET_ORDERS + " AND C.id = ?";
 	private static final String ADD_ORDER = "INSERT INTO orders (id, customer) VALUES id = ?, customer = ?" +
 			" ON DUPLICATE KEY UPDATE id = ?, order = ?";
 	private static final String ADD_ORDER_PRODUCT = "INSERT INTO orders_products VALUES order_id = ?, product_id = ?"
 			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
 	private static final String DELETE_ORDERS = "DELETE FROM orders";
+	private static final String DELETE_ORDERS_REFERENCE = "DELETE FROM orders_products";
 	private static final String DELETE_ORDER = DELETE_ORDERS + " WHERE id = ?";
+	private static final String DELETE_ORDER_REFERENCE = DELETE_ORDERS_REFERENCE + " WHERE order_id = ?";
 	
 	private static final String GET_USER = "SELECT C.id AS customer_id, C.first_name, C.last_name, C.date_of_birth, C.tax_code FROM orders O, users C"
 			+ "	WHERE  O.customer = C.id";
-	private static final String GET_PRODUCTS = "SELECT P.id AS product_id, P.name AS product_name, P.price AS product_price\r\n"
-			+ "FROM orders O, orders_products OP, products P, users C"
-			+ "WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id AND O.id = ?";
+	private static final String GET_PRODUCTS = "SELECT P.id AS product_id, P.name AS product_name, P.price AS product_price"
+			+ " FROM orders O, orders_products OP, products P, users C"
+			+ " WHERE O.id = OP.order_id AND OP.product_id = P.id AND O.customer = C.id AND O.id = ?";
 	private static final String GET_PRODUCT = GET_PRODUCTS + " AND P.id = ?";
 	private static final String ADD_PRODUCT_ORDER = "INSERT INTO INSERT INTO orders_products VALUES (?, ?) "
 			+ " ON DUPLICATE KEY UPDATE order_id = ?, product_id = ?";
@@ -51,17 +55,17 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public List<Order> getOrders() {
+	public List<Order> getOrders() throws DataAccessException {
 		return this.connection.query(GET_ORDERS, new OrderMapper());
 	}
 
 	@Override
-	public Order getOrder(int id) {
+	public Order getOrder(int id) throws EmptyResultDataAccessException{
 		return this.connection.queryForObject(GET_ORDER, new OrderMapper(), id);
 	}
 
 	@Override
-	public void addOrder(Order order) {
+	public void addOrder(Order order) throws DataAccessException {
 		this.userService.addUser(order.getCustomer());
 		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
 		this.connection.query(ADD_ORDER, new OrderMapper(), order.getId(), order.getCustomer().getId());
@@ -69,14 +73,14 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public void updateOrders(List<Order> orders) {
+	public void updateOrders(List<Order> orders) throws DataAccessException {
 		orders.stream().forEach((order) -> {
 			this.addOrder(order);
 		}); 
 	}
 
 	@Override
-	public void updateOrder(int id, Order order) {
+	public void updateOrder(int id, Order order) throws DataAccessException {
 		this.userService.addUser(order.getCustomer());
 		order.getProducts().stream().forEach((product) -> this.productService.addProduct(product));
 		this.connection.query(ADD_ORDER, new OrderMapper(), id, order.getCustomer().getId());
@@ -84,17 +88,19 @@ public class OrderService implements OrderDAO{
 	}
 
 	@Override
-	public void deleteOrders() {
+	public void deleteOrders() throws DataAccessException {
 		this.connection.update(DELETE_ORDERS);
+		this.connection.update(DELETE_ORDERS_REFERENCE);
 	}
 
 	@Override
-	public void deleteOrder(int id) {
+	public void deleteOrder(int id) throws DataAccessException {
 		this.connection.update(DELETE_ORDER, id);
+		this.connection.update(DELETE_ORDER_REFERENCE, id);
 	}
 
 	@Override
-	public User getUser(int orderId) {
+	public User getUser(int orderId) throws DataAccessException {
 		return this.connection.queryForObject(GET_USER, new UserMapper());
 	}
 
