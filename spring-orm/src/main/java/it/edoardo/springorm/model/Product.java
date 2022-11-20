@@ -2,13 +2,23 @@ package it.edoardo.springorm.model;
 
 import java.io.Serializable;
 
-public class Product implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity @Table(name = "products")
+public class Product implements Serializable, Comparable<Product> {
 
 	private static final long serialVersionUID = 3529457983597142947L;
 	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String name;
-	private double price;
+	
+	@Column(name = "name") private String name;
+	@Column(name = "price") private double price;
 	
 	public int getId() {
 		return id;
@@ -32,5 +42,10 @@ public class Product implements Serializable {
 	
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	@Override
+	public int compareTo(Product o) {
+		return this.getId() - o.getId();
 	}
 }
