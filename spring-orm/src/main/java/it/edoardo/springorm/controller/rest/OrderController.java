@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,23 +21,53 @@ public class OrderController {
 	
 	@Autowired private OrderRepository repository;
 	
+	/**
+	 * 
+	 * @return the list of the order submitted in the database
+	 */
+	@GetMapping(path = "/")
 	public List<Order> getOrders() {
 		return null;
 	}
 	
-	public Order getOrder(int id) {
+	/**
+	 * 
+	 * @param id of the order to retrieve
+	 * @return the order identified with the id
+	 */
+	@GetMapping(path = "/{id}/")
+	public Order getOrder(@PathVariable(value = "id") int id) {
 		return null;
 	}
 	
-	public List<User> getUsers(int id) {
+	/**
+	 * 
+	 * @param id of the order to retrieve
+	 * @return the user who made the order identified by id
+	 */
+	@GetMapping(path = "/{id}/users/")
+	public User getUser(@PathVariable(value = "id") int id) {
 		return null;
 	}
 	
-	public List<Product> getProducts(int id) {
+	/**
+	 * 
+	 * @param id of the order
+	 * @return the list of the products inside the order identified by id
+	 */
+	@GetMapping(path = "/{id}/products/")
+	public List<Product> getProducts(@PathVariable(value = "id") int id) {
 		return null;
 	}
 	
-	public Product getProduct(int orderId, int productId) {
+	/**
+	 * 
+	 * @param orderId of the order to retrieve
+	 * @param productId of the product to retrieve
+	 * @return the product identified by productId, inside the order identified by orderId
+	 */
+	@GetMapping(path = "/{orderId}/products/{productId}/")
+	public Product getProduct(@PathVariable(value = "orderId") int orderId, @PathVariable(value = "productId") int productId) {
 		return null;
 	}
 
