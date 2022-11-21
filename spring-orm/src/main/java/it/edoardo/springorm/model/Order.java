@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Generated;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "customer")
 	@JsonProperty(value = "customer") private User customer;
 	
-	@ManyToMany
+	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
 	@JoinTable(
 			name = "products_orders",
 			joinColumns = @JoinColumn(name = "order_id"),
