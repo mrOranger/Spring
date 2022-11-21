@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,17 +15,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity @Table(name = "orders")
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity @Table(name = "orders") @Generated("jsonschema2pojo")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -1970433144207280641L;
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@JsonProperty(value = "id") private int id;
 	 
 	@ManyToOne
 	@JoinColumn(name = "customer")
-	private User customer;
+	@JsonProperty(value = "customer") private User customer;
 	
 	@ManyToMany
 	@JoinTable(
@@ -32,32 +35,38 @@ public class Order implements Serializable {
 			joinColumns = @JoinColumn(name = "order_id"),
 			inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
-	private List<Product> products;
+	@JsonProperty(value = "products") private List<Product> products;
 	
 	public Order() {
 		this.products = new ArrayList<Product>();
 	}
 	
+	@JsonProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 	
+	@JsonProperty(value = "id")
 	public void setId(int id) {
 		this.id = id;
 	}
 	
+	@JsonProperty(value = "customer")
 	public User getCustomer() {
 		return customer;
 	}
 	
+	@JsonProperty(value = "customer")
 	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
 	
+	@JsonProperty(value = "products")
 	public List<Product> getProducts() {
 		return products;
 	}
 	
+	@JsonProperty(value = "products")
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
