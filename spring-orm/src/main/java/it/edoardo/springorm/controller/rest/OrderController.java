@@ -78,7 +78,7 @@ public class OrderController {
 	 * @param order to add in the database
 	 * @return the new order insert in the database
 	 */
-	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Order postUser(@RequestBody Order order) {
 		return this.repository.save(order);
 	}
