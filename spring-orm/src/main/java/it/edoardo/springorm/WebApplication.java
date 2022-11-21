@@ -56,7 +56,7 @@ public class WebApplication {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(getDataSource());
 		factory.setJpaVendorAdapter(adapter);
-		factory.setPackagesToScan(getClass().getPackage().getName());
+		factory.setPackagesToScan("it.edoardo.springorm.model");
 		return factory;
 	}
 	

@@ -45,33 +45,11 @@ public class UserController {
 	}
 	
 	/**
-	 * 
-	 * @param id of the user 
-	 * @return the products ordered by the user with that id
+	 * TODO: sistemare metodo
 	 */
-	@GetMapping(path = "/{id}/products/")
-	public List<Product> getProducts(@PathVariable(name = "id")int id) {
-		return this.repository.findUserProducts(id);
-	}
-	
-	/**
-	 * 
-	 * @param id of the user
-	 * @return all the orders made by the user with that id
-	 */
-	@GetMapping(path = "/{id}/orders/")
-	public List<Order> getOrders(@PathVariable(name = "id") int id) {
-		return this.repository.findUserOrders(id);
-	}
-	
-	/**
-	 * @param userId of the user
-	 * @param productId of the product
-	 * @return the product identified with that id, ordered by the user with userId
-	 */
-	@GetMapping(path = "/{userId}/products/{productId}")
-	public Product getProduct(@PathVariable(name = "userId") int userId, @PathVariable(name = "productId") int productId) {
-		return this.repository.findUserProduct(userId, productId);
+	@GetMapping(path = "/taxCode/{taxCode}/")
+	public User getUserByTaxCode(@PathVariable(name = "taxCode") String taxCode) {
+		return this.repository.getUserByTaxCode(taxCode);
 	}
 	
 	/**
