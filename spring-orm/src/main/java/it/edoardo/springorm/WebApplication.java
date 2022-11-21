@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @PropertySource(value = "classpath:database.properties")
 @EnableTransactionManagement
 @EnableJpaRepositories(
-		basePackages = "it.edoardo.springorm.repository",
+		basePackages = { "it.edoardo.springorm.repository" },
 		entityManagerFactoryRef = "entityMangerFactory",
 		transactionManagerRef = "transactionManager")
 public class WebApplication {
@@ -51,11 +51,12 @@ public class WebApplication {
 		
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 		adapter.setDatabase(Database.MYSQL);
+		adapter.setGenerateDdl(true);
 		
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(getDataSource());
 		factory.setJpaVendorAdapter(adapter);
-		factory.setPackagesToScan("it.edoardo.springorm.dao");
+		factory.setPackagesToScan(getClass().getPackage().getName());
 		return factory;
 	}
 	
