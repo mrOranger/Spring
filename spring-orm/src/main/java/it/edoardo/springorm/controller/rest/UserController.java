@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,5 +70,14 @@ public class UserController {
 	public Product getProduct(@PathVariable(name = "userId") int userId, @PathVariable(name = "productId") int productId) {
 		return null;
 	}
-
+	
+	/**
+	 * 
+	 * @param user to add in the database
+	 * @return the new user insert in the database
+	 */
+	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public User postUser(@RequestBody User user) {
+		return this.repository.save(user);
+	}
 }
