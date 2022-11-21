@@ -2,6 +2,7 @@ package it.edoardo.springorm.controller.rest;
 
 import java.util.List;
 
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/")
 	public List<User> getUsers() {
-		return null;
+		return Lists.newArrayList(repository.findAll().iterator());
 	}
 	
 	/**
@@ -35,7 +36,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{id}/")
 	public User getUser(@PathVariable(name = "id") int id) {
-		return null;
+		return this.repository.findById(id).get();
 	}
 	
 	/**

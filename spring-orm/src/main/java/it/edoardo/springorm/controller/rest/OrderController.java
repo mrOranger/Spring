@@ -2,11 +2,11 @@ package it.edoardo.springorm.controller.rest;
 
 import java.util.List;
 
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +27,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/")
 	public List<Order> getOrders() {
-		return null;
+		return Lists.newArrayList(this.repository.findAll().iterator());
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class OrderController {
 	 */
 	@GetMapping(path = "/{id}/")
 	public Order getOrder(@PathVariable(value = "id") int id) {
-		return null;
+		return this.repository.findById(id).get();
 	}
 	
 	/**
