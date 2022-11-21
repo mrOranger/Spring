@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +23,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration @ComponentScan("it.edoardo.springorm.controller.rest")
 @PropertySource(value = "classpath:database.properties")
 @EnableTransactionManagement
+@EnableJpaRepositories(
+		basePackages = "it.edoardo.springorm.repository",
+		entityManagerFactoryRef = "entityMangerFactory",
+		transactionManagerRef = "transactionManager")
 public class WebApplication {
 	
 	@Value("${database.driver_class_name}") private String driver;
@@ -40,7 +45,7 @@ public class WebApplication {
 		return dataSource;
 	}
 	
-	@Bean @Scope("singleton")
+	@Bean(name = "entityMangerFactory") @Scope("singleton")
 	@Description("Bean for configurate the JPA, Hibernate and the connection with the database")
 	public LocalContainerEntityManagerFactoryBean getLocalContainer() {
 		
@@ -54,7 +59,7 @@ public class WebApplication {
 		return factory;
 	}
 	
-	@Bean @Scope("singleton")
+	@Bean(name = "transactionManager") @Scope("singleton")
 	@Description("Bean for the manager of the transactions for the database")
 	public PlatformTransactionManager getPlatformTransactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
