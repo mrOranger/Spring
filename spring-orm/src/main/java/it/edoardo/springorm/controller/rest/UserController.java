@@ -2,7 +2,6 @@ package it.edoardo.springorm.controller.rest;
 
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/")
 	public List<User> getUsers() {
-		return Lists.newArrayList(repository.findAll().iterator());
+		return repository.findAll();
 	}
 	
 	/**
@@ -52,7 +51,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{id}/products/")
 	public List<Product> getProducts(@PathVariable(name = "id")int id) {
-		return null;
+		return this.repository.findUserProducts(id);
 	}
 	
 	/**
@@ -62,7 +61,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{id}/orders/")
 	public List<Order> getOrders(@PathVariable(name = "id") int id) {
-		return null;
+		return this.repository.findUserOrders(id);
 	}
 	
 	/**
@@ -72,7 +71,7 @@ public class UserController {
 	 */
 	@GetMapping(path = "/{userId}/products/{productId}")
 	public Product getProduct(@PathVariable(name = "userId") int userId, @PathVariable(name = "productId") int productId) {
-		return null;
+		return this.repository.findUserProduct(userId, productId);
 	}
 	
 	/**
