@@ -1,6 +1,8 @@
 package it.edoardo.springorm.controller.rest;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.edoardo.springorm.model.Order;
-import it.edoardo.springorm.model.Product;
 import it.edoardo.springorm.model.User;
 import it.edoardo.springorm.repository.UserRepository;
 
-// TODO: aggiungere gestione eccezione org.springframework.dao.EmptyResultDataAccessException
 @RestController
 @RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
@@ -35,25 +34,35 @@ public class UserController {
 	}
 	
 	/**
-	 * 
 	 * @param id of the user
 	 * @return the user identified by that id
 	 */
 	@GetMapping(path = "/{id}/")
 	public User getUser(@PathVariable(name = "id") int id) {
-		return this.repository.findById(id).get();
-	}
-	
-	/**
-	 * TODO: sistemare metodo
-	 */
-	@GetMapping(path = "/taxCode/{taxCode}/")
-	public User getUserByTaxCode(@PathVariable(name = "taxCode") String taxCode) {
-		return this.repository.getUserByTaxCode(taxCode);
+		return this.repository.findById(id).orElse(null);
 	}
 	
 	/**
 	 * 
+	 * @param taxCode of the user to get
+	 * @return the removed user
+	 */
+	@GetMapping(path = "/taxCode/{taxCode}/")
+	public User getUserByTaxCode(@PathVariable(name = "taxCode") String taxCode) {
+		return this.repository.findByTaxCode(taxCode).orElse(null);
+	}
+	
+	/**
+	 * @param startDate greater or equal the user's date of birth
+	 * @param endDate less then or equal to the user's date of birth
+	 * @return the users with date of birth between these two dates
+	 */
+	@GetMapping(path = "/date/{start}/{end}/")
+	public List<User> getUsersByDate(@PathVariable(name = "start") String start, @PathVariable(name = "end") String end) {
+		return this.repository.findAllByDateOfBirthBetween(LocalDate.parse(start), LocalDate.parse(end));
+	}
+	
+	/**
 	 * @param user to add in the database
 	 * @return the new user insert in the database
 	 */
@@ -63,7 +72,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 
 	 * @param users submitted in the database
 	 * @return the new modified users
 	 */
@@ -74,7 +82,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 
 	 * @param id of the user to modify
 	 * @param user values to modify
 	 * @return the modified user
@@ -90,7 +97,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 
 	 * @return the empty collection of users
 	 */
 	@DeleteMapping(path = "/")
@@ -103,9 +109,37 @@ public class UserController {
 	 * @return the removed user
 	 */
 	@DeleteMapping(path = "/{id}/")
-	public User deleteUsers(@PathVariable(name = "id") int id){
+	public User deleteUser(@PathVariable(name = "id") int id){
 		final User user = this.repository.findById(id).get();
 		this.repository.deleteById(id);
 		return user;
+	}
+	
+	/**
+	 * 
+	 * @param taxCode of the user to remove
+	 * @return the user removed from the collection
+	 */
+	@DeleteMapping(path = "/taxCode/{taxCode}/") @Transactional
+	public User deleteUserByTaxCode(@PathVariable(name = "taxCode") String taxCode){
+		Optional<User> user = this.repository.findByTaxCode(taxCode);
+		user.ifPresent((u) -> this.repository.deleteByTaxCode(taxCode));
+		return user.orElse(null);
+	}
+	
+
+	/**
+	 * 
+	 * @param start date from delete the user
+	 * @param end date from delete the user
+	 * @return the new collection with removed users
+	 */
+	@DeleteMapping(path = "/date/{start}/{end}/")
+	public List<User> deleteUsersByDate(
+			@PathVariable(name = "start") String start, 
+			@PathVariable(name = "end") String end){
+		List<User> users = this.repository.findAllByDateOfBirthBetween(LocalDate.parse(start), LocalDate.parse(end));
+		this.repository.deleteAllByDateOfBirthBetween(LocalDate.parse(start), LocalDate.parse(end));
+		return users;
 	}
 }
