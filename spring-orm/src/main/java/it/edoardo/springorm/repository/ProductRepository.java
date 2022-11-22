@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 
 import it.edoardo.springorm.model.Product;
 
@@ -25,7 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 			nativeQuery = true)
 	public abstract Optional<Product> findByIdAndOrder(int productId, int orderId);
 	
-	@Query(value = "SELECT P.* FROM products P, orders O, products_orders PO "
+	@Query(value = "SELECT P.* FROM users U, products P, orders O, products_orders PO "
 			+ "WHERE P.id = PO.product_id AND PO.order_id = O.id AND O.id = 1 AND P.id = ?1 AND U.id = ?2",
 			nativeQuery = true)
 	public abstract Optional<Product> findByIdAndUser(int productId, int userId);
