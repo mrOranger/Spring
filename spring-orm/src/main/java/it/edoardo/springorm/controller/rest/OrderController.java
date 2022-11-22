@@ -2,7 +2,6 @@ package it.edoardo.springorm.controller.rest;
 
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,64 +22,81 @@ public class OrderController {
 	
 	@Autowired private OrderRepository repository;
 	
-	/**
-	 * 
-	 * @return the list of the order submitted in the database
-	 */
-	@GetMapping(path = "/")
 	public List<Order> getOrders() {
-		return Lists.newArrayList(this.repository.findAll().iterator());
+		return this.repository.findAll();
 	}
 	
-	/**
-	 * 
-	 * @param id of the order to retrieve
-	 * @return the order identified with the id
-	 */
-	@GetMapping(path = "/{id}/")
-	public Order getOrder(@PathVariable(value = "id") int id) {
-		return this.repository.findById(id).get();
+	public Order gerOrder(int id) {
+		return this.repository.findById(id).orElse(null);
 	}
 	
-	/**
-	 * 
-	 * @param id of the order to retrieve
-	 * @return the user who made the order identified by id
-	 */
-	@GetMapping(path = "/{id}/users/")
-	public User getUser(@PathVariable(value = "id") int id) {
-		return null;
+	public List<Order> getOrdersByUser(int id) {
+		return this.repository.findAllByCustomer(id);
 	}
 	
-	/**
-	 * 
-	 * @param id of the order
-	 * @return the list of the products inside the order identified by id
-	 */
-	@GetMapping(path = "/{id}/products/")
-	public List<Product> getProducts(@PathVariable(value = "id") int id) {
-		return null;
+	public List<Order> getOrdersByProduct(int id) {
+		return this.repository.findAllByProduct(id);
 	}
 	
-	/**
-	 * 
-	 * @param orderId of the order to retrieve
-	 * @param productId of the product to retrieve
-	 * @return the product identified by productId, inside the order identified by orderId
-	 */
-	@GetMapping(path = "/{orderId}/products/{productId}/")
-	public Product getProduct(@PathVariable(value = "orderId") int orderId, @PathVariable(value = "productId") int productId) {
-		return null;
+	public Order getOrderByProduct(int product, int order) {
+		return this.repository.findByProduct(product, order).orElse(null);
 	}
 	
-	/**
-	 * 
-	 * @param order to add in the database
-	 * @return the new order insert in the database
-	 */
-	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Order postUser(@RequestBody Order order) {
+	public Order postOrder(Order order) {
+		this.repository.save(order);
+		return order;
+	}
+	
+	public Order postProductInOrder(int order, Product product) {
+		final Order currOrder = this.repository.getReferenceById(order);
+		currOrder.getProducts().add(product);
+		this.repository.save(currOrder);
+		return currOrder;
+	}
+	
+	public List<Order> putOrders(List<Order> orders) {
+		orders.stream().forEach((order) -> this.putOrder(order.getId(), order));
+		return orders;
+	}
+	
+	public Order putOrder(int id, Order order) {
+		if(this.repository.findById(id).isPresent())  {
+			final Order orderToUpdate = this.repository.getReferenceById(id);
+			orderToUpdate.setId(id);
+			orderToUpdate.setCustomer(order.getCustomer());
+			orderToUpdate.setProducts(order.getProducts());
+			return this.repository.save(orderToUpdate);
+		}
 		return this.repository.save(order);
 	}
+	
+	public Order putProductInOrder(int orderId, int prodId, Product product) {
+		final Order currOrder = this.repository.getReferenceById(orderId);
+		if(currOrder.getProducts().contains(product)) {
+			currOrder.getProducts().set(currOrder.getProducts().indexOf(product), product);
+		} else {
+			currOrder.getProducts().add(product);
+		}
+		return currOrder;
+	}
+	
+	public void deleteOrders() {
+		this.repository.deleteAll();
+	}
+	
+	public void deleteOrder(int id) {
+		this.repository.deleteById(id);
+	}
 
+	public void deleteProductsFromOrders() {
+		this.repository.deleteAllProductsFromOrders();
+	}
+	
+	public void deleteProductsFromOrder(int id) {
+		this.repository.deleteAllProductsFromOrder(id);
+	}
+	
+	public void deleteProductFromOrder(int order, int product) {
+		this.repository.deleteProductFromOrder(order, product);
+	}
 }
