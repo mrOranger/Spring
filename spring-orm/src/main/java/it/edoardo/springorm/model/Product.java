@@ -60,4 +60,11 @@ public class Product implements Serializable, Comparable<Product> {
 	public int compareTo(Product o) {
 		return this.getId() - o.getId();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return ((Product)obj).getId() == this.getId();
+	}
+	
+	
 }
