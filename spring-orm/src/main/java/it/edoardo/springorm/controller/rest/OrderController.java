@@ -4,16 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.springorm.model.Order;
 import it.edoardo.springorm.model.Product;
-import it.edoardo.springorm.model.User;
 import it.edoardo.springorm.repository.OrderRepository;
 
 @RestController
@@ -22,44 +23,53 @@ public class OrderController {
 	
 	@Autowired private OrderRepository repository;
 	
+	@GetMapping(path = "/")
 	public List<Order> getOrders() {
 		return this.repository.findAll();
 	}
 	
-	public Order gerOrder(int id) {
+	@GetMapping(path = "/{id}/")
+	public Order gerOrder(@PathVariable(value = "id") int id) {
 		return this.repository.findById(id).orElse(null);
 	}
 	
-	public List<Order> getOrdersByUser(int id) {
+	@GetMapping(path = "/users/{id}/")
+	public List<Order> getOrdersByUser(@PathVariable(value = "id") int id) {
 		return this.repository.findAllByCustomer(id);
 	}
 	
-	public List<Order> getOrdersByProduct(int id) {
+	@GetMapping(path = "/products/{id}/")
+	public List<Order> getOrdersByProduct(@PathVariable(value = "id") int id) {
 		return this.repository.findAllByProduct(id);
 	}
 	
-	public Order getOrderByProduct(int product, int order) {
+	@GetMapping(path = "/orders/{order}/products/{product}/")
+	public Order getOrderByProduct(@PathVariable(value = "product") int product, @PathVariable(value = "order") int order) {
 		return this.repository.findByProduct(product, order).orElse(null);
 	}
 	
-	public Order postOrder(Order order) {
+	@PostMapping(path = "/")
+	public Order postOrder(@RequestBody Order order) {
 		this.repository.save(order);
 		return order;
 	}
 	
-	public Order postProductInOrder(int order, Product product) {
+	@PostMapping(path = "/{order}/")
+	public Order postProductInOrder(@PathVariable(value = "order") int order, Product product) {
 		final Order currOrder = this.repository.getReferenceById(order);
 		currOrder.getProducts().add(product);
 		this.repository.save(currOrder);
 		return currOrder;
 	}
 	
-	public List<Order> putOrders(List<Order> orders) {
+	@PutMapping(path = "/")
+	public List<Order> putOrders(@RequestBody List<Order> orders) {
 		orders.stream().forEach((order) -> this.putOrder(order.getId(), order));
 		return orders;
 	}
 	
-	public Order putOrder(int id, Order order) {
+	@PutMapping(path = "/{id}/")
+	public Order putOrder(@PathVariable(value = "id") int id, @RequestBody Order order) {
 		if(this.repository.findById(id).isPresent())  {
 			final Order orderToUpdate = this.repository.getReferenceById(id);
 			orderToUpdate.setId(id);
@@ -70,7 +80,8 @@ public class OrderController {
 		return this.repository.save(order);
 	}
 	
-	public Order putProductInOrder(int orderId, int prodId, Product product) {
+	@PutMapping(path = "/orders/{orderId}/products/{prodId}/")
+	public Order putProductInOrder(@PathVariable(value = "orderId") int orderId, @PathVariable(value = "prodId") int prodId, @RequestBody Product product) {
 		final Order currOrder = this.repository.getReferenceById(orderId);
 		if(currOrder.getProducts().contains(product)) {
 			currOrder.getProducts().set(currOrder.getProducts().indexOf(product), product);
@@ -80,23 +91,28 @@ public class OrderController {
 		return currOrder;
 	}
 	
+	@DeleteMapping(path = "/")
 	public void deleteOrders() {
 		this.repository.deleteAll();
 	}
 	
-	public void deleteOrder(int id) {
+	@DeleteMapping(path = "/{id}/")
+	public void deleteOrder(@PathVariable(value = "id") int id) {
 		this.repository.deleteById(id);
 	}
 
+	@DeleteMapping(path = "/products/")
 	public void deleteProductsFromOrders() {
 		this.repository.deleteAllProductsFromOrders();
 	}
 	
-	public void deleteProductsFromOrder(int id) {
+	@DeleteMapping(path = "orders/{id}/products/")
+	public void deleteProductsFromOrder(@PathVariable(value = "id") int id) {
 		this.repository.deleteAllProductsFromOrder(id);
 	}
 	
-	public void deleteProductFromOrder(int order, int product) {
+	@DeleteMapping(path = "orders/{order}/products/{product}/")
+	public void deleteProductFromOrder(@PathVariable(value = "order") int order, @PathVariable(value = "product") int product) {
 		this.repository.deleteProductFromOrder(order, product);
 	}
 }
