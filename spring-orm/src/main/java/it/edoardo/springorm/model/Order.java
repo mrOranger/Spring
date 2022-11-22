@@ -16,9 +16,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity @Table(name = "orders") @Generated("jsonschema2pojo")
+@JsonIgnoreProperties(value = "products")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -1970433144207280641L;
@@ -30,7 +32,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "customer")
 	@JsonProperty(value = "customer") private User customer;
 	
-	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(
 			name = "products_orders",
 			joinColumns = @JoinColumn(name = "order_id"),

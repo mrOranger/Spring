@@ -10,7 +10,8 @@ import it.edoardo.springorm.model.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 	
-	public abstract List<Order> findAllByCustomer(int id);
+	@Query(value = "SELECT * FROM orders WHERE customer = ?1", nativeQuery = true)
+	public abstract List<Order> findAllByCustomer(int customer);
 	
 	@Query(value = "SELECT O.* FROM orders O, products_orders PO, products P "
 			+ "WHERE O.id = PO.order_id AND PO.product_id = P.id AND P.id = ?1", nativeQuery = true)
@@ -19,6 +20,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 	@Query(value = "SELECT O.* FROM orders O, products_orders PO, products P "
 			+ "WHERE O.id = PO.order_id AND PO.product_id = P.id AND P.id = ?1 AND O.id = ?2", nativeQuery = true)
 	public abstract Optional<Order> findByProduct(int product, int order);
+	
+	@Query(value = "INSERT INTO products_orders VALUES (?1, ?2)", nativeQuery = true)
+	public abstract void saveProductInOrder(int order, int product);
 	
 	@Query(value = "DELETE FROM products_orders", nativeQuery = true)
 	public abstract void deleteAllProductsFromOrders();

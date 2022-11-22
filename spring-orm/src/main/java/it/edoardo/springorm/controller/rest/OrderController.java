@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.omg.CORBA.CurrentOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +46,7 @@ public class OrderController {
 		return this.repository.findAllByProduct(id);
 	}
 	
-	@GetMapping(path = "/orders/{order}/products/{product}/") @Transactional
+	@GetMapping(path = "/{order}/products/{product}/") @Transactional
 	public Order getOrderByProduct(@PathVariable(value = "product") int product, @PathVariable(value = "order") int order) {
 		return this.repository.findByProduct(product, order).orElse(null);
 	}
@@ -53,68 +54,78 @@ public class OrderController {
 	@PostMapping(path = "/") @Transactional
 	public Order postOrder(@RequestBody Order order) {
 		this.repository.save(order);
+		this.repository.flush();
 		return order;
 	}
 	
-	@PostMapping(path = "/{order}/") @Transactional
-	public Order postProductInOrder(@PathVariable(value = "order") int order, Product product) {
-		final Order currOrder = this.repository.getReferenceById(order);
-		currOrder.getProducts().add(product);
-		this.repository.save(currOrder);
-		return currOrder;
+	@PostMapping(path = "/{order}/products/{product}/") @Transactional
+	public Order postProductInOrder(@PathVariable(value = "order") int order, @PathVariable(value = "product") int product) {
+		this.repository.saveProductInOrder(order, product);
+		return this.repository.findById(order).orElse(null);
 	}
 	
 	@PutMapping(path = "/") @Transactional
 	public List<Order> putOrders(@RequestBody List<Order> orders) {
 		orders.stream().forEach((order) -> this.putOrder(order.getId(), order));
+		this.repository.flush();
 		return orders;
 	}
 	
 	@PutMapping(path = "/{id}/") @Transactional
 	public Order putOrder(@PathVariable(value = "id") int id, @RequestBody Order order) {
 		if(this.repository.findById(id).isPresent())  {
-			final Order orderToUpdate = this.repository.getReferenceById(id);
+			final Order orderToUpdate = this.repository.findById(id).get();
 			orderToUpdate.setId(id);
 			orderToUpdate.setCustomer(order.getCustomer());
 			orderToUpdate.setProducts(order.getProducts());
+			this.repository.flush();
 			return this.repository.save(orderToUpdate);
 		}
+		this.repository.flush();
 		return this.repository.save(order);
 	}
 	
 	@PutMapping(path = "/orders/{orderId}/products/{prodId}/") @Transactional
 	public Order putProductInOrder(@PathVariable(value = "orderId") int orderId, @PathVariable(value = "prodId") int prodId, @RequestBody Product product) {
-		final Order currOrder = this.repository.getReferenceById(orderId);
+		final Order currOrder = this.repository.findById(orderId).get();
 		if(currOrder.getProducts().contains(product)) {
 			currOrder.getProducts().set(currOrder.getProducts().indexOf(product), product);
 		} else {
 			currOrder.getProducts().add(product);
 		}
+		this.repository.flush();
 		return currOrder;
 	}
 	
 	@DeleteMapping(path = "/") @Transactional
 	public void deleteOrders() {
+		this.repository.deleteAllProductsFromOrders();
 		this.repository.deleteAll();
+		this.repository.flush();
 	}
 	
 	@DeleteMapping(path = "/{id}/") @Transactional
 	public void deleteOrder(@PathVariable(value = "id") int id) {
+		this.repository.deleteAllProductsFromOrder(id);
 		this.repository.deleteById(id);
+		this.repository.flush();
 	}
 
 	@DeleteMapping(path = "/products/") @Transactional
 	public void deleteProductsFromOrders() {
 		this.repository.deleteAllProductsFromOrders();
+		this.repository.flush();
 	}
 	
-	@DeleteMapping(path = "orders/{id}/products/") @Transactional
+	@DeleteMapping(path = "/{id}/products/") @Transactional
 	public void deleteProductsFromOrder(@PathVariable(value = "id") int id) {
 		this.repository.deleteAllProductsFromOrder(id);
+		this.repository.flush();
 	}
 	
-	@DeleteMapping(path = "orders/{order}/products/{product}/") @Transactional
+	@DeleteMapping(path = "/{order}/products/{product}/") @Transactional
 	public void deleteProductFromOrder(@PathVariable(value = "order") int order, @PathVariable(value = "product") int product) {
 		this.repository.deleteProductFromOrder(order, product);
+		this.repository.flush();
 	}
 }
