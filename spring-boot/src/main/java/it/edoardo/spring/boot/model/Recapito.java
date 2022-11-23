@@ -1,10 +1,25 @@
 package it.edoardo.spring.boot.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity @Table(name = "Recapiti")
 public class Recapito {
 	
-	private int id;
-	private String telefono;
-	private String email;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@Column(name = "id_recapito") private int id;
+	@Column(name = "telefono") private String telefono;
+	@Column(name = "email") private String email;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_impiegato", nullable = false)
+	private Impiegato impiegato;
 	
 	public int getId() {
 		return id;

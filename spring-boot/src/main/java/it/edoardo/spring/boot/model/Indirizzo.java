@@ -1,14 +1,29 @@
 package it.edoardo.spring.boot.model;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity @Table(name = "Indirizzi")
 public class Indirizzo {
 	
-	private int id;
-	private String via;
-	private int numero;
-	private String città;
-	private String regione;
-	private String provincia;
-	private String nazione;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_indirizzo") private int id;
+	@Column(name = "via") private String via;
+	@Column(name = "numero") private int numero;
+	@Column(name = "città") private String città;
+	@Column(name = "regione") private String regione;
+	@Column(name = "provincia") private String provincia;
+	@Column(name = "nazione") private String nazione;
+	
+	@OneToMany(mappedBy = "abitaIn")
+	private List<Impiegato> impiegati;
 	
 	public int getId() {
 		return id;
@@ -63,5 +78,13 @@ public class Indirizzo {
 	
 	public void setNazione(String nazione) {
 		this.nazione = nazione;
+	}
+	
+	public List<Impiegato> getImpiegati() {
+		return impiegati;
+	}
+	
+	public void setImpiegati(List<Impiegato> impiegati) {
+		this.impiegati = impiegati;
 	}
 }

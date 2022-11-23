@@ -3,17 +3,40 @@ package it.edoardo.spring.boot.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity @Table(name = "Impiegati")
 public class Impiegato {
 	
-	private int id;
-	private String nome;
-	private String cognome;
-	private String codiceFiscale;
-	private LocalDate dataDiNascita;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@Column(name = "id_impiegato") private int id;
+	@Column(name = "nome") private String nome;
+	@Column(name = "cognome") private String cognome;
+	@Column(name = "codice_fiscale") private String codiceFiscale;
+	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_dipartimento", nullable = false)
 	private Dipartimento lavoraIn;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_indirizzo", nullable = false)
 	private Indirizzo abitaIn;
+	
+	@OneToMany(mappedBy = "impiegato")
 	private List<Recapito> recapiti;
+	
+	@OneToOne(mappedBy = "direttore")
+	private Dipartimento dipartimento;
 	
 	public int getId() {
 		return id;
@@ -77,5 +100,13 @@ public class Impiegato {
 
 	public void setRecapiti(List<Recapito> recapiti) {
 		this.recapiti = recapiti;
+	}
+
+	public Dipartimento getDipartimento() {
+		return dipartimento;
+	}
+
+	public void setDipartimento(Dipartimento dipartimento) {
+		this.dipartimento = dipartimento;
 	}
 }
