@@ -24,7 +24,7 @@ public class Dipartimento {
 	private List<Impiegato> impiegati;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_impiegato", referencedColumnName = "id")
+	@JoinColumn(name = "direttore", referencedColumnName = "id_impiegato")
 	private Impiegato direttore;
 	
 	public int getId() {
