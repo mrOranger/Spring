@@ -18,39 +18,39 @@ public interface ImpiegatoRepository extends JpaRepository<Impiegato, Integer>{
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByViaAndNumeroCivico(String via, int civico);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.città = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, indirizzi Ind WHERE I.id_indirizzo = Ind.id_indirizzo AND Ind.città = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByCittà(String città);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.regione = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, indirizzi Ind WHERE I.id_indirizzo = Ind.id_indirizzo AND Ind.regione = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByRegione(String regione);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.provincia = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, indirizzi Ind WHERE I.id_indirizzo = Ind.id_indirizzo AND Ind.provincia = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByProvincia(String provincia);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.nazione = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, indirizzi Ind WHERE I.id_indirizzo = Ind.id_indirizzo AND Ind.nazione = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByNazione(String nazione);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN recapiti R WHERE R.email = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, recapiti R WHERE I.id_impiegato = R.id_impiegato AND R.email = ?1",
 			nativeQuery = true)
 	public abstract Optional<Impiegato> findByEmail(String email);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN recapiti R WHERE R.telefono = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, recapiti R WHERE I.id_impiegato = R.id_impiegato AND R.telefono = ?1",
 			nativeQuery = true)
 	public abstract Optional<Impiegato> findByTelefono(String telefono);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN dipartimenti D WHERE D.id_dipartimento = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id_dipartimento AND D.id_dipartimento = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByDipartimento(int dipartimento);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN dipartimenti D WHERE D.direttore = I.id_impiegato",
+	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id_dipartimento AND D.direttore = I.id_impiegato",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllDirigenti();
 	
-	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE D.id_dipartimento = ?1 AND D.direttore = I.id_impiegato",
+	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id_dipartimento AND D.id_dipartimento = ?1 AND D.direttore = I.id_impiegato",
 			nativeQuery = true)
 	public abstract Optional<Impiegato> findDirigenteInDipartimento(int dipartimento);
 
