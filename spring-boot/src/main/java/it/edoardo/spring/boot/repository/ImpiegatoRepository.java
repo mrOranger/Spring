@@ -14,7 +14,7 @@ public interface ImpiegatoRepository extends JpaRepository<Impiegato, Integer>{
 	public abstract Optional<Impiegato> findByCodiceFiscale(String codiceFiscale);
 	public abstract List<Impiegato> findAllByDataDiNascitaBetween(LocalDate start, LocalDate end);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.via = ?1 AND Ind.numero = ?2",
+	@Query(value = "SELECT I.* FROM impiegati I, indirizzi Ind WHERE I.id_indirizzo = Ind.id_indirizzo AND Ind.numero = ?2 AND Ind.via = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByViaAndNumeroCivico(String via, int civico);
 	

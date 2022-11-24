@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.edoardo.spring.boot.dao.impl.ImpiegatoService;
 import it.edoardo.spring.boot.model.Impiegato;
 
-@RestController @RequestMapping(path = "/impiegati/") 
+@RestController @RequestMapping(path = "/impiegati") 
 public class ImpiegatiController {
 	
 	@Autowired private ImpiegatoService service;
@@ -32,14 +33,15 @@ public class ImpiegatiController {
 		return this.service.getImpiegatoByCf(cf);
 	}
 	
-	// TODO : Bad request da rivedere
 	@GetMapping(path = "/data/{start}/{end}/")
-	public List<Impiegato> getImpiegatiByData(@PathVariable(name = "start") LocalDate start, 
+	public List<Impiegato> getImpiegatiByData(@PathVariable(name = "start")
+			@DateTimeFormat(pattern = "yyyy-MM-dd")
+			LocalDate start,
+			@DateTimeFormat(pattern = "yyyy-MM-dd")
 			@PathVariable(name = "end") LocalDate end) {
 		return this.service.getImpiegatiByData(start, end);
 	}
 	
-	// TODO : Internal server error da riveredere
 	@GetMapping(path = "/via/{via}/{civico}/")
 	public List<Impiegato> getImpiegatiByVia(@PathVariable(name = "via") String via, 
 			@PathVariable(name = "civico") int civico) {
