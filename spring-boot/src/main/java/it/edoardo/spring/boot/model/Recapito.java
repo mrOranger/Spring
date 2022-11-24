@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity @Table(name = "Recapiti")
+@Entity @Table(name = "recapiti")
 public class Recapito {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 

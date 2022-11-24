@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity @Table(name = "Impiegati")
+@Entity @Table(name = "impiegati")
 public class Impiegato {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -35,7 +35,7 @@ public class Impiegato {
 	@OneToMany(mappedBy = "impiegato")
 	private List<Recapito> recapiti;
 	
-	@OneToOne(mappedBy = "direttore")
+	@OneToOne(mappedBy = "direttore", optional = true)
 	private Dipartimento dipartimento;
 	
 	public int getId() {

@@ -1,8 +1,12 @@
 package it.edoardo.spring.boot;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@EnableAutoConfiguration
+@ComponentScan(basePackages = "it.edoardo.spring.boot.rest")
 @SpringBootApplication
 public class Application {
 

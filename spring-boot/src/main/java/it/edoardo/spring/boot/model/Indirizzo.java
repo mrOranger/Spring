@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity @Table(name = "Indirizzi")
+@Entity @Table(name = "indirizzi")
 public class Indirizzo {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
