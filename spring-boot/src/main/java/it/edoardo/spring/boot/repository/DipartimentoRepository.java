@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import it.edoardo.spring.boot.model.Dipartimento;
 
-public interface RepositoryDipartimento extends JpaRepository<Dipartimento, Integer>{
+public interface DipartimentoRepository extends JpaRepository<Dipartimento, Integer>{
 
 }
