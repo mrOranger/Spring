@@ -30,5 +30,5 @@ public interface IndirizzoRepository extends JpaRepository<Indirizzo, Integer>{
 	
 	@Query(value = "SELECT Ind.* FROM indirizzi Ind JOIN impiegati I JOIN dipartimenti D"
 			+ " WHERE D.direttore = i.id_impiegato AND D.id_dipartimenti = ?1", nativeQuery = true)
-	public abstract List<Indirizzo> findByDirigente(int id);
+	public abstract Optional<Indirizzo> findByDirigente(int id);
 }
