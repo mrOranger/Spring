@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import it.edoardo.spring.boot.model.Impiegato;
-import it.edoardo.spring.boot.model.Recapito;
 
 public interface ImpiegatoDao {
 	
@@ -24,11 +23,10 @@ public interface ImpiegatoDao {
 	public abstract Impiegato getDirigente(int dipartimento);
 	
 	public abstract Impiegato postImpiegato(Impiegato impiegato);
-	public abstract Impiegato postRecapito(Recapito recapito);
 	
-	public abstract Impiegato putImpiegato(Impiegato impiegato);
+	public abstract List<Impiegato> putImpiegati(Iterable<Impiegato> impiegati);
+	public abstract Impiegato putImpiegato(int id, Impiegato impiegato);
 	
-	public abstract List<Impiegato> deleteImpiegati();
-	public abstract Impiegato deleteImpiegato(int id);
-	public abstract Impiegato deleteDirigente(int dipartimento);
+	public abstract void deleteImpiegati();
+	public abstract void deleteImpiegato(int id);
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import it.edoardo.spring.boot.dao.ImpiegatoDao;
 import it.edoardo.spring.boot.model.Impiegato;
-import it.edoardo.spring.boot.model.Recapito;
 import it.edoardo.spring.boot.repository.ImpiegatoRepository;
 
 @Service
@@ -88,40 +87,27 @@ public class ImpiegatoService implements ImpiegatoDao{
 
 	@Override
 	public Impiegato postImpiegato(Impiegato impiegato) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Impiegato postRecapito(Recapito recapito) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Impiegato putImpiegato(Impiegato impiegato) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Impiegato> deleteImpiegati() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Impiegato deleteImpiegato(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Impiegato deleteDirigente(int dipartimento) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repository.save(impiegato);
 	}
 	
-	
+	@Override
+	public List<Impiegato> putImpiegati(Iterable<Impiegato> impiegati) {
+		return this.repository.saveAll(impiegati);
+	}
 
+	@Override
+	public Impiegato putImpiegato(int id, Impiegato impiegato) {
+		impiegato.setId(id);
+		return this.repository.save(impiegato);
+	}
+
+	@Override
+	public void deleteImpiegati() {
+		this.repository.deleteAll();
+	}
+
+	@Override
+	public void deleteImpiegato(int id) {
+		this.repository.deleteById(id);
+	}
 }
