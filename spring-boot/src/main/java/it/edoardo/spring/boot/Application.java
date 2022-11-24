@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
-@ComponentScan(basePackages = "it.edoardo.spring.boot.rest")
-@SpringBootApplication
+@ComponentScan
+@SpringBootApplication(scanBasePackages = "it.edoardo.spring.boot")
 public class Application {
 
 	public static void main(String[] args) {

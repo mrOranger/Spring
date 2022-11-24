@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import it.edoardo.spring.boot.dao.ImpiegatoDao;
 import it.edoardo.spring.boot.model.Impiegato;
 import it.edoardo.spring.boot.model.Recapito;
 import it.edoardo.spring.boot.repository.ImpiegatoRepository;
 
+@Service
 public class ImpiegatoService implements ImpiegatoDao{
 	
 	@Autowired private ImpiegatoRepository repository;

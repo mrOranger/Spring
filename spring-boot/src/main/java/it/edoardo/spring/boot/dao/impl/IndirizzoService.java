@@ -3,11 +3,13 @@ package it.edoardo.spring.boot.dao.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import it.edoardo.spring.boot.dao.IndirizzoDao;
 import it.edoardo.spring.boot.model.Indirizzo;
 import it.edoardo.spring.boot.repository.IndirizzoRepository;
 
+@Service
 public class IndirizzoService implements IndirizzoDao{
 	
 	@Autowired private IndirizzoRepository repository;
