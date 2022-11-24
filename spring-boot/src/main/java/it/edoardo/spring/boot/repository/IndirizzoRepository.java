@@ -10,7 +10,7 @@ import it.edoardo.spring.boot.model.Indirizzo;
 
 public interface IndirizzoRepository extends JpaRepository<Indirizzo, Integer>{
 	
-	public abstract List<Indirizzo> findAllByViaAndNumeroCivico(String via, int numeroCivico);
+	public abstract List<Indirizzo> findAllByViaAndNumero(String via, int numeroCivico);
 	public abstract List<Indirizzo> findAllByCittà(String città);
 	public abstract List<Indirizzo> findAllByProvincia(String provincia);
 	public abstract List<Indirizzo> findAllByRegione(String regione);

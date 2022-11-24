@@ -26,7 +26,7 @@ public class IndirizzoService implements IndirizzoDao{
 
 	@Override
 	public List<Indirizzo> getIndirizziByViaAndNumeroCivico(String via, int numeroCivico) {
-		return this.repository.findAllByViaAndNumeroCivico(via, numeroCivico);
+		return this.repository.findAllByViaAndNumero(via, numeroCivico);
 	}
 
 	@Override
