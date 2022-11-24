@@ -8,7 +8,7 @@ public interface RecapitoDao {
 	
 	public abstract List<Recapito> getRecapiti();
 	public abstract Recapito getRecapito(int id);
-	public abstract Recapito getRecapitoOfImpiegato(int id);
+	public abstract List<Recapito> getRecapitoOfImpiegato(int id);
 	public abstract Recapito getRecapitoByEmail(String email);
 	public abstract Recapito getRecapitoByTelefono(String telefono);
 	public abstract List<Recapito> getRecapitiByProvider(String provider);
