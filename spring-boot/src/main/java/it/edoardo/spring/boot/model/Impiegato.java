@@ -3,6 +3,7 @@ package it.edoardo.spring.boot.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity @Table(name = "impiegati")
 public class Impiegato {
@@ -26,19 +27,23 @@ public class Impiegato {
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne @JsonIgnore
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	@JoinColumn(name = "id_dipartimento", nullable = false)
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne @JsonIgnore
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "id_indirizzo", nullable = false)
+	@JsonIgnoreProperties(value = "impiegati")
 	private Indirizzo abitaIn;
 	
-	@OneToMany(mappedBy = "impiegato") @JsonIgnore
+	@OneToMany(mappedBy = "impiegato", cascade = CascadeType.ALL) 
+	@JsonIgnoreProperties(value = "impiegato")
 	private List<Recapito> recapiti;
 	
-	@OneToOne(mappedBy = "direttore", optional = true) @JsonIgnore
-	private Dipartimento dipartimento;
+	@OneToOne(mappedBy = "direttore", optional = true, cascade = CascadeType.ALL) 
+	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
+	private Dipartimento dirige;
 	
 	public int getId() {
 		return id;
@@ -104,11 +109,11 @@ public class Impiegato {
 		this.recapiti = recapiti;
 	}
 
-	public Dipartimento getDipartimento() {
-		return dipartimento;
+	public Dipartimento getDirige() {
+		return dirige;
 	}
 
-	public void setDipartimento(Dipartimento dipartimento) {
-		this.dipartimento = dipartimento;
+	public void setDiretto(Dipartimento dipartimento) {
+		this.dirige = dipartimento;
 	}
 }

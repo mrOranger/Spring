@@ -20,10 +20,10 @@ public class Dipartimento {
 	@Column(name = "id_dipartimento") private int id;
 	@Column(name = "nome") private String nome;
 	
-	@OneToMany(mappedBy = "lavoraIn")
+	@OneToMany(mappedBy = "lavoraIn", cascade = CascadeType.ALL) 
 	private List<Impiegato> impiegati;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL) 
 	@JoinColumn(name = "direttore", referencedColumnName = "id_impiegato")
 	private Impiegato direttore;
 	

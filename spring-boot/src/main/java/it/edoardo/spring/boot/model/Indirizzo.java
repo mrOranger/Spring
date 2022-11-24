@@ -2,6 +2,7 @@ package it.edoardo.spring.boot.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Indirizzo {
 	@Column(name = "provincia") private String provincia;
 	@Column(name = "nazione") private String nazione;
 	
-	@OneToMany(mappedBy = "abitaIn")
+	@OneToMany(mappedBy = "abitaIn", cascade = CascadeType.ALL)
 	private List<Impiegato> impiegati;
 	
 	public int getId() {

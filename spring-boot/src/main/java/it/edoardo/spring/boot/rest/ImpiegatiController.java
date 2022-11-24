@@ -5,13 +5,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.spring.boot.dao.impl.ImpiegatoService;
 import it.edoardo.spring.boot.model.Impiegato;
+import net.bytebuddy.asm.Advice.Return;
 
 @RestController @RequestMapping(path = "/impiegati") 
 public class ImpiegatiController {
@@ -92,5 +97,29 @@ public class ImpiegatiController {
 	public Impiegato getDirigente(@PathVariable(name = "dipartimento") int dipartimento) {
 		return this.service.getDirigente(dipartimento);
 	}
-
+	
+	@PostMapping(path = "/")
+	public Impiegato postImpiegato(@RequestBody Impiegato impiegato) {
+		return this.service.postImpiegato(impiegato);
+	}
+	
+	@PutMapping(path = "/")
+	public List<Impiegato> putImpiegati(@RequestBody Iterable<Impiegato> impiegati) {
+		return this.service.putImpiegati(impiegati);
+	}
+	
+	@PutMapping(path = "/{id}/")
+	public Impiegato putImpiegati(@PathVariable(name = "id") int id, @RequestBody Impiegato impiegato) {
+		return this.service.putImpiegato(id, impiegato);
+	}
+	
+	@DeleteMapping(path = "/")
+	public void deleteImpiegati() {
+		this.service.deleteImpiegati();
+	}
+	
+	@DeleteMapping
+	public void deleteImpiegato(@PathVariable(name = "id") int id) {
+		this.service.deleteImpiegato(id);
+	}
 }
