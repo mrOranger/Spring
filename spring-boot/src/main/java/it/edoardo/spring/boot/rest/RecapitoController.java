@@ -1,5 +1,11 @@
 package it.edoardo.spring.boot.rest;
 
-public class RecapitoController {
+import org.springframework.beans.factory.annotation.Autowired;
 
+import it.edoardo.spring.boot.dao.impl.RecapitoService;
+
+public class RecapitoController {
+	
+	@Autowired private RecapitoService service;
+	
 }
