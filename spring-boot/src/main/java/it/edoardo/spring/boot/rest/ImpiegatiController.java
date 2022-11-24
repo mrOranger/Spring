@@ -32,12 +32,14 @@ public class ImpiegatiController {
 		return this.service.getImpiegatoByCf(cf);
 	}
 	
+	// TODO : Bad request da rivedere
 	@GetMapping(path = "/data/{start}/{end}/")
 	public List<Impiegato> getImpiegatiByData(@PathVariable(name = "start") LocalDate start, 
 			@PathVariable(name = "end") LocalDate end) {
 		return this.service.getImpiegatiByData(start, end);
 	}
 	
+	// TODO : Internal server error da riveredere
 	@GetMapping(path = "/via/{via}/{civico}/")
 	public List<Impiegato> getImpiegatiByVia(@PathVariable(name = "via") String via, 
 			@PathVariable(name = "civico") int civico) {

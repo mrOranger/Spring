@@ -14,23 +14,23 @@ public interface ImpiegatoRepository extends JpaRepository<Impiegato, Integer>{
 	public abstract Optional<Impiegato> findByCodiceFiscale(String codiceFiscale);
 	public abstract List<Impiegato> findAllByDataDiNascitaBetween(LocalDate start, LocalDate end);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzo Ind WHERE Ind.via = ?1 AND Ind.numero = ?2",
+	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.via = ?1 AND Ind.numero = ?2",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByViaAndNumeroCivico(String via, int civico);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzo Ind WHERE Ind.città = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.città = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByCittà(String città);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzo Ind WHERE Ind.regione = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.regione = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByRegione(String regione);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzo Ind WHERE Ind.provincia = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.provincia = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByProvincia(String provincia);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzo Ind WHERE Ind.nazione = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE Ind.nazione = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByNazione(String nazione);
 	

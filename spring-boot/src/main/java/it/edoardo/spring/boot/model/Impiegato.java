@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity @Table(name = "impiegati")
 public class Impiegato {
 	
@@ -24,18 +26,18 @@ public class Impiegato {
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne
+	@ManyToOne @JsonIgnore
 	@JoinColumn(name = "id_dipartimento", nullable = false)
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne
+	@ManyToOne @JsonIgnore
 	@JoinColumn(name = "id_indirizzo", nullable = false)
 	private Indirizzo abitaIn;
 	
-	@OneToMany(mappedBy = "impiegato")
+	@OneToMany(mappedBy = "impiegato") @JsonIgnore
 	private List<Recapito> recapiti;
 	
-	@OneToOne(mappedBy = "direttore", optional = true)
+	@OneToOne(mappedBy = "direttore", optional = true) @JsonIgnore
 	private Dipartimento dipartimento;
 	
 	public int getId() {
