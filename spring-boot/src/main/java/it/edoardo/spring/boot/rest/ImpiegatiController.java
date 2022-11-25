@@ -2,9 +2,12 @@ package it.edoardo.spring.boot.rest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,13 +31,23 @@ public class ImpiegatiController {
 	}
 	
 	@GetMapping(path = "/{id}/")
-	public Impiegato getImpiegato(@PathVariable(name = "id") int id) {
-		return this.service.getImpiegatoById(id);
+	public ResponseEntity<Impiegato> getImpiegato(@PathVariable(name = "id") int id) {
+		try {
+			return new ResponseEntity<Impiegato>(this.service.getImpiegatoById(id), HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping(path = "/cf/{cf}/")
-	public Impiegato getImpiegatoByCf(@PathVariable(name = "cf") String cf) {
-		return this.service.getImpiegatoByCf(cf);
+	public ResponseEntity<Impiegato> getImpiegatoByCf(@PathVariable(name = "cf") String cf) {
+		try {
+			return new ResponseEntity<Impiegato>(this.service.getImpiegatoByCf(cf), HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping(path = "/data/{start}/{end}/")
@@ -73,13 +86,23 @@ public class ImpiegatiController {
 	}
 	
 	@GetMapping(path = "/email/{email}/")
-	public Impiegato getImpiegatoByEmail(@PathVariable(name = "email") String email) {
-		return this.service.getImpiegatoByEmail(email);
+	public ResponseEntity<Impiegato> getImpiegatoByEmail(@PathVariable(name = "email") String email) {
+		try {
+			return new ResponseEntity<Impiegato>(this.service.getImpiegatoByEmail(email), HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping(path = "/telefono/{telefono}/")
-	public Impiegato getImpiegatoByTelefono(@PathVariable(name = "telefono") String telefono) {
-		return this.service.getImpiegatoByTelefono(telefono);
+	public ResponseEntity<Impiegato> getImpiegatoByTelefono(@PathVariable(name = "telefono") String telefono) {
+		try {
+			return new ResponseEntity<Impiegato>(this.service.getImpiegatoByTelefono(telefono), HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping(path = "/dipartimento/{dipartimento}/")
@@ -93,8 +116,13 @@ public class ImpiegatiController {
 	}
 	
 	@GetMapping(path = "/dirigente/{dipartimento}/")
-	public Impiegato getDirigente(@PathVariable(name = "dipartimento") int dipartimento) {
-		return this.service.getDirigente(dipartimento);
+	public ResponseEntity<Impiegato> getDirigente(@PathVariable(name = "dipartimento") int dipartimento) {
+		try {
+			return new ResponseEntity<Impiegato>(this.service.getDirigente(dipartimento), HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping(path = "/")

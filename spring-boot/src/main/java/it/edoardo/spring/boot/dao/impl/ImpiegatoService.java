@@ -2,6 +2,7 @@ package it.edoardo.spring.boot.dao.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,13 @@ public class ImpiegatoService implements ImpiegatoDao{
 	}
 
 	@Override
-	public Impiegato getImpiegatoById(int id) {
-		return this.repository.findById(id).orElse(null);
+	public Impiegato getImpiegatoById(int id) throws NoSuchElementException {
+		return this.repository.findById(id).get();
 	}
 
 	@Override
-	public Impiegato getImpiegatoByCf(String codiceFiscale) {
-		return this.repository.findByCodiceFiscale(codiceFiscale).orElse(null);
+	public Impiegato getImpiegatoByCf(String codiceFiscale) throws NoSuchElementException {
+		return this.repository.findByCodiceFiscale(codiceFiscale).get();
 	}
 
 	@Override
@@ -66,8 +67,8 @@ public class ImpiegatoService implements ImpiegatoDao{
 	}
 
 	@Override
-	public Impiegato getImpiegatoByTelefono(String telefono) {
-		return this.repository.findByTelefono(telefono).orElse(null);
+	public Impiegato getImpiegatoByTelefono(String telefono) throws NoSuchElementException {
+		return this.repository.findByTelefono(telefono).get();
 	}
 
 	@Override
@@ -81,8 +82,8 @@ public class ImpiegatoService implements ImpiegatoDao{
 	}
 
 	@Override
-	public Impiegato getDirigente(int dipartimento) {
-		return this.repository.findDirigenteInDipartimento(dipartimento).orElse(null);
+	public Impiegato getDirigente(int dipartimento) throws NoSuchElementException {
+		return this.repository.findDirigenteInDipartimento(dipartimento).get();
 	}
 
 	@Override
