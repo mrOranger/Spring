@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -125,7 +127,7 @@ public class ImpiegatiController {
 		return new ResponseEntity<Impiegato>((Impiegato)null, HttpStatus.NO_CONTENT);
 	}
 	
-	@PostMapping(path = "/")
+	@PostMapping(path = "/") @Transactional
 	public Impiegato postImpiegato(@RequestBody Impiegato impiegato) {
 		return this.service.postImpiegato(impiegato);
 	}

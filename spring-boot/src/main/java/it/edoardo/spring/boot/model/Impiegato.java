@@ -1,5 +1,6 @@
 package it.edoardo.spring.boot.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity @Table(name = "impiegati")
-public class Impiegato {
+public class Impiegato implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name = "id") private int id;
@@ -26,18 +29,16 @@ public class Impiegato {
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "lavora_in", nullable = false)
-	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "abita_in", nullable = false)
-	@JsonIgnoreProperties(value = "impiegati")
 	private Indirizzo abitaIn;
 
-	@OneToOne(optional = true, mappedBy = "direttore", cascade = CascadeType.ALL) 
-	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
+	@OneToOne(optional = true, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "dirige", nullable = true)
 	private Dipartimento dirige;
 
 	
@@ -101,7 +102,7 @@ public class Impiegato {
 		return dirige;
 	}
 
-	public void setDirettore(Dipartimento dipartimento) {
+	public void setDirige(Dipartimento dipartimento) {
 		this.dirige = dipartimento;
 	}
 }

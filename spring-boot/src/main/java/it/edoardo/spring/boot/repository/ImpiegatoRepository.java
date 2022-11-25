@@ -42,15 +42,15 @@ public interface ImpiegatoRepository extends JpaRepository<Impiegato, Integer>{
 			nativeQuery = true)
 	public abstract Optional<Impiegato> findByTelefono(String telefono);
 	
-	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id AND D.id = ?1",
+	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.lavora_in = D.id AND D.id = ?1",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllByDipartimento(int dipartimento);
 	
-	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id AND D.direttore = I.id",
+	@Query(value = "SELECT I.* FROM impiegati I WHERE I.dirige IS NOT NULL",
 			nativeQuery = true)
 	public abstract List<Impiegato> findAllDirigenti();
 	
-	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE I.id_dipartimento = D.id AND D.id = ?1 AND D.direttore = I.id",
+	@Query(value = "SELECT I.* FROM impiegati I, dipartimenti D WHERE D.id = ?1 AND D.Id = I.dirige",
 			nativeQuery = true)
 	public abstract Optional<Impiegato> findDirigenteInDipartimento(int dipartimento);
 
