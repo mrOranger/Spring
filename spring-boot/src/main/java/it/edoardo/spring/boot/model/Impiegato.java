@@ -115,7 +115,7 @@ public class Impiegato {
 	}
 	
 	public void addRecapito(Recapito recapito) {
-		this.recapiti.add(recapito);
+		addRecapito(recapito, true);
 	}
 	
 	public void addRecapito(Recapito recapito, boolean inserito) {
@@ -140,7 +140,16 @@ public class Impiegato {
 		return dirige;
 	}
 
-	public void setDiretto(Dipartimento dipartimento) {
-		this.dirige = dipartimento;
+	public void setDirettore(Dipartimento dipartimento) {
+		setDirettore(dipartimento, true);
 	}
+	
+	public void setDirettore(Dipartimento dipartimento, boolean inserito) {
+		this.dirige = dipartimento;
+		if(this.dirige != null && inserito) {
+			this.dirige.addDirettore(this, false);
+		}
+	}
+	
+	// TODO: continuare nella creazione dei metodi per impostare le relazioni
 }

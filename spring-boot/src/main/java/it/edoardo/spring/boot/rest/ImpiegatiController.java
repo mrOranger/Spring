@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.spring.boot.dao.impl.ImpiegatoService;
 import it.edoardo.spring.boot.model.Impiegato;
-import net.bytebuddy.asm.Advice.Return;
 
 @RestController @RequestMapping(path = "/impiegati") 
 public class ImpiegatiController {
@@ -118,7 +117,7 @@ public class ImpiegatiController {
 		this.service.deleteImpiegati();
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(path = "/{id}/")
 	public void deleteImpiegato(@PathVariable(name = "id") int id) {
 		this.service.deleteImpiegato(id);
 	}

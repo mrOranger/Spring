@@ -52,7 +52,33 @@ public class Dipartimento {
 		return direttore;
 	}
 	
+	public List<Impiegato> getImpiegati() {
+		return impiegati;
+	}
+
+	public void setImpiegati(List<Impiegato> impiegati) {
+		this.impiegati = impiegati;
+	}
+
 	public void setDirettore(Impiegato direttore) {
 		this.direttore = direttore;
+	}
+	
+	public void addDirettore(Impiegato direttore) {
+		addDirettore(direttore, true);
+	}
+	
+	public void addDirettore(Impiegato direttore, boolean inserito) {
+		if(direttore != null) {
+            if(getImpiegati().contains(direttore)) {
+            	getImpiegati().set(getImpiegati().indexOf(direttore), direttore);
+            }
+            else {
+            	getImpiegati().add(direttore);
+            }
+            if (inserito) {
+            	direttore.setDirettore(this, false);
+            }			
+		}
 	}
 }
