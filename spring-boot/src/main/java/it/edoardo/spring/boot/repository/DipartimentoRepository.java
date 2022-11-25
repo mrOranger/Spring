@@ -11,11 +11,11 @@ public interface DipartimentoRepository extends JpaRepository<Dipartimento, Inte
 	
 	public abstract Optional<Dipartimento> findByNome(String nome);
 	
-	@Query(value = "SELECT D.* FROM dipartimenti D JOIN impiegati I WHERE I.id_impiegato = ?1"
+	@Query(value = "SELECT D.* FROM dipartimenti D, impiegati I WHERE I.lavora_id = D.id AND I.id = ?1"
 			,nativeQuery =  true)
 	public abstract Optional<Dipartimento> findByImpiegato(int id);
 	
-	@Query(value = "SELECT D.* FROM dipartimenti D JOIN impiegati I WHERE D.direttore = ?1"
+	@Query(value = "SELECT D.* FROM dipartimenti D, impiegati I WHERE I.lavora_in = D.id AND D.direttore = ?1"
 			,nativeQuery =  true)
 	public abstract Optional<Dipartimento> findByDirettore(int id);
 
