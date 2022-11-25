@@ -13,12 +13,12 @@ import javax.persistence.Table;
 public class Recapito {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
-	@Column(name = "id_recapito") private int id;
+	@Column(name = "id") private int id;
 	@Column(name = "telefono") private String telefono;
 	@Column(name = "email") private String email;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_impiegato", nullable = false)
+	@JoinColumn(name = "id_impiegato")
 	private Impiegato impiegato;
 	
 	public int getId() {
@@ -43,5 +43,13 @@ public class Recapito {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Impiegato getImpiegato() {
+		return impiegato;
+	}
+
+	public void setImpiegato(Impiegato impiegato) {
+		this.impiegato = impiegato;
 	}
 }

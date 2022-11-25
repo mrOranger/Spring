@@ -1,6 +1,7 @@
 package it.edoardo.spring.boot.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,29 +22,33 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Impiegato {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
-	@Column(name = "id_impiegato") private int id;
+	@Column(name = "id") private int id;
 	@Column(name = "nome") private String nome;
 	@Column(name = "cognome") private String cognome;
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
+	@JoinColumn(name = "id_dipartimento")
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
-	@JoinColumn(name = "id_dipartimento", nullable = false)
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "id_indirizzo", nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_indirizzo")
 	@JsonIgnoreProperties(value = "impiegati")
 	private Indirizzo abitaIn;
 	
-	@OneToMany(mappedBy = "impiegato", cascade = CascadeType.ALL) 
+	@OneToMany(mappedBy = "impiegato", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnoreProperties(value = "impiegato")
 	private List<Recapito> recapiti;
 	
-	@OneToOne(mappedBy = "direttore", optional = true, cascade = CascadeType.ALL) 
+	@OneToOne(mappedBy = "direttore") 
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento dirige;
+	
+	public Impiegato() {
+		this.recapiti = new ArrayList<>();
+	}
 	
 	public int getId() {
 		return id;

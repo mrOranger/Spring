@@ -1,5 +1,6 @@
 package it.edoardo.spring.boot.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,15 +18,19 @@ import javax.persistence.Table;
 public class Dipartimento {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY )
-	@Column(name = "id_dipartimento") private int id;
+	@Column(name = "id") private int id;
 	@Column(name = "nome") private String nome;
 	
-	@OneToMany(mappedBy = "lavoraIn", cascade = CascadeType.ALL) 
+	@OneToMany(mappedBy = "lavoraIn", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Impiegato> impiegati;
 	
 	@OneToOne(cascade = CascadeType.ALL) 
-	@JoinColumn(name = "direttore", referencedColumnName = "id_impiegato")
+	@JoinColumn(name = "direttore")
 	private Impiegato direttore;
+	
+	public Dipartimento() {
+		this.impiegati = new ArrayList<>();
+	}
 	
 	public int getId() {
 		return id;

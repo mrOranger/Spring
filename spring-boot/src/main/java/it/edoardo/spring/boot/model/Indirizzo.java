@@ -1,5 +1,6 @@
 package it.edoardo.spring.boot.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 public class Indirizzo {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_indirizzo") private int id;
+	@Column(name = "id") private int id;
 	@Column(name = "via") private String via;
 	@Column(name = "numero") private int numero;
 	@Column(name = "città") private String città;
@@ -23,8 +24,12 @@ public class Indirizzo {
 	@Column(name = "provincia") private String provincia;
 	@Column(name = "nazione") private String nazione;
 	
-	@OneToMany(mappedBy = "abitaIn", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "abitaIn", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Impiegato> impiegati;
+	
+	public Indirizzo() {
+		this.impiegati = new ArrayList<>();
+	}
 	
 	public int getId() {
 		return id;
