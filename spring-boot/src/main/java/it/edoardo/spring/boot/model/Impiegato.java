@@ -28,12 +28,12 @@ public class Impiegato {
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_dipartimento")
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_indirizzo")
 	@JsonIgnoreProperties(value = "impiegati")
 	private Indirizzo abitaIn;
@@ -42,7 +42,7 @@ public class Impiegato {
 	@JsonIgnoreProperties(value = "impiegato")
 	private List<Recapito> recapiti;
 	
-	@OneToOne(mappedBy = "direttore") 
+	@OneToOne(mappedBy = "direttore", cascade = CascadeType.ALL) 
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento dirige;
 	
@@ -112,6 +112,28 @@ public class Impiegato {
 
 	public void setRecapiti(List<Recapito> recapiti) {
 		this.recapiti = recapiti;
+	}
+	
+	public void addRecapito(Recapito recapito) {
+		this.recapiti.add(recapito);
+	}
+	
+	public void addRecapito(Recapito recapito, boolean inserito) {
+		if(recapito != null) {
+            if(getRecapiti().contains(recapito)) {
+            	getRecapiti().set(getRecapiti().indexOf(recapito), recapito);
+            }
+            else {
+            	getRecapiti().add(recapito);
+            }
+            if (inserito) {
+                recapito.setImpiegato(this, false);
+            }			
+		}
+	}
+	
+	public void rimuoviRecapito(Recapito recapito) {
+		getRecapiti().remove(recapito);
 	}
 
 	public Dipartimento getDirige() {

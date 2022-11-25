@@ -1,5 +1,6 @@
 package it.edoardo.spring.boot.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ public class Recapito {
 	@Column(name = "telefono") private String telefono;
 	@Column(name = "email") private String email;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_impiegato")
 	private Impiegato impiegato;
 	
@@ -50,6 +51,13 @@ public class Recapito {
 	}
 
 	public void setImpiegato(Impiegato impiegato) {
+		setImpiegato(impiegato, true);
+	}
+	
+	public void setImpiegato(Impiegato impiegato, boolean inserito) {
 		this.impiegato = impiegato;
+		if(this.impiegato != null && inserito) {
+			this.impiegato.addRecapito(this, false);
+		}
 	}
 }
