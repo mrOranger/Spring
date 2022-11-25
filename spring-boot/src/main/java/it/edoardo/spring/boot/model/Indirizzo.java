@@ -23,14 +23,7 @@ public class Indirizzo {
 	@Column(name = "regione") private String regione;
 	@Column(name = "provincia") private String provincia;
 	@Column(name = "nazione") private String nazione;
-	
-	@OneToMany(mappedBy = "abitaIn", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<Impiegato> impiegati;
-	
-	public Indirizzo() {
-		this.impiegati = new ArrayList<>();
-	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -84,13 +77,5 @@ public class Indirizzo {
 	
 	public void setNazione(String nazione) {
 		this.nazione = nazione;
-	}
-	
-	public List<Impiegato> getImpiegati() {
-		return impiegati;
-	}
-	
-	public void setImpiegati(List<Impiegato> impiegati) {
-		this.impiegati = impiegati;
 	}
 }
