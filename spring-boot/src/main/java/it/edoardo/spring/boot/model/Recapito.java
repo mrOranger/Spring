@@ -52,13 +52,6 @@ public class Recapito {
 	}
 
 	public void setImpiegato(Impiegato impiegato) {
-		setImpiegato(impiegato, true);
-	}
-	
-	public void setImpiegato(Impiegato impiegato, boolean inserito) {
 		this.impiegato = impiegato;
-		if(this.impiegato != null && inserito) {
-			this.impiegato.addRecapito(this, false);
-		}
 	}
 }
