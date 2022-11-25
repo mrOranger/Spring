@@ -1,18 +1,16 @@
 package it.edoardo.spring.boot.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -28,27 +26,20 @@ public class Impiegato {
 	@Column(name = "codice_fiscale") private String codiceFiscale;
 	@Column(name = "data_di_nascita") private LocalDate dataDiNascita;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_dipartimento")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "lavora_in", nullable = false)
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento lavoraIn;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_indirizzo")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name = "abita_in", nullable = false)
 	@JsonIgnoreProperties(value = "impiegati")
 	private Indirizzo abitaIn;
-	
-	@OneToMany(mappedBy = "impiegato", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties(value = "impiegato")
-	private List<Recapito> recapiti;
-	
-	@OneToOne(mappedBy = "direttore", cascade = CascadeType.ALL) 
+
+	@OneToOne(optional = true, mappedBy = "direttore", cascade = CascadeType.ALL) 
 	@JsonIgnoreProperties(value = {"impiegati", "direttore"})
 	private Dipartimento dirige;
-	
-	public Impiegato() {
-		this.recapiti = new ArrayList<>();
-	}
+
 	
 	public int getId() {
 		return id;
@@ -106,50 +97,11 @@ public class Impiegato {
 		this.abitaIn = abitaIn;
 	}
 
-	public List<Recapito> getRecapiti() {
-		return recapiti;
-	}
-
-	public void setRecapiti(List<Recapito> recapiti) {
-		this.recapiti = recapiti;
-	}
-	
-	public void addRecapito(Recapito recapito) {
-		addRecapito(recapito, true);
-	}
-	
-	public void addRecapito(Recapito recapito, boolean inserito) {
-		if(recapito != null) {
-            if(getRecapiti().contains(recapito)) {
-            	getRecapiti().set(getRecapiti().indexOf(recapito), recapito);
-            }
-            else {
-            	getRecapiti().add(recapito);
-            }
-            if (inserito) {
-                recapito.setImpiegato(this, false);
-            }			
-		}
-	}
-	
-	public void rimuoviRecapito(Recapito recapito) {
-		getRecapiti().remove(recapito);
-	}
-
 	public Dipartimento getDirige() {
 		return dirige;
 	}
 
 	public void setDirettore(Dipartimento dipartimento) {
-		setDirettore(dipartimento, true);
-	}
-	
-	public void setDirettore(Dipartimento dipartimento, boolean inserito) {
 		this.dirige = dipartimento;
-		if(this.dirige != null && inserito) {
-			this.dirige.addDirettore(this, false);
-		}
 	}
-	
-	// TODO: continuare nella creazione dei metodi per impostare le relazioni
 }
