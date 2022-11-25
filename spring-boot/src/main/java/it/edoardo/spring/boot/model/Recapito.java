@@ -3,6 +3,7 @@ package it.edoardo.spring.boot.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class Recapito {
 	@Column(name = "telefono") private String telefono;
 	@Column(name = "email") private String email;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_impiegato")
 	private Impiegato impiegato;
 	
