@@ -6,20 +6,31 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import it.edoardo.spring.boot.dao.impl.RecapitoService;
 import it.edoardo.spring.boot.model.Recapito;
 
+@RestController @RequestMapping(path = "/recapiti")
 public class RecapitoController {
 
 	@Autowired
 	private RecapitoService service;
 
+	@GetMapping(path = "/")
 	public ResponseEntity<List<Recapito>> getRecapiti() {
 		return returnResponseEntityCollection(this.service.getRecapiti());
 	}
 
-	public ResponseEntity<Recapito> getRecapito(int id) {
+	@GetMapping(path = "/{id}/")
+	public ResponseEntity<Recapito> getRecapito(@PathVariable int id) {
 		try {
 			return new ResponseEntity<Recapito>(this.service.getRecapito(id), HttpStatus.OK);			
 		} catch (NoSuchElementException e) {
@@ -28,11 +39,13 @@ public class RecapitoController {
 		return new ResponseEntity<Recapito>((Recapito)null, HttpStatus.NO_CONTENT);
 	}
 
-	public ResponseEntity<List<Recapito>> getRecapitoOfImpiegato(int id) {
+	@GetMapping(path = "/impiegato/{id}/")
+	public ResponseEntity<List<Recapito>> getRecapitoOfImpiegato(@PathVariable int id) {
 		return returnResponseEntityCollection(this.service.getRecapitoOfImpiegato(id));
 	}
 
-	public ResponseEntity<Recapito> getRecapitoByEmail(String email) {
+	@GetMapping(path = "/email/{email}/")
+	public ResponseEntity<Recapito> getRecapitoByEmail(@PathVariable String email) {
 		try {
 			return new ResponseEntity<Recapito>(this.service.getRecapitoByEmail(email), HttpStatus.OK);			
 		} catch (NoSuchElementException e) {
@@ -41,7 +54,8 @@ public class RecapitoController {
 		return new ResponseEntity<Recapito>((Recapito)null, HttpStatus.NO_CONTENT);
 	}
 
-	public ResponseEntity<Recapito> getRecapitoByTelefono(String telefono) {
+	@GetMapping(path = "/telefono/{telefono}/")
+	public ResponseEntity<Recapito> getRecapitoByTelefono(@PathVariable String telefono) {
 		try {
 			return new ResponseEntity<Recapito>(this.service.getRecapitoByTelefono(telefono), HttpStatus.OK);			
 		} catch (NoSuchElementException e) {
@@ -50,39 +64,48 @@ public class RecapitoController {
 		return new ResponseEntity<Recapito>((Recapito)null, HttpStatus.NO_CONTENT);
 	}
 
-	public ResponseEntity<List<Recapito>> getRecapitiByProvider(String provider) {
+	@GetMapping(path = "/email/provider/{provider}/")
+	public ResponseEntity<List<Recapito>> getRecapitiByProvider(@PathVariable String provider) {
 		return returnResponseEntityCollection(this.service.getRecapitiByProvider(provider));
 	}
 
-	public ResponseEntity<List<Recapito>> getRecapitiByDipartimento(int id) {
+	@GetMapping(path = "/dipartimento/{id}/")
+	public ResponseEntity<List<Recapito>> getRecapitiByDipartimento(@PathVariable int id) {
 		return returnResponseEntityCollection(this.service.getRecapitiByDipartimento(id));
 	}
 
+	@GetMapping(path = "/dirigenti/")
 	public ResponseEntity<List<Recapito>> getRecapitiOfDirigenti() {
 		return returnResponseEntityCollection(this.service.getRecapitiOfDirigenti());
 	}
 
-	public ResponseEntity<List<Recapito>> getRecapitiOfDirigente(int id) {
+	@GetMapping(path = "/dirigente/{id}/")
+	public ResponseEntity<List<Recapito>> getRecapitiOfDirigente(@PathVariable int id) {
 		return returnResponseEntityCollection(this.service.getRecapitiOfDirigente(id));
 	}
 
+	@PostMapping(path = "/")
 	public ResponseEntity<Recapito> postRecapito(Recapito recapito) {
 		return new ResponseEntity<Recapito>(this.service.postRecapito(recapito), HttpStatus.OK);
 	}
 
-	public ResponseEntity<List<Recapito>> putRecapiti(Iterable<Recapito> recapiti) {
+	@PutMapping(path = "/")
+	public ResponseEntity<List<Recapito>> putRecapiti(@RequestBody Iterable<Recapito> recapiti) {
 		return new ResponseEntity<List<Recapito>>(this.service.putRecapiti(recapiti), HttpStatus.OK);
 	}
 
-	public ResponseEntity<Recapito> putRecapito(int id, Recapito recapito) {
+	@PutMapping(path = "/{id}/")
+	public ResponseEntity<Recapito> putRecapito(@PathVariable int id, @RequestBody Recapito recapito) {
 		return new ResponseEntity<Recapito>(this.service.putRecapito(id, recapito), HttpStatus.OK);
 	}
 
+	@DeleteMapping(path = "/")
 	public void deleteRecapiti() {
 		this.service.deleteRecapiti();
 	}
 
-	public void deleteRecapito(int id) {
+	@DeleteMapping(path = "/{id}/")
+	public void deleteRecapito(@PathVariable int id) {
 		try {
 			this.service.deleteRecapito(id);	
 		} catch(IllegalArgumentException e) {
@@ -90,7 +113,8 @@ public class RecapitoController {
 		}
 	}
 
-	public void deleteRecapitiOfImpiegato(int id) {
+	@DeleteMapping(path = "/impiegato/{id}/")
+	public void deleteRecapitiOfImpiegato(@PathVariable int id) {
 		try {
 			this.service.deleteRecapitiOfImpiegato(id);	
 		} catch(IllegalArgumentException e) {
