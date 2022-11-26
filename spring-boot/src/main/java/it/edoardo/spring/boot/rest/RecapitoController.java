@@ -85,7 +85,7 @@ public class RecapitoController {
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<Recapito> postRecapito(Recapito recapito) {
+	public ResponseEntity<Recapito> postRecapito(@RequestBody Recapito recapito) {
 		return new ResponseEntity<Recapito>(this.service.postRecapito(recapito), HttpStatus.OK);
 	}
 
