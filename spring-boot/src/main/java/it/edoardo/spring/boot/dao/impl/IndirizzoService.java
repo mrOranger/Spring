@@ -69,4 +69,15 @@ public class IndirizzoService implements IndirizzoDao{
 	public Indirizzo getIndirizzoOfDirigente(int dipartimento) throws NoSuchElementException {
 		return this.repository.findByDirigente(dipartimento).get();
 	}
+
+	@Override
+	public List<Indirizzo> putIndirizzi(Iterable<Indirizzo> indirizzi) {
+		return this.repository.saveAllAndFlush(indirizzi);
+	}
+
+	@Override
+	public Indirizzo putIndirizzo(int id, Indirizzo indirizzo) {
+		indirizzo.setId(id);
+		return this.repository.saveAndFlush(indirizzo);
+	}
 }

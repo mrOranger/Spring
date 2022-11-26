@@ -17,5 +17,7 @@ public interface IndirizzoDao {
 	public abstract List<Indirizzo> getIndirizziOfDipartimento(int id);
 	public abstract List<Indirizzo> getIndirizziOfDirigenti();
 	public abstract Indirizzo getIndirizzoOfDirigente(int dipartimento);
+	public abstract List<Indirizzo> putIndirizzi(Iterable<Indirizzo> indirizzi);
+	public abstract Indirizzo putIndirizzo(int id, Indirizzo indirizzo);
 
 }

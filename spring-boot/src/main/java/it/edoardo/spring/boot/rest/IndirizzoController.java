@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -112,4 +113,15 @@ public class IndirizzoController {
 		}
 		return new ResponseEntity<Indirizzo>((Indirizzo)null, HttpStatus.NO_CONTENT);
 	}
+	
+	@PutMapping(path = "/")
+	public ResponseEntity<List<Indirizzo>> putIndirizzi(Iterable<Indirizzo> indirizzi) {
+		return new ResponseEntity<List<Indirizzo>>(this.service.putIndirizzi(indirizzi), HttpStatus.OK);
+	}
+	
+	@PutMapping(path = "/{id}/")
+	public ResponseEntity<Indirizzo> putIndirizzo(int id, Indirizzo indirizzo) {
+		return new ResponseEntity<Indirizzo>(this.service.putIndirizzo(id, indirizzo), HttpStatus.OK);
+	}
+	
 }
