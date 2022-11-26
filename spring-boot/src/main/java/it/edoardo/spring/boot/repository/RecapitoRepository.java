@@ -30,4 +30,7 @@ public interface RecapitoRepository extends JpaRepository<Recapito, Integer>{
 			+ "WHERE R.id_impiegato = I.id AND I.dirige = ?1", nativeQuery = true)
 	public abstract List<Recapito> findAllOfDirigente(int id);
 	
+	@Query(value = "DELETE FROM recapiti WHERE id_impiegato = ?1", nativeQuery = true)
+	public abstract void deleteRecapitiOfImpiegato(int id);
+	
 }

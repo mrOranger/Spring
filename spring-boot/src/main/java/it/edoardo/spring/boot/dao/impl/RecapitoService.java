@@ -58,4 +58,35 @@ public class RecapitoService implements RecapitoDao{
 	public List<Recapito> getRecapitiOfDirigente(int id) {
 		return this.repository.findAllOfDirigente(id);
 	}
+
+	@Override
+	public Recapito postRecapito(Recapito recapito) {
+		return this.repository.saveAndFlush(recapito);
+	}
+
+	@Override
+	public List<Recapito> putRecapiti(Iterable<Recapito> recapiti) {
+		return this.repository.saveAllAndFlush(recapiti);
+	}
+
+	@Override
+	public Recapito putRecapito(int id, Recapito recapito) {
+		recapito.setId(id);
+		return this.repository.save(recapito);
+	}
+
+	@Override
+	public void deleteRecapiti() {
+		this.repository.deleteAll();
+	}
+
+	@Override
+	public void deleteRecapito(int id) {
+		this.repository.deleteById(id);
+	}
+
+	@Override
+	public void deleteRecapitiOfImpiegato(int id) {
+		this.repository.deleteRecapitiOfImpiegato(id);
+	}
 }

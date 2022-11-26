@@ -15,5 +15,10 @@ public interface RecapitoDao {
 	public abstract List<Recapito> getRecapitiByDipartimento(int id);
 	public abstract List<Recapito> getRecapitiOfDirigenti();
 	public abstract List<Recapito> getRecapitiOfDirigente(int id);
-
+	public abstract Recapito postRecapito(Recapito recapito);
+	public abstract List<Recapito> putRecapiti(Iterable<Recapito> recapiti);
+	public abstract Recapito putRecapito(int id, Recapito recapito);
+	public abstract void deleteRecapiti();
+	public abstract void deleteRecapito(int id);
+	public abstract void deleteRecapitiOfImpiegato(int id);
 }
