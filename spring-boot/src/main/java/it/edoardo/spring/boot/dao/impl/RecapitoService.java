@@ -1,6 +1,7 @@
 package it.edoardo.spring.boot.dao.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class RecapitoService implements RecapitoDao{
 	}
 
 	@Override
-	public Recapito getRecapito(int id) {
+	public Recapito getRecapito(int id) throws NoSuchElementException {
 		return this.repository.findById(id).get();
 	}
 
@@ -30,12 +31,12 @@ public class RecapitoService implements RecapitoDao{
 	}
 
 	@Override
-	public Recapito getRecapitoByEmail(String email) {
+	public Recapito getRecapitoByEmail(String email) throws NoSuchElementException {
 		return this.repository.findByEmail(email).get();
 	}
 
 	@Override
-	public Recapito getRecapitoByTelefono(String telefono) {
+	public Recapito getRecapitoByTelefono(String telefono) throws NoSuchElementException {
 		return this.repository.findByTelefono(telefono).get();
 	}
 
@@ -72,7 +73,7 @@ public class RecapitoService implements RecapitoDao{
 	@Override
 	public Recapito putRecapito(int id, Recapito recapito) {
 		recapito.setId(id);
-		return this.repository.save(recapito);
+		return this.repository.saveAndFlush(recapito);
 	}
 
 	@Override
@@ -81,12 +82,12 @@ public class RecapitoService implements RecapitoDao{
 	}
 
 	@Override
-	public void deleteRecapito(int id) {
+	public void deleteRecapito(int id) throws IllegalArgumentException {
 		this.repository.deleteById(id);
 	}
 
 	@Override
-	public void deleteRecapitiOfImpiegato(int id) {
+	public void deleteRecapitiOfImpiegato(int id) throws IllegalArgumentException {
 		this.repository.deleteRecapitiOfImpiegato(id);
 	}
 }
