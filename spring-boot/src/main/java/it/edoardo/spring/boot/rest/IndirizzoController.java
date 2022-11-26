@@ -88,7 +88,7 @@ public class IndirizzoController {
 	}
 	
 	@GetMapping(path = "/dipartimento/{id}/")
-	public ResponseEntity<List<Indirizzo>> getIndirizziOfDipartimento(int id) {
+	public ResponseEntity<List<Indirizzo>> getIndirizziOfDipartimento(@PathVariable int id) {
 		if(this.service.getIndirizziOfDipartimento(id).size() > 0) {
 			return new ResponseEntity<List<Indirizzo>>(this.service.getIndirizziOfDipartimento(id), HttpStatus.OK);
 		} 
@@ -104,7 +104,7 @@ public class IndirizzoController {
 	}
 	
 	@GetMapping(path = "/dirigenti/{dipartimento}/")
-	public ResponseEntity<Indirizzo> getIndirizzoOfDirigente(int dipartimento) {
+	public ResponseEntity<Indirizzo> getIndirizzoOfDirigente(@PathVariable int dipartimento) {
 		try {
 			return new ResponseEntity<Indirizzo>(this.service.getIndirizzoOfDirigente(dipartimento), HttpStatus.OK);
 		} catch (NoSuchElementException e) {
