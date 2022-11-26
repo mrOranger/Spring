@@ -1,6 +1,7 @@
 package it.edoardo.spring.boot.dao.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class IndirizzoService implements IndirizzoDao{
 	}
 
 	@Override
-	public Indirizzo getIndirizzo(int id) {
+	public Indirizzo getIndirizzo(int id) throws NoSuchElementException {
 		return this.repository.findById(id).get();
 	}
 
@@ -50,7 +51,7 @@ public class IndirizzoService implements IndirizzoDao{
 	}
 
 	@Override
-	public Indirizzo getIndirizzoOfImpiegato(int id) {
+	public Indirizzo getIndirizzoOfImpiegato(int id) throws NoSuchElementException {
 		return this.repository.findByImpiegato(id).get();
 	}
 
@@ -65,7 +66,7 @@ public class IndirizzoService implements IndirizzoDao{
 	}
 
 	@Override
-	public Indirizzo getIndirizzoOfDirigente(int dipartimento) {
+	public Indirizzo getIndirizzoOfDirigente(int dipartimento) throws NoSuchElementException {
 		return this.repository.findByDirigente(dipartimento).get();
 	}
 }
