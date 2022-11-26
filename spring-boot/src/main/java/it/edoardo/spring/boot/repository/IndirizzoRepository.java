@@ -16,19 +16,19 @@ public interface IndirizzoRepository extends JpaRepository<Indirizzo, Integer>{
 	public abstract List<Indirizzo> findAllByRegione(String regione);
 	public abstract List<Indirizzo> findAllByNazione(String nazione);
 	
-	@Query(value = "SELECT I.* FROM impiegati I JOIN indirizzi Ind WHERE I.id_impiegato = ?1",
-			nativeQuery =  true)
+	@Query(value = "SELECT Ind.* FROM impiegati I, indirizzi Ind "
+			+ "WHERE I.id = ?1 AND I.abita_in = Ind.id", nativeQuery =  true)
 	public abstract Optional<Indirizzo> findByImpiegato(int id);
 	
-	@Query(value = "SELECT Ind.* FROM indirizzi Ind JOIN impiegati I WHERE I.id_dipartimento = ?1",
-			nativeQuery = true)
+	@Query(value = "SELECT Ind.* FROM indirizzi Ind, impiegati I "
+			+ "WHERE I.lavora_in = ?1 AND I.abita_in = Ind.id",nativeQuery = true)
 	public abstract List<Indirizzo> findAllByDipartimento(int id);
 	
-	@Query(value = "SELECT Ind.* FROM indirizzi Ind JOIN impiegati I JOIN dipartimenti D"
-			+ " WHERE D.direttore = i.id_impiegato", nativeQuery = true)
+	@Query(value = "SELECT Ind.* FROM indirizzi Ind, impiegati I "
+			+ "WHERE I.dirige IS NOT NULL AND I.abita_in = Ind.id", nativeQuery = true)
 	public abstract List<Indirizzo> findAllByDirigenti();
 	
-	@Query(value = "SELECT Ind.* FROM indirizzi Ind JOIN impiegati I JOIN dipartimenti D"
-			+ " WHERE D.direttore = i.id_impiegato AND D.id_dipartimenti = ?1", nativeQuery = true)
+	@Query(value = "SELECT Ind.* FROM indirizzi Ind, impiegati I"
+			+ " WHERE I.dirige = ?1 AND I.abita_in = Ind.id", nativeQuery = true)
 	public abstract Optional<Indirizzo> findByDirigente(int id);
 }
